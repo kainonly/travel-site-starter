@@ -39,6 +39,8 @@ func main() {
 	root.AddCommand(cmd.API)
 	root.AddCommand(cmd.Setup)
 	root.AddCommand(cmd.Sync)
+	root.AddCommand(cmd.User())
+	root.AddCommand(cmd.Values)
 	if err := root.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
