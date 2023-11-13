@@ -15,6 +15,7 @@ import (
 	"github.com/weplanx/go/rest"
 	"github.com/weplanx/go/sessions"
 	"github.com/weplanx/go/values"
+	"server/api/datasets"
 	"server/api/index"
 	"server/api/lark"
 	"server/api/tencent"
@@ -29,22 +30,25 @@ var Provides = wire.NewSet(
 	index.Provides,
 	tencent.Provides,
 	lark.Provides,
+	datasets.Provides,
 )
 
 type API struct {
 	*common.Inject
 
-	Hertz    *server.Hertz
-	Csrf     *csrf.Csrf
-	Values   *values.Controller
-	Sessions *sessions.Controller
-	Rest     *rest.Controller
-	Index    *index.Controller
-	IndexX   *index.Service
-	Tencent  *tencent.Controller
-	TencentX *tencent.Service
-	Lark     *lark.Controller
-	LarkX    *lark.Service
+	Hertz     *server.Hertz
+	Csrf      *csrf.Csrf
+	Values    *values.Controller
+	Sessions  *sessions.Controller
+	Rest      *rest.Controller
+	Index     *index.Controller
+	IndexX    *index.Service
+	Tencent   *tencent.Controller
+	TencentX  *tencent.Service
+	Lark      *lark.Controller
+	LarkX     *lark.Service
+	Datasets  *datasets.Controller
+	DatasetsX *datasets.Service
 }
 
 func (x *API) Routes(h *server.Hertz) (err error) {
@@ -120,6 +124,12 @@ func (x *API) Routes(h *server.Hertz) (err error) {
 	{
 		_lark.POST("tasks", x.Lark.CreateTasks)
 		_lark.GET("tasks", x.Lark.GetTasks)
+	}
+	_datasets := h.Group("datasets", m...)
+	{
+		_datasets.GET("", x.Datasets.Lists)
+		_datasets.POST("create", x.Datasets.Create)
+		_datasets.DELETE(":name", x.Datasets.Delete)
 	}
 	return
 }

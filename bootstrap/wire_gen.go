@@ -11,6 +11,7 @@ import (
 	"github.com/weplanx/go/sessions"
 	"github.com/weplanx/go/values"
 	"server/api"
+	"server/api/datasets"
 	"server/api/index"
 	"server/api/lark"
 	"server/api/tencent"
@@ -112,19 +113,28 @@ func NewAPI(values2 *common.Values) (*api.API, error) {
 		LarkX:    larkService,
 		IndexX:   indexService,
 	}
+	datasetsService := &datasets.Service{
+		Inject: inject,
+		Values: service,
+	}
+	datasetsController := &datasets.Controller{
+		DatasetsX: datasetsService,
+	}
 	apiAPI := &api.API{
-		Inject:   inject,
-		Hertz:    hertz,
-		Csrf:     csrf,
-		Values:   controller,
-		Sessions: sessionsController,
-		Rest:     restController,
-		Index:    indexController,
-		IndexX:   indexService,
-		Tencent:  tencentController,
-		TencentX: tencentService,
-		Lark:     larkController,
-		LarkX:    larkService,
+		Inject:    inject,
+		Hertz:     hertz,
+		Csrf:      csrf,
+		Values:    controller,
+		Sessions:  sessionsController,
+		Rest:      restController,
+		Index:     indexController,
+		IndexX:    indexService,
+		Tencent:   tencentController,
+		TencentX:  tencentService,
+		Lark:      larkController,
+		LarkX:     larkService,
+		Datasets:  datasetsController,
+		DatasetsX: datasetsService,
 	}
 	return apiAPI, nil
 }
