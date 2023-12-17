@@ -5,7 +5,6 @@ module.exports = {
     'prettier/prettier': ['error', require('./.prettierrc.js')],
     'import/no-duplicates': 'error',
     'import/no-unused-modules': 'error',
-    'import/no-unassigned-import': 'error',
     'import/order': [
       'error',
       {
