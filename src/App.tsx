@@ -3,11 +3,6 @@ import { Breadcrumb, ConfigProvider, Layout, Menu, MenuProps, theme } from 'antd
 import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-const items1: MenuProps['items'] = ['1', '2', '3'].map(key => ({
-  key,
-  label: `nav ${key}`
-}));
-
 const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map((icon, index) => {
   const key = String(index + 1);
   return {
@@ -39,16 +34,7 @@ const App: React.FC = () => {
   return (
     <ConfigProvider>
       <Layout style={{ height: '100%', overflow: 'hidden' }}>
-        <Layout.Header style={{ display: 'flex', alignItems: 'center' }}>
-          <div className="demo-logo" />
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            defaultSelectedKeys={['2']}
-            items={items1}
-            style={{ flex: 1, minWidth: 0 }}
-          />
-        </Layout.Header>
+        <Layout.Header style={{ display: 'flex', alignItems: 'center', background: '#fff' }}></Layout.Header>
 
         <Layout>
           <Layout.Sider width={200} style={{ background: colorBgContainer }}>
