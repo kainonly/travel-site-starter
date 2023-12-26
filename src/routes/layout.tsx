@@ -1,23 +1,23 @@
-import { Outlet } from '@modern-js/runtime/router';
-import { Layout, Nav, Button, Breadcrumb, Avatar } from '@douyinfe/semi-ui';
+import { Link, Outlet } from '@modern-js/runtime/router';
+import { Avatar, Breadcrumb, Button, Layout, Nav } from '@douyinfe/semi-ui';
 import {
   IconBell,
-  IconHelpCircle,
   IconBytedanceLogo,
-  IconHome,
+  IconHelpCircle,
   IconHistogram,
+  IconHome,
   IconLive,
-  IconSetting,
   IconSemiLogo,
+  IconSetting,
 } from '@douyinfe/semi-icons';
+import './global.css';
 
 export default () => {
-  const { Header, Footer, Sider, Content } = Layout;
   return (
     <Layout
       style={{ height: '100%', border: '1px solid var(--semi-color-border)' }}
     >
-      <Sider style={{ backgroundColor: 'var(--semi-color-bg-1)' }}>
+      <Layout.Sider style={{ backgroundColor: 'var(--semi-color-bg-1)' }}>
         <Nav
           defaultSelectedKeys={['Home']}
           style={{ maxWidth: 220, height: '100%' }}
@@ -29,8 +29,8 @@ export default () => {
               icon: <IconHistogram size="large" />,
             },
             {
-              itemKey: 'Live',
-              text: '测试功能',
+              itemKey: 'users',
+              text: '团队成员',
               icon: <IconLive size="large" />,
             },
             {
@@ -47,9 +47,9 @@ export default () => {
             collapseButton: true,
           }}
         />
-      </Sider>
+      </Layout.Sider>
       <Layout>
-        <Header style={{ backgroundColor: 'var(--semi-color-bg-1)' }}>
+        <Layout.Header style={{ backgroundColor: 'var(--semi-color-bg-1)' }}>
           <Nav
             mode="horizontal"
             footer={
@@ -76,8 +76,8 @@ export default () => {
               </>
             }
           />
-        </Header>
-        <Content
+        </Layout.Header>
+        <Layout.Content
           style={{
             padding: '24px',
             backgroundColor: 'var(--semi-color-bg-0)',
@@ -87,16 +87,11 @@ export default () => {
             style={{
               marginBottom: '24px',
             }}
-            routes={[
-              '首页',
-              '当这个页面标题很长时需要省略',
-              '上一页',
-              '详情页',
-            ]}
+            routes={['首页', '详情页']}
           />
           <Outlet />
-        </Content>
-        <Footer
+        </Layout.Content>
+        <Layout.Footer
           style={{
             display: 'flex',
             justifyContent: 'space-between',
@@ -118,7 +113,7 @@ export default () => {
             <span style={{ marginRight: '24px' }}>平台客服</span>
             <span>反馈建议</span>
           </span>
-        </Footer>
+        </Layout.Footer>
       </Layout>
     </Layout>
   );
