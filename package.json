@@ -1,8 +1,6 @@
 {
   "name": "connecting",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "version": "0.0.0-NOT-USED",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
