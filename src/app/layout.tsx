@@ -1,5 +1,5 @@
 import { AntdRegistry } from '@ant-design/nextjs-registry';
-import { ConfigProvider, Layout } from 'antd';
+import { ConfigProvider, Layout, theme } from 'antd';
 import type { Metadata } from 'next';
 
 import './globals.css';
@@ -14,7 +14,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <AntdRegistry>
           <ConfigProvider
-            theme={{ components: { Layout: { headerBg: '#fff', headerHeight: 60, headerPadding: '0 12px' } } }}
+            theme={{
+              token: { borderRadius: 0 },
+              components: { Layout: { headerBg: '#fff', headerHeight: 60, headerPadding: '0 12px' } }
+              // algorithm: [theme.compactAlgorithm]
+            }}
           >
             <Layout style={{ height: '100%' }}>{children}</Layout>
           </ConfigProvider>
