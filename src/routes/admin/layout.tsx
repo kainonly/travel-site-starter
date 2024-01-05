@@ -1,23 +1,27 @@
 'use client';
 
-import { DesktopOutlined, ScheduleOutlined, SettingOutlined } from '@ant-design/icons';
+import {
+  DesktopOutlined,
+  ScheduleOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
 import { Col, Layout, Menu, Row, theme } from 'antd';
-import React from 'react';
 
+import { Outlet } from '@modern-js/runtime/router';
 import styles from './styles.module.css';
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout() {
   const {
-    token: { colorBgContainer, borderRadiusLG }
+    token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
   return (
     <>
       <Layout.Header className={styles.header}>
         <Row justify="space-between" align="middle">
-          <Col></Col>
-          <Col></Col>
-          <Col></Col>
+          <Col />
+          <Col />
+          <Col />
         </Row>
       </Layout.Header>
       <Layout>
@@ -29,20 +33,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             style={{ height: '100%', borderRight: 0 }}
             items={[
               { key: 'index', label: 'Workbench', icon: <DesktopOutlined /> },
-              { key: 'workflow', label: 'Workflow', icon: <ScheduleOutlined /> },
+              {
+                key: 'workflow',
+                label: 'Workflow',
+                icon: <ScheduleOutlined />,
+              },
               { type: 'divider' },
-              { key: 'setting', label: 'Setting', icon: <SettingOutlined /> }
+              { key: 'setting', label: 'Setting', icon: <SettingOutlined /> },
             ]}
           />
         </Layout.Sider>
-        <Layout style={{ padding: '12px' }}>
+        <Layout style={{ padding: '6px' }}>
           <Layout.Content
             style={{
               background: colorBgContainer,
-              borderRadius: borderRadiusLG
+              borderRadius: borderRadiusLG,
             }}
           >
-            {children}
+            <Outlet />
           </Layout.Content>
         </Layout>
       </Layout>

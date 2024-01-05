@@ -19,11 +19,17 @@ export default function Basic() {
         console.log('Failed:', errorInfo);
       }}
     >
-      <Form.Item<FieldType> name="email" rules={[{ required: true, message: 'Please input your email!' }]}>
+      <Form.Item<FieldType>
+        name="email"
+        rules={[{ required: true, message: 'Please input your email!' }]}
+      >
         <Input prefix={<UserOutlined />} type={'email'} placeholder={'Email'} />
       </Form.Item>
 
-      <Form.Item<FieldType> name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
+      <Form.Item<FieldType>
+        name="password"
+        rules={[{ required: true, message: 'Please input your password!' }]}
+      >
         <Input.Password prefix={<LockOutlined />} placeholder={'Password'} />
       </Form.Item>
 
