@@ -17,15 +17,23 @@ export default function AdminLayout() {
 
   return (
     <>
-      <Layout.Header className={styles.header}>
-        <Row justify="space-between" align="middle">
+      <Layout.Header
+        style={{
+          padding: '0 12px',
+          borderBottom: '1px solid #f0f0f0',
+        }}
+      >
+        <Row justify={'space-between'} align="middle">
           <Col />
           <Col />
           <Col />
         </Row>
       </Layout.Header>
       <Layout>
-        <Layout.Sider width={240} className={styles.nav}>
+        <Layout.Sider
+          width={300}
+          style={{ background: colorBgContainer, padding: '12px' }}
+        >
           <Menu
             mode="inline"
             defaultSelectedKeys={['1']}
@@ -43,7 +51,7 @@ export default function AdminLayout() {
             ]}
           />
         </Layout.Sider>
-        <Layout style={{ padding: '6px' }}>
+        <Layout style={{ padding: '12px', overflowY: 'auto' }}>
           <Layout.Content
             style={{
               background: colorBgContainer,
