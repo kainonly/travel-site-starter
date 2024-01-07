@@ -1,13 +1,20 @@
 'use client';
 
 import {
+  ApiOutlined,
+  AppstoreAddOutlined,
+  DeploymentUnitOutlined,
   DesktopOutlined,
+  PlusOutlined,
   ScheduleOutlined,
   SettingOutlined,
+  ThunderboltOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
-import { Col, Layout, Menu, Row, theme } from 'antd';
+import { Avatar, Badge, Button, Col, Layout, Menu, Row, theme } from 'antd';
 
 import { Outlet } from '@modern-js/runtime/router';
+
 import styles from './styles.module.css';
 
 export default function AdminLayout() {
@@ -19,19 +26,35 @@ export default function AdminLayout() {
     <>
       <Layout.Header
         style={{
-          padding: '0 12px',
+          padding: '0 16px',
           borderBottom: '1px solid #f0f0f0',
         }}
       >
         <Row justify={'space-between'} align="middle">
+          <Col>
+            <Button
+              type="text"
+              icon={<PlusOutlined />}
+              onClick={() => {
+                // message.success('Success!');
+              }}
+            >
+              Create Workflow
+            </Button>
+          </Col>
           <Col />
-          <Col />
-          <Col />
+          <Col>
+            <div className={styles.center}>
+              <Badge dot>
+                <Avatar shape="square" icon={<UserOutlined />} />
+              </Badge>
+            </div>
+          </Col>
         </Row>
       </Layout.Header>
       <Layout>
         <Layout.Sider
-          width={300}
+          width={240}
           style={{ background: colorBgContainer, padding: '12px' }}
         >
           <Menu
@@ -40,13 +63,28 @@ export default function AdminLayout() {
             defaultOpenKeys={['sub1']}
             style={{ height: '100%', borderRight: 0 }}
             items={[
-              { key: 'index', label: 'Workbench', icon: <DesktopOutlined /> },
+              { key: 'overview', label: 'Overview', icon: <DesktopOutlined /> },
               {
                 key: 'workflow',
                 label: 'Workflow',
                 icon: <ScheduleOutlined />,
               },
+              {
+                key: 'connect',
+                label: 'Connect',
+                icon: <ApiOutlined />,
+              },
+              {
+                key: 'template',
+                label: 'Template',
+                icon: <ThunderboltOutlined />,
+              },
               { type: 'divider' },
+              {
+                key: 'endpoint',
+                label: 'Endpoint',
+                icon: <DeploymentUnitOutlined />,
+              },
               { key: 'setting', label: 'Setting', icon: <SettingOutlined /> },
             ]}
           />

@@ -10,7 +10,6 @@ export default function RootLayout() {
         components: {
           Layout: {
             headerBg: '#fff',
-            headerPadding: '0 24px',
           },
         },
       }}
