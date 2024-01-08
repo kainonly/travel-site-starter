@@ -1,19 +1,12 @@
 import { Outlet } from '@modern-js/runtime/router';
-import { ConfigProvider, Layout } from 'antd';
+
+import { Layout, ConfigProvider } from '@douyinfe/semi-ui';
 
 import './globals.css';
 
 export default function RootLayout() {
   return (
-    <ConfigProvider
-      theme={{
-        components: {
-          Layout: {
-            headerBg: '#fff',
-          },
-        },
-      }}
-    >
+    <ConfigProvider>
       <Layout style={{ height: '100%' }}>
         <Outlet />
       </Layout>

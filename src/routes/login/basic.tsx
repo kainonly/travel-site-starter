@@ -1,10 +1,5 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
-
-type FormControl = {
-  email?: string;
-  password?: string;
-};
+import { Button, Form } from '@douyinfe/semi-ui';
+import { IconLock, IconMail } from '@douyinfe/semi-icons';
 
 export default function Basic() {
   return (
@@ -12,34 +7,31 @@ export default function Basic() {
       name={'basic'}
       layout={'vertical'}
       autoComplete={'off'}
-      size={'large'}
-      style={{ padding: '10px 0 0' }}
-      onFinish={(values: any) => {
-        console.log('Success:', values);
-      }}
-      onFinishFailed={(errorInfo: any) => {
-        console.log('Failed:', errorInfo);
+      onSubmit={values => {
+        console.log(values);
       }}
     >
-      <Form.Item<FormControl>
-        name="email"
-        rules={[{ required: true, message: 'Please input your email!' }]}
-      >
-        <Input prefix={<UserOutlined />} type={'email'} placeholder={'Email'} />
-      </Form.Item>
+      <Form.Input
+        noLabel
+        field="email"
+        type={'email'}
+        placeholder={'电子邮件'}
+        prefix={<IconMail />}
+        rules={[{ required: true, message: '电子邮件不能为空' }]}
+      />
 
-      <Form.Item<FormControl>
-        name="password"
-        rules={[{ required: true, message: 'Please input your password!' }]}
-      >
-        <Input.Password prefix={<LockOutlined />} placeholder={'Password'} />
-      </Form.Item>
+      <Form.Input
+        noLabel
+        field="password"
+        mode="password"
+        placeholder={'密码'}
+        prefix={<IconLock />}
+        rules={[{ required: true, message: '密码不能为空' }]}
+      />
 
-      <Form.Item>
-        <Button type="primary" block={true} htmlType="submit">
-          Go
-        </Button>
-      </Form.Item>
+      <Button type="primary" block={true} htmlType="submit">
+        开始
+      </Button>
     </Form>
   );
 }

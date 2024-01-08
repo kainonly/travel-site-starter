@@ -1,104 +1,95 @@
-'use client';
-
+import { Layout, Nav, Button, Avatar } from '@douyinfe/semi-ui';
 import {
-  ApiOutlined,
-  AppstoreAddOutlined,
-  DeploymentUnitOutlined,
-  DesktopOutlined,
-  PlusOutlined,
-  ScheduleOutlined,
-  SettingOutlined,
-  ThunderboltOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
-import { Avatar, Badge, Button, Col, Layout, Menu, Row, theme } from 'antd';
+  IconSemiLogo,
+  IconBell,
+  IconSetting,
+  IconDesktop,
+  IconTemplate,
+  IconCalendar,
+  IconComponent,
+  IconServer,
+} from '@douyinfe/semi-icons';
 
 import { Outlet } from '@modern-js/runtime/router';
 
-import styles from './styles.module.css';
-
 export default function AdminLayout() {
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
-
   return (
     <>
-      <Layout.Header
-        style={{
-          padding: '0 16px',
-          borderBottom: '1px solid #f0f0f0',
-        }}
-      >
-        <Row justify={'space-between'} align="middle">
-          <Col>
-            <Button
-              type="text"
-              icon={<PlusOutlined />}
-              onClick={() => {
-                // message.success('Success!');
-              }}
-            >
-              Create Workflow
-            </Button>
-          </Col>
-          <Col />
-          <Col>
-            <div className={styles.center}>
-              <Badge dot>
-                <Avatar shape="square" icon={<UserOutlined />} />
-              </Badge>
-            </div>
-          </Col>
-        </Row>
+      <Layout.Header style={{ backgroundColor: 'var(--semi-color-bg-1)' }}>
+        <Nav
+          mode="horizontal"
+          defaultSelectedKeys={['Home']}
+          header={{
+            logo: <IconSemiLogo style={{ height: '36px', fontSize: 36 }} />,
+            text: 'EnterConnect',
+          }}
+          footer={
+            <>
+              <Button
+                theme="borderless"
+                icon={<IconBell size="large" />}
+                style={{
+                  color: 'var(--semi-color-text-2)',
+                  marginRight: '12px',
+                }}
+              />
+              <Avatar color="orange" size="small">
+                ZT
+              </Avatar>
+            </>
+          }
+        />
       </Layout.Header>
       <Layout>
-        <Layout.Sider
-          width={240}
-          style={{ background: colorBgContainer, padding: '12px' }}
-        >
-          <Menu
-            mode="inline"
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
-            style={{ height: '100%', borderRight: 0 }}
+        <Layout.Sider style={{ backgroundColor: 'var(--semi-color-bg-1)' }}>
+          <Nav
+            style={{ maxWidth: 240, height: '100%' }}
+            defaultSelectedKeys={['overview']}
             items={[
-              { key: 'overview', label: 'Overview', icon: <DesktopOutlined /> },
               {
-                key: 'workflow',
-                label: 'Workflow',
-                icon: <ScheduleOutlined />,
+                itemKey: 'overview',
+                text: '总览',
+                icon: <IconDesktop size={'large'} />,
               },
               {
-                key: 'connect',
-                label: 'Connect',
-                icon: <ApiOutlined />,
+                itemKey: 'workflow',
+                text: '计划任务',
+                icon: <IconCalendar size={'large'} />,
               },
               {
-                key: 'template',
-                label: 'Template',
-                icon: <ThunderboltOutlined />,
+                itemKey: 'connect',
+                text: '连接器',
+                icon: <IconComponent size={'large'} />,
               },
-              { type: 'divider' },
               {
-                key: 'endpoint',
-                label: 'Endpoint',
-                icon: <DeploymentUnitOutlined />,
+                itemKey: 'template',
+                text: '模板',
+                icon: <IconTemplate size={'large'} />,
               },
-              { key: 'setting', label: 'Setting', icon: <SettingOutlined /> },
+              {
+                itemKey: 'endpoint',
+                text: '端点',
+                icon: <IconServer size={'large'} />,
+              },
+              {
+                itemKey: 'setting',
+                text: '设置',
+                icon: <IconSetting size="large" />,
+              },
             ]}
+            footer={{
+              collapseButton: true,
+            }}
           />
         </Layout.Sider>
-        <Layout style={{ padding: '12px', overflowY: 'auto' }}>
-          <Layout.Content
-            style={{
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-            }}
-          >
-            <Outlet />
-          </Layout.Content>
-        </Layout>
+        <Layout.Content
+          style={{
+            padding: '24px',
+            backgroundColor: 'var(--semi-color-bg-0)',
+          }}
+        >
+          <Outlet />
+        </Layout.Content>
       </Layout>
     </>
   );

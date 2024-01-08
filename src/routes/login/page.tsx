@@ -1,54 +1,50 @@
 import {
-  CopyrightOutlined,
-  GithubOutlined,
-  GoogleOutlined,
-  SelectOutlined,
-  StarOutlined,
-  WindowsOutlined,
-} from '@ant-design/icons';
-import { Button, Divider, Layout, Row, Space, Tabs, Typography } from 'antd';
-
-import styles from './styles.module.css';
-import Basic from './basic';
+  Button,
+  Divider,
+  Layout,
+  Space,
+  TabPane,
+  Tabs,
+  Typography,
+} from '@douyinfe/semi-ui';
+import { IconFeishuLogo, IconGithubLogo } from '@douyinfe/semi-icons';
+import Basic from '@/routes/login/basic';
 import Sms from '@/routes/login/sms';
 
 export default () => {
   return (
     <>
-      <Layout.Header style={{ background: '#fff' }}>
-        <Button type="text" icon={<StarOutlined />}>
-          <b>Star</b>
-        </Button>
-      </Layout.Header>
-      <Layout.Content className={styles.content}>
-        <Row style={{ minHeight: '80%' }} justify="center" align="middle">
-          <div style={{ minWidth: '360px' }}>
-            <Typography.Title level={2}>SIGN IN</Typography.Title>
-            <Tabs
-              items={[
-                { key: 'basic', label: 'BASIC', children: <Basic /> },
-                { key: 'sms', label: 'SMS', children: <Sms /> },
-              ]}
-            />
-            <Divider plain style={{ marginTop: 0 }}>
-              Or
-            </Divider>
-            <Space>
-              <Button type="text" icon={<WindowsOutlined />} />
-              <Button type="text" icon={<GoogleOutlined />} />
-              <Button type="text" icon={<GithubOutlined />} />
-            </Space>
-          </div>
-        </Row>
+      <Layout.Content style={{ verticalAlign: 'middle' }}>
+        <div style={{ maxWidth: 360, margin: '7% auto 0' }}>
+          <Typography.Title heading={2}>欢迎使用</Typography.Title>
+          <Tabs type="line">
+            <TabPane tab="管理账户" itemKey="basic">
+              <Basic />
+            </TabPane>
+            <TabPane tab="短信" itemKey="sms">
+              <Sms />
+            </TabPane>
+          </Tabs>
+          <Divider margin="12px">第三方免登</Divider>
+          <Space>
+            <Button icon={<IconGithubLogo />} theme={'borderless'} />
+            <Button icon={<IconFeishuLogo />} theme={'borderless'} />
+          </Space>
+        </div>
       </Layout.Content>
-      <Layout.Footer className={styles.footer}>
-        <Space direction="vertical">
-          <Typography.Link style={{ color: 'rgba(0, 0, 0, 0.85)' }} strong>
-            <span>BSD-3-Clause License </span>
-            <SelectOutlined />
-          </Typography.Link>
+      <Layout.Footer
+        style={{
+          width: '100%',
+          padding: '20px',
+          textAlign: 'center',
+        }}
+      >
+        <Space vertical>
           <Typography.Text strong>
-            Copyright <CopyrightOutlined /> 2024. Open Source Connector by Kain.
+            <span>BSD-3-Clause License </span>
+          </Typography.Text>
+          <Typography.Text strong>
+            Copyright © 2024. Open Source EnterConnect by Kain.
           </Typography.Text>
         </Space>
       </Layout.Footer>
