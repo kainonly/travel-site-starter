@@ -10,9 +10,10 @@ import {
   IconServer,
 } from '@douyinfe/semi-icons';
 
-import { Outlet } from '@modern-js/runtime/router';
+import { Outlet, useNavigate } from '@modern-js/runtime/router';
 
 export default function AdminLayout() {
+  const navigate = useNavigate();
   return (
     <>
       <Layout.Header style={{ backgroundColor: 'var(--semi-color-bg-1)' }}>
@@ -79,6 +80,9 @@ export default function AdminLayout() {
             ]}
             footer={{
               collapseButton: true,
+            }}
+            onClick={({ itemKey }) => {
+              navigate(`/admin/${itemKey}`);
             }}
           />
         </Layout.Sider>
