@@ -10,7 +10,7 @@ import {
   IconServer,
 } from '@douyinfe/semi-icons';
 
-import { Outlet, useNavigate } from '@modern-js/runtime/router';
+import { Link, Outlet, useNavigate } from '@modern-js/runtime/router';
 
 export default function AdminLayout() {
   const navigate = useNavigate();
@@ -19,7 +19,6 @@ export default function AdminLayout() {
       <Layout.Header style={{ backgroundColor: 'var(--semi-color-bg-1)' }}>
         <Nav
           mode="horizontal"
-          defaultSelectedKeys={['Home']}
           header={{
             logo: <IconSemiLogo style={{ height: '36px', fontSize: 36 }} />,
             text: 'EnterConnect',
@@ -45,7 +44,6 @@ export default function AdminLayout() {
         <Layout.Sider style={{ backgroundColor: 'var(--semi-color-bg-1)' }}>
           <Nav
             style={{ maxWidth: 240, height: '100%' }}
-            defaultSelectedKeys={['overview']}
             items={[
               {
                 itemKey: 'overview',
@@ -81,8 +79,8 @@ export default function AdminLayout() {
             footer={{
               collapseButton: true,
             }}
-            onClick={({ itemKey }) => {
-              navigate(`/admin/${itemKey}`);
+            onSelect={data => {
+              console.log(data);
             }}
           />
         </Layout.Sider>
