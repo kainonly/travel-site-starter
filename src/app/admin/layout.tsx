@@ -29,17 +29,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             style={{ height: '100%', borderRight: 0 }}
             items={[
               { key: 'index', label: 'Workbench', icon: <DesktopOutlined /> },
-              { key: 'workflow', label: 'Workflow', icon: <ScheduleOutlined /> },
+              { key: 'flow', label: '我的流程', icon: <ScheduleOutlined /> },
               { type: 'divider' },
               { key: 'setting', label: 'Setting', icon: <SettingOutlined /> }
             ]}
           />
         </Layout.Sider>
-        <Layout style={{ padding: '12px' }}>
+        <Layout>
           <Layout.Content
             style={{
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG
+              background: colorBgContainer
             }}
           >
             {children}

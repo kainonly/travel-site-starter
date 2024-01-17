@@ -15,9 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AntdRegistry>
           <ConfigProvider
             theme={{
-              token: { borderRadius: 0 },
               components: { Layout: { headerBg: '#fff', headerHeight: 60, headerPadding: '0 12px' } }
-              // algorithm: [theme.compactAlgorithm]
             }}
           >
             <Layout style={{ height: '100%' }}>{children}</Layout>
