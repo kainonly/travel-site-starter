@@ -1,50 +1,55 @@
 'use client';
 
-import { DesktopOutlined, ScheduleOutlined, SettingOutlined } from '@ant-design/icons';
-import { Col, Layout, Menu, Row, theme } from 'antd';
+import {
+  AntDesignOutlined,
+  AppstoreAddOutlined,
+  DesktopOutlined,
+  ProjectOutlined,
+  ScheduleOutlined,
+  SettingOutlined
+} from '@ant-design/icons';
+import { Avatar, Badge, Button, Col, Layout, Menu, Popover, Row, Space } from 'antd';
+import { useRouter, useSelectedLayoutSegment } from 'next/navigation';
 import React from 'react';
 
-import styles from './styles.module.css';
-
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const {
-    token: { colorBgContainer, borderRadiusLG }
-  } = theme.useToken();
+  const { Header, Content } = Layout;
+  const segment = useSelectedLayoutSegment();
+  const router = useRouter();
 
   return (
     <>
-      <Layout.Header className={styles.header}>
-        <Row justify="space-between" align="middle">
+      <Header style={{ borderBottom: '1px solid #f0f0f0' }}>
+        <Row justify={'space-between'} align={'middle'}>
+          <Col>
+            <Menu
+              style={{ height: '100%', borderRight: 0 }}
+              mode={'horizontal'}
+              defaultSelectedKeys={[segment as string]}
+              items={[
+                { key: 'index', label: '工作台', icon: <DesktopOutlined /> },
+                { key: 'flow', label: '我的流程', icon: <ProjectOutlined /> },
+                { key: 'log', label: '运行日志', icon: <ScheduleOutlined /> },
+                { key: 'setting', label: '设置', icon: <SettingOutlined /> }
+              ]}
+              onSelect={({ key }) => {
+                router.push(`/admin/${key}`);
+              }}
+            />
+          </Col>
           <Col></Col>
-          <Col></Col>
-          <Col></Col>
+          <Col>
+            <Popover title="个人中心" content={<div></div>} arrow={false}>
+              <a style={{ display: 'block', padding: '0 12px' }}>
+                <Badge count={5}>
+                  <Avatar shape={'square'} size={32} icon={<AntDesignOutlined />} />
+                </Badge>
+              </a>
+            </Popover>
+          </Col>
         </Row>
-      </Layout.Header>
-      <Layout>
-        <Layout.Sider width={240} className={styles.nav}>
-          <Menu
-            mode="inline"
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
-            style={{ height: '100%', borderRight: 0 }}
-            items={[
-              { key: 'index', label: 'Workbench', icon: <DesktopOutlined /> },
-              { key: 'flow', label: '我的流程', icon: <ScheduleOutlined /> },
-              { type: 'divider' },
-              { key: 'setting', label: 'Setting', icon: <SettingOutlined /> }
-            ]}
-          />
-        </Layout.Sider>
-        <Layout>
-          <Layout.Content
-            style={{
-              background: colorBgContainer
-            }}
-          >
-            {children}
-          </Layout.Content>
-        </Layout>
-      </Layout>
+      </Header>
+      <Content style={{ padding: 16 }}>{children}</Content>
     </>
   );
 }

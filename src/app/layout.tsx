@@ -1,11 +1,11 @@
 import { AntdRegistry } from '@ant-design/nextjs-registry';
-import { ConfigProvider, Layout, theme } from 'antd';
+import { ConfigProvider, Layout } from 'antd';
 import type { Metadata } from 'next';
 
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Connecting'
+  title: 'WEPLANX'
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AntdRegistry>
           <ConfigProvider
             theme={{
-              components: { Layout: { headerBg: '#fff', headerHeight: 60, headerPadding: '0 12px' } }
+              components: { Layout: { headerBg: '#fff', headerPadding: '0 16px' } }
             }}
           >
             <Layout style={{ height: '100%' }}>{children}</Layout>

@@ -6,6 +6,11 @@ const nextConfig = {
         source: '/',
         destination: '/admin',
         permanent: true
+      },
+      {
+        source: '/admin',
+        destination: '/admin/index',
+        permanent: true
       }
     ];
   }

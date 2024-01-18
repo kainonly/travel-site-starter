@@ -20,16 +20,16 @@ export default function Basic() {
       }}
     >
       <Form.Item<FieldType> name="email" rules={[{ required: true, message: 'Please input your email!' }]}>
-        <Input prefix={<UserOutlined />} type={'email'} placeholder={'Email'} />
+        <Input prefix={<UserOutlined />} type={'email'} placeholder={'电子邮件'} />
       </Form.Item>
 
       <Form.Item<FieldType> name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
-        <Input.Password prefix={<LockOutlined />} placeholder={'Password'} />
+        <Input.Password prefix={<LockOutlined />} placeholder={'密码'} />
       </Form.Item>
 
       <Form.Item>
         <Button type="primary" block={true} htmlType="submit">
-          Go
+          登录
         </Button>
       </Form.Item>
     </Form>
