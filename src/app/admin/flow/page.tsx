@@ -1,6 +1,6 @@
 'use client';
 
-import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
+import { PlusOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Card, Input, Space, Table, TableProps, Tag } from 'antd';
 import React from 'react';
 
@@ -93,19 +93,20 @@ export default function Page() {
       style={{ height: '100%' }}
       title={
         <Space align={'center'}>
-          <Input style={{ width: 240 }} suffix={<SearchOutlined />} placeholder="搜索流程名称" />
-          <Space.Compact>
-            <Button type={'text'} icon={<ReloadOutlined />}></Button>
-          </Space.Compact>
+          <Input style={{ width: 240 }} bordered={false} placeholder="搜索流程名称" />
+          <Button type={'text'} icon={<ReloadOutlined />}></Button>
         </Space>
       }
       extra={
         <Space align={'center'}>
-          <Button type="primary">创建</Button>
+          <Button type="primary" icon={<PlusOutlined />}></Button>
         </Space>
       }
     >
-      <Table columns={columns} dataSource={data} />
+      <Table
+        columns={[{ title: '名称', width: 320 }, { title: '概况' }, { title: '操作', width: 60 }]}
+        dataSource={[]}
+      />
     </Card>
   );
 }

@@ -28,8 +28,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               defaultSelectedKeys={[segment as string]}
               items={[
                 { key: 'index', label: '工作台', icon: <DesktopOutlined /> },
-                { key: 'flow', label: '我的流程', icon: <ProjectOutlined /> },
-                { key: 'log', label: '运行日志', icon: <ScheduleOutlined /> },
+                { key: 'flow', label: '流程', icon: <ProjectOutlined /> },
+                { key: 'log', label: '日志', icon: <ScheduleOutlined /> },
                 { key: 'setting', label: '设置', icon: <SettingOutlined /> }
               ]}
               onSelect={({ key }) => {

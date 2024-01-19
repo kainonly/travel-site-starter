@@ -13,7 +13,7 @@ export default function Basic() {
       layout="vertical"
       autoComplete="off"
       onFinish={(values: any) => {
-        console.log('Success:', values);
+        console.log(values);
       }}
       onFinishFailed={(errorInfo: any) => {
         console.log('Failed:', errorInfo);
