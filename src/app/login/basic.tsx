@@ -1,10 +1,7 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 
-type FieldType = {
-  email?: string;
-  password?: string;
-};
+import { login, LoginData } from './actions';
 
 export default function Basic() {
   return (
@@ -12,18 +9,16 @@ export default function Basic() {
       name="basic"
       layout="vertical"
       autoComplete="off"
-      onFinish={(values: any) => {
-        console.log(values);
-      }}
-      onFinishFailed={(errorInfo: any) => {
-        console.log('Failed:', errorInfo);
+      onFinish={async (data: LoginData) => {
+        const result = await login(data);
+        console.log(result);
       }}
     >
-      <Form.Item<FieldType> name="email" rules={[{ required: true, message: 'Please input your email!' }]}>
+      <Form.Item<LoginData> name="email" rules={[{ required: true, message: '电子邮件不能为空' }]}>
         <Input prefix={<UserOutlined />} type={'email'} placeholder={'电子邮件'} />
       </Form.Item>
 
-      <Form.Item<FieldType> name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
+      <Form.Item<LoginData> name="password" rules={[{ required: true, message: '密码不能为空' }]}>
         <Input.Password prefix={<LockOutlined />} placeholder={'密码'} />
       </Form.Item>
 
