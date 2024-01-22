@@ -4,17 +4,16 @@ import { verify } from '@node-rs/argon2';
 import CryptoJS from 'crypto-js';
 import { cookies } from 'next/headers';
 
-import clientPromise from '@/lib/mongodb';
+import getInstance from '@/lib/instance';
 import { Admin } from '@/model/admin';
 
-export type BasicData = {
+export type BasicDto = {
   email: string;
   password: string;
 };
 
-export async function basicSubmit(data: BasicData): Promise<boolean> {
-  const client = await clientPromise;
-  const db = client.db('development');
+export async function basicSubmit(data: BasicDto): Promise<boolean> {
+  const { db } = await getInstance();
   const user = await db.collection<Admin>('admin').findOne({
     email: data.email
   });
@@ -33,4 +32,14 @@ export async function basicSubmit(data: BasicData): Promise<boolean> {
     });
   }
   return check;
+}
+
+export type SmsDto = {
+  area: string;
+  phone: string;
+  captcha: string;
+};
+
+export async function smsSubmit(data: SmsDto): Promise<boolean> {
+  return false;
 }
