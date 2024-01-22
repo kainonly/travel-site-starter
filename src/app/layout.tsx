@@ -1,5 +1,5 @@
 import { AntdRegistry } from '@ant-design/nextjs-registry';
-import { ConfigProvider, Layout } from 'antd';
+import { App, ConfigProvider, Layout } from 'antd';
 import type { Metadata } from 'next';
 
 import './globals.css';
@@ -18,7 +18,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               components: { Layout: { headerBg: '#fff', headerPadding: '0 16px' } }
             }}
           >
-            <Layout style={{ height: '100%' }}>{children}</Layout>
+            <App style={{ height: '100%' }}>
+              <Layout style={{ height: '100%' }}>{children}</Layout>
+            </App>
           </ConfigProvider>
         </AntdRegistry>
       </body>

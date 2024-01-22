@@ -1,17 +1,23 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
+import { App, Button, Form, Input } from 'antd';
+import { useRouter } from 'next/navigation';
 
 import { basicSubmit, BasicData } from './actions';
 
 export default function Basic() {
+  const router = useRouter();
+  const { notification } = App.useApp();
+
   return (
     <Form
       name="basic"
       layout="vertical"
       autoComplete="off"
       onFinish={async (data: BasicData) => {
-        const result = await basicSubmit(data);
-        console.log(result);
+        if (await basicSubmit(data)) {
+          notification.success({ message: '登录成功' });
+          router.push('/admin');
+        }
       }}
     >
       <Form.Item<BasicData> name="email" rules={[{ required: true, message: '电子邮件不能为空' }]}>
