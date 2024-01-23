@@ -2,15 +2,17 @@
 
 import {
   AntDesignOutlined,
-  AppstoreAddOutlined,
   DesktopOutlined,
+  LogoutOutlined,
   ProjectOutlined,
   ScheduleOutlined,
   SettingOutlined
 } from '@ant-design/icons';
-import { Avatar, Badge, Button, Col, Layout, Menu, Popover, Row, Space } from 'antd';
+import { Avatar, Badge, Col, Dropdown, Layout, Menu, Row } from 'antd';
 import { useRouter, useSelectedLayoutSegment } from 'next/navigation';
 import React from 'react';
+
+import { logout } from '@/app/admin/actions';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { Header, Content } = Layout;
@@ -39,13 +41,27 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </Col>
           <Col></Col>
           <Col>
-            <Popover title="个人中心" content={<div></div>} arrow={false}>
+            <Dropdown
+              menu={{
+                items: [
+                  {
+                    key: 'exit',
+                    label: '退出登录',
+                    icon: <LogoutOutlined />,
+                    onClick: async () => {
+                      await logout();
+                      router.push('/login');
+                    }
+                  }
+                ]
+              }}
+            >
               <a style={{ display: 'block', padding: '0 12px' }}>
                 <Badge count={5}>
                   <Avatar shape={'square'} size={32} icon={<AntDesignOutlined />} />
                 </Badge>
               </a>
-            </Popover>
+            </Dropdown>
           </Col>
         </Row>
       </Header>
