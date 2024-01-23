@@ -5,7 +5,7 @@ import CryptoJS from 'crypto-js';
 import { cookies } from 'next/headers';
 
 import getInstance from '@/lib/instance';
-import { Admin } from '@/model/admin';
+import { User } from '@/model/user';
 
 export type BasicDto = {
   email: string;
@@ -14,7 +14,7 @@ export type BasicDto = {
 
 export async function basicSubmit(data: BasicDto): Promise<boolean> {
   const { db } = await getInstance();
-  const user = await db.collection<Admin>('admin').findOne({
+  const user = await db.collection<User>('admin').findOne({
     email: data.email
   });
   const check = await verify(user!.password, data.password);

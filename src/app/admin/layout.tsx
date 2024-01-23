@@ -2,6 +2,7 @@
 
 import {
   AntDesignOutlined,
+  BulbOutlined,
   ClusterOutlined,
   DesktopOutlined,
   LogoutOutlined,
@@ -9,7 +10,7 @@ import {
   SettingOutlined,
   TeamOutlined
 } from '@ant-design/icons';
-import { Avatar, Badge, Col, Dropdown, Layout, Menu, Row, theme } from 'antd';
+import { Avatar, Badge, Col, Dropdown, Input, Layout, Menu, Row, Space, theme } from 'antd';
 import { useRouter, useSelectedLayoutSegment } from 'next/navigation';
 import React from 'react';
 
@@ -17,7 +18,7 @@ import { logout } from '@/app/admin/actions';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const {
-    token: { colorBgContainer, borderRadiusLG }
+    token: { colorBgContainer }
   } = theme.useToken();
   const { Header, Sider, Content } = Layout;
   const segment = useSelectedLayoutSegment();
@@ -27,7 +28,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <>
       <Header style={{ borderBottom: '1px solid #f0f0f0' }}>
         <Row justify={'space-between'} align={'middle'}>
-          <Col></Col>
+          <Col>
+            <Input prefix={<BulbOutlined />} placeholder="有问题尽管问我..." variant="borderless" />
+          </Col>
           <Col></Col>
           <Col>
             <Dropdown
