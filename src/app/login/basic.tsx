@@ -6,7 +6,7 @@ import { basicSubmit, BasicDto } from './actions';
 
 export default function Basic() {
   const router = useRouter();
-  const { notification } = App.useApp();
+  const { message } = App.useApp();
 
   return (
     <Form
@@ -14,10 +14,12 @@ export default function Basic() {
       layout="vertical"
       autoComplete="off"
       onFinish={async (data: BasicDto) => {
-        if (await basicSubmit(data)) {
-          notification.success({ message: '登录成功' });
-          router.push('/admin');
+        if (!(await basicSubmit(data))) {
+          message.error({ content: '登录失败，用户名或密码不正确！' });
+          return;
         }
+        message.success({ content: '登录成功，正在加载数据~' });
+        router.push('/admin');
       }}
     >
       <Form.Item<BasicDto> name="email" rules={[{ required: true, message: '电子邮件不能为空' }]}>

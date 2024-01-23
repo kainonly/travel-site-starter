@@ -2,11 +2,11 @@ import { LockOutlined } from '@ant-design/icons';
 import { App, Button, Col, Form, Input, Row, Select } from 'antd';
 import { useRouter } from 'next/navigation';
 
-import { SmsDto, smsSubmit } from '@/app/login/actions';
+import { basicSubmit, SmsDto, smsSubmit } from '@/app/login/actions';
 
 export default function Sms() {
   const router = useRouter();
-  const { notification } = App.useApp();
+  const { message } = App.useApp();
 
   return (
     <Form
@@ -15,10 +15,12 @@ export default function Sms() {
       autoComplete="off"
       initialValues={{ area: '86' }}
       onFinish={async (data: SmsDto) => {
-        if (await smsSubmit(data)) {
-          notification.success({ message: '登录成功' });
-          router.push('/admin');
+        if (!(await smsSubmit(data))) {
+          message.error({ content: '登录失败，用户名或密码不正确！' });
+          return;
         }
+        message.success({ content: '登录成功，正在加载数据~' });
+        router.push('/admin');
       }}
     >
       <Form.Item<SmsDto> name="phone" rules={[{ required: true, message: '手机号码不能为空' }]}>

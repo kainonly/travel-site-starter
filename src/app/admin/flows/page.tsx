@@ -93,20 +93,17 @@ export default function Page() {
       style={{ height: '100%' }}
       title={
         <Space align={'center'}>
-          <Input style={{ width: 240 }} bordered={false} placeholder="搜索流程名称" />
+          <Input style={{ width: 240 }} prefix={<SearchOutlined />} placeholder="搜索流程名称" />
           <Button type={'text'} icon={<ReloadOutlined />}></Button>
         </Space>
       }
       extra={
         <Space align={'center'}>
-          <Button type="primary" icon={<PlusOutlined />}></Button>
+          <Button type="primary">新增</Button>
         </Space>
       }
     >
-      <Table
-        columns={[{ title: '名称', width: 320 }, { title: '概况' }, { title: '操作', width: 60 }]}
-        dataSource={[]}
-      />
+      <Table columns={[{ title: '名称', width: 320 }, { title: '概况' }, { title: '', width: 60 }]} dataSource={[]} />
     </Card>
   );
 }

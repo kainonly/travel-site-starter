@@ -10,10 +10,9 @@
     "test": "jest"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.2.6",
     "@ant-design/nextjs-registry": "^1.0.0",
     "@node-rs/argon2": "^1.7.2",
-    "antd": "^5.12.2",
+    "antd": "^5.12.8",
     "crypto-js": "^4.2.0",
     "mongodb": "6.3",
     "next": "14.1.0",
