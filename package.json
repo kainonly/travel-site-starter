@@ -12,11 +12,10 @@
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.0.0",
     "@node-rs/argon2": "^1.7.2",
-    "antd": "^5.12.8",
+    "antd": "^5.13.3",
     "crypto-js": "^4.2.0",
     "mongodb": "6.3",
     "next": "14.1.0",
-    "next-auth": "^4.24.5",
     "react": "^18",
     "react-dom": "^18"
   },
