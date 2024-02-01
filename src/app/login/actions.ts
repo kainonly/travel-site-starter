@@ -4,23 +4,23 @@ import { verify } from '@node-rs/argon2';
 import CryptoJS from 'crypto-js';
 import { cookies } from 'next/headers';
 
-import getInstance from '@/lib/instance';
-import { User } from '@/model/user';
+import { db } from '@/lib/bootstrap';
 
 export type BasicDto = {
   email: string;
   password: string;
 };
 
-export async function basicSubmit(data: BasicDto): Promise<boolean> {
-  const { db } = await getInstance();
-  const user = await db.collection<User>('admin').findOne({
-    email: data.email
+export async function basicSubmit(dto: BasicDto): Promise<boolean> {
+  const data = await db.user.findFirst({
+    where: {
+      email: dto.email
+    }
   });
-  const check = await verify(user!.password, data.password);
+  const check = await verify(data!.password, dto.password);
   if (check) {
     const ciphertext = CryptoJS.AES.encrypt(
-      JSON.stringify({ email: data.email }),
+      JSON.stringify({ email: dto.email }),
       process.env.APP_KEY as string
     ).toString();
     cookies().set('session', ciphertext, {
@@ -40,6 +40,6 @@ export type SmsDto = {
   captcha: string;
 };
 
-export async function smsSubmit(data: SmsDto): Promise<boolean> {
+export async function smsSubmit(dto: SmsDto): Promise<boolean> {
   return false;
 }

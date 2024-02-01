@@ -8,6 +8,7 @@ import {
   LogoutOutlined,
   ProjectOutlined,
   SettingOutlined,
+  ShoppingOutlined,
   TeamOutlined
 } from '@ant-design/icons';
 import { Avatar, Badge, Col, Dropdown, Input, Layout, Menu, Row, Space, theme } from 'antd';
@@ -65,8 +66,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             defaultSelectedKeys={[segment as string]}
             items={[
               { key: 'index', label: '工作台', icon: <DesktopOutlined /> },
-              { key: 'flows', label: '我的流程', icon: <ProjectOutlined /> },
-              { key: 'endpoints', label: '服务端点', icon: <ClusterOutlined /> },
+              { key: 'orders', label: '订单管理', icon: <ProjectOutlined /> },
+              { key: 'projects', label: '产品管理', icon: <ShoppingOutlined /> },
               { type: 'divider' },
               { key: 'users', label: '团队成员', icon: <TeamOutlined /> },
               { key: 'setting', label: '设置', icon: <SettingOutlined /> }
