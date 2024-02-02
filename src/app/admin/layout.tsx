@@ -67,7 +67,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             items={[
               { key: 'index', label: '工作台', icon: <DesktopOutlined /> },
               { key: 'orders', label: '订单管理', icon: <ProjectOutlined /> },
-              { key: 'projects', label: '产品管理', icon: <ShoppingOutlined /> },
+              { key: 'products', label: '产品管理', icon: <ShoppingOutlined /> },
               { type: 'divider' },
               { key: 'users', label: '团队成员', icon: <TeamOutlined /> },
               { key: 'setting', label: '设置', icon: <SettingOutlined /> }
