@@ -1,14 +1,23 @@
+import { verifySync } from '@node-rs/jsonwebtoken';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
-  const currentUser = request.cookies.get('session')?.value;
-  if (!currentUser) {
-    return NextResponse.redirect(new URL('/login', request.url));
+export async function middleware(request: NextRequest) {
+  const token = request.cookies.get('access_token')?.value;
+  const logout = NextResponse.redirect(new URL('/login', request.url));
+  if (!token) {
+    return logout;
+  }
+
+  try {
+    const claims = verifySync(token, process.env.KEY as string);
+    console.log(claims);
+  } catch {
+    return logout;
   }
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|login).*)']
+  matcher: ['/((?!_next/static|favicon.ico|login).*)']
 };

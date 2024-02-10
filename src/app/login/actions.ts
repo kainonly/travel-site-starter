@@ -1,7 +1,8 @@
 'use server';
 
 import { verify } from '@node-rs/argon2';
-import CryptoJS from 'crypto-js';
+import { signSync } from '@node-rs/jsonwebtoken';
+import { User } from '@prisma/client';
 import { cookies } from 'next/headers';
 
 import { db } from '@/lib/bootstrap';
@@ -12,22 +13,23 @@ export type BasicDto = {
 };
 
 export async function basicSubmit(dto: BasicDto): Promise<boolean> {
-  const data = await db.user.findFirst({
+  const data: User = await db.user.findFirst({
     where: {
-      email: dto.email
+      email: dto.email,
+      status: true
     }
   });
-  const check = await verify(data!.password, dto.password);
+  if (!data) {
+    return false;
+  }
+  const check = await verify(data.password, dto.password);
   if (check) {
-    const ciphertext = CryptoJS.AES.encrypt(
-      JSON.stringify({ email: dto.email }),
-      process.env.APP_KEY as string
-    ).toString();
-    cookies().set('session', ciphertext, {
-      httpOnly: true,
+    const token = signSync({ data: { id: data.id } }, process.env.KEY as string);
+    cookies().set('access_token', token, {
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24 * 7,
       path: '/',
+      httpOnly: true,
+      maxAge: 60 * 60 * 24 * 7,
       sameSite: 'strict'
     });
   }
