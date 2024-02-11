@@ -1,8 +1,8 @@
 'use server';
 
-import { verify } from '@node-rs/argon2';
-import { signSync } from '@node-rs/jsonwebtoken';
 import { User } from '@prisma/client';
+import { verify } from 'argon2';
+import { AES } from 'crypto-js';
 import { cookies } from 'next/headers';
 
 import { db } from '@/lib/bootstrap';
@@ -24,8 +24,8 @@ export async function basicSubmit(dto: BasicDto): Promise<boolean> {
   }
   const check = await verify(data.password, dto.password);
   if (check) {
-    const token = signSync({ data: { id: data.id } }, process.env.KEY as string);
-    cookies().set('access_token', token, {
+    const encrypted = AES.encrypt(JSON.stringify({ id: data.id }), process.env.KEY as string).toString();
+    cookies().set('session', encrypted, {
       secure: process.env.NODE_ENV === 'production',
       path: '/',
       httpOnly: true,
