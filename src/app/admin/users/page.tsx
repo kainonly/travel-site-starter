@@ -1,22 +1,24 @@
 import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Card, Input, Space, Table } from 'antd';
+import { User } from '@prisma/client';
+import { Button, Card, Input, Space, Table, TableProps } from 'antd';
 import React from 'react';
 
-interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
-}
+interface UserDS extends Omit<User, 'password'> {}
 
 export default function Page() {
+  const columns: TableProps<UserDS>['columns'] = [
+    { title: '电子邮件', key: 'email', width: 320 },
+    { title: '概况' },
+    { title: '', width: 60 }
+  ];
+  const data: UserDS[] = [];
+
   return (
     <Card
       style={{ height: '100%' }}
       title={
         <Space align={'center'}>
-          <Input style={{ width: 240 }} prefix={<SearchOutlined />} placeholder="搜索流程名称" />
+          <Input style={{ width: 240 }} prefix={<SearchOutlined />} placeholder="搜索电子邮件" />
           <Button type={'text'} icon={<ReloadOutlined />}></Button>
         </Space>
       }
@@ -26,7 +28,7 @@ export default function Page() {
         </Space>
       }
     >
-      <Table columns={[{ title: '名称', width: 320 }, { title: '概况' }, { title: '', width: 60 }]} dataSource={[]} />
+      <Table rowSelection={{ type: 'checkbox' }} columns={columns} dataSource={data} />
     </Card>
   );
 }
