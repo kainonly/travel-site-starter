@@ -3,16 +3,10 @@ import { User } from '@prisma/client';
 import { Button, Card, Input, Space, Table, TableProps } from 'antd';
 import React from 'react';
 
-interface UserDS extends Omit<User, 'password'> {}
+import { getData } from '@/app/admin/users/data';
 
-export default function Page() {
-  const columns: TableProps<UserDS>['columns'] = [
-    { title: '电子邮件', key: 'email', width: 320 },
-    { title: '概况' },
-    { title: '', width: 60 }
-  ];
-  const data: UserDS[] = [];
-
+export default async function Page() {
+  const data = await getData();
   return (
     <Card
       style={{ height: '100%' }}
@@ -28,7 +22,12 @@ export default function Page() {
         </Space>
       }
     >
-      <Table rowSelection={{ type: 'checkbox' }} columns={columns} dataSource={data} />
+      <Table
+        rowKey={'id'}
+        rowSelection={{ type: 'checkbox' }}
+        columns={[{ title: '电子邮件', dataIndex: 'email', width: 320 }, { title: '概况' }, { title: '', width: 60 }]}
+        dataSource={data}
+      />
     </Card>
   );
 }

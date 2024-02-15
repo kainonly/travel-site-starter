@@ -11,42 +11,42 @@ datasource db {
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
-  create_time  DateTime @default(now())
-  updated_time DateTime @updatedAt
-  status       Boolean  @default(true)
-  email        String   @unique
-  password     String
-  name         String?
-  avatar       String?
-  phone        String?
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  status     Boolean  @default(true)
+  email      String   @unique
+  password   String
+  name       String?
+  avatar     String?
+  phone      String?
 
   @@map("user")
 }
 
 model Role {
-  id           Int      @id @default(autoincrement())
-  create_time  DateTime @default(now())
-  updated_time DateTime @updatedAt
-  status       Boolean  @default(true)
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  status     Boolean  @default(true)
 
   @@map("role")
 }
 
 model Product {
-  id           Int      @id @default(autoincrement())
-  create_time  DateTime @default(now())
-  updated_time DateTime @updatedAt
-  status       Boolean  @default(true)
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  status     Boolean  @default(true)
 
   @@map("product")
 }
 
 model Order {
-  id           Int      @id @default(autoincrement())
-  create_time  DateTime @default(now())
-  updated_time DateTime @updatedAt
-  status       Boolean  @default(true)
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  status     Boolean  @default(true)
 
   @@map("order")
 }
