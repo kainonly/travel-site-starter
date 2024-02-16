@@ -1,5 +1,5 @@
 {
-  "name": "hotel-sol",
+  "name": "next-lab",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,12 +10,11 @@
   },
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.0.0",
+    "@node-rs/argon2": "^1.7.2",
     "@prisma/client": "^5.9.0",
     "antd": "^5.14.0",
-    "argon2": "^0.31.2",
     "crypto-js": "^4.2.0",
     "next": "^14.1.0",
-    "next-auth": "^5.0.0-beta.9",
     "react": "^18",
     "react-dom": "^18"
   },

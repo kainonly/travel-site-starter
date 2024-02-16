@@ -1,7 +1,6 @@
 'use server';
 
-import { User } from '@prisma/client';
-import { verify } from 'argon2';
+import { verify } from '@node-rs/argon2';
 import { AES } from 'crypto-js';
 import { cookies } from 'next/headers';
 
@@ -13,7 +12,7 @@ export type BasicDto = {
 };
 
 export async function basicSubmit(dto: BasicDto): Promise<boolean> {
-  const data: User = await db.user.findFirst({
+  const data = await db.user.findFirst({
     where: {
       email: dto.email,
       status: true

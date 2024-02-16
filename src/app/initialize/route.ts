@@ -1,4 +1,4 @@
-import { hash } from 'argon2';
+import { hash } from '@node-rs/argon2';
 
 import { db } from '@/lib/bootstrap';
 
