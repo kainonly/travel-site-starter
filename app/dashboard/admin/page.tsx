@@ -1,9 +1,8 @@
 import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
-import { User } from '@prisma/client';
-import { Button, Card, Input, Space, Table, TableProps } from 'antd';
+import { Button, Card, Input, Space, Table } from 'antd';
 import React from 'react';
 
-import { getData } from '@/app/admin/users/data';
+import { getData } from '@/app/dashboard/admin/data';
 
 export default async function Page() {
   const data = await getData();

@@ -2,7 +2,7 @@ import { LockOutlined } from '@ant-design/icons';
 import { App, Button, Col, Form, Input, Row, Select } from 'antd';
 import { useRouter } from 'next/navigation';
 
-import { basicSubmit, SmsDto, smsSubmit } from '@/app/login/actions';
+import { SmsDto, smsSubmit } from '@/app/login/actions';
 
 export default function Sms() {
   const router = useRouter();
@@ -20,7 +20,7 @@ export default function Sms() {
           return;
         }
         message.success({ content: '登录成功，正在加载数据~' });
-        router.push('/admin');
+        router.push('/');
       }}
     >
       <Form.Item<SmsDto> name="phone" rules={[{ required: true, message: '手机号码不能为空' }]}>

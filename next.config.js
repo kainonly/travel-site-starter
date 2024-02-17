@@ -4,18 +4,18 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/admin',
+        destination: '/dashboard',
         permanent: true
       },
       {
-        source: '/admin',
-        destination: '/admin/index',
+        source: '/dashboard',
+        destination: '/dashboard/index',
         permanent: true
       }
     ];
   },
   experimental: {
-    serverComponentsExternalPackages: []
+    serverComponentsExternalPackages: ['@node-rs/argon2']
   }
 };
 

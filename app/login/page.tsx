@@ -1,7 +1,7 @@
 'use client';
 
 import { CopyrightOutlined, GithubOutlined, GitlabOutlined, GoogleOutlined } from '@ant-design/icons';
-import { Button, Divider, Layout, Row, Space, Tabs, Typography } from 'antd';
+import { Button, Layout, Row, Space, Tabs, Typography } from 'antd';
 
 import Basic from '@/app/login/basic';
 import Sms from '@/app/login/sms';

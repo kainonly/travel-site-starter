@@ -10,18 +10,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Admin {
   id         Int      @id @default(autoincrement())
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   status     Boolean  @default(true)
-  email      String   @unique
-  password   String
-  name       String?
-  avatar     String?
-  phone      String?
+  email      String   @unique @db.VarChar
+  password   String   @db.VarChar
+  name       String?  @db.VarChar
+  avatar     String?  @db.VarChar
+  phone      String?  @db.VarChar
 
-  @@map("user")
+  @@map("admin")
 }
 
 model Role {
@@ -33,20 +33,37 @@ model Role {
   @@map("role")
 }
 
-model Product {
-  id         Int      @id @default(autoincrement())
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  status     Boolean  @default(true)
+model User {
+  id             Int      @id @default(autoincrement())
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  status         Boolean  @default(true)
+  first_name     String   @db.VarChar
+  last_name      String   @db.VarChar
+  gender         String?  @db.VarChar
+  job_title      String?  @db.VarChar
+  job_type       String?  @db.VarChar
+  job_descrptior String?  @db.VarChar
+  job_area       String?  @db.VarChar
+  bio            String?  @db.VarChar
 
-  @@map("product")
+  @@map("user")
 }
 
-model Order {
-  id         Int      @id @default(autoincrement())
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  status     Boolean  @default(true)
-
-  @@map("order")
-}
+// model Product {
+//   id         Int      @id @default(autoincrement())
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   status     Boolean  @default(true)
+//
+//   @@map("product")
+// }
+//
+// model Order {
+//   id         Int      @id @default(autoincrement())
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//   status     Boolean  @default(true)
+//
+//   @@map("order")
+// }

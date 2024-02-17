@@ -19,7 +19,7 @@ export default function Basic() {
           return;
         }
         message.success({ content: '登录成功，正在加载数据~' });
-        router.push('/admin');
+        router.push('/');
       }}
     >
       <Form.Item<BasicDto> name="email" rules={[{ required: true, message: '电子邮件不能为空' }]}>

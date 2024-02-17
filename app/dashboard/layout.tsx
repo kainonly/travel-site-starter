@@ -3,7 +3,6 @@
 import {
   AntDesignOutlined,
   BulbOutlined,
-  ClusterOutlined,
   DesktopOutlined,
   LogoutOutlined,
   ProjectOutlined,
@@ -15,7 +14,7 @@ import { Avatar, Badge, Col, Dropdown, Input, Layout, Menu, Row, Space, theme } 
 import { useRouter, useSelectedLayoutSegment } from 'next/navigation';
 import React from 'react';
 
-import { logout } from '@/app/admin/actions';
+import { logout } from '@/app/dashboard/actions';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const {
@@ -66,14 +65,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             defaultSelectedKeys={[segment as string]}
             items={[
               { key: 'index', label: '工作台', icon: <DesktopOutlined /> },
-              { key: 'orders', label: '订单管理', icon: <ProjectOutlined /> },
-              { key: 'products', label: '产品管理', icon: <ShoppingOutlined /> },
+              { key: 'order', label: '订单管理', icon: <ProjectOutlined /> },
+              { key: 'product', label: '产品管理', icon: <ShoppingOutlined /> },
+              { key: 'user', label: '会员管理', icon: <TeamOutlined /> },
               { type: 'divider' },
-              { key: 'users', label: '团队成员', icon: <TeamOutlined /> },
               { key: 'setting', label: '设置', icon: <SettingOutlined /> }
             ]}
             onSelect={({ key }) => {
-              router.push(`/admin/${key}`);
+              router.push(`/dashboard/${key}`);
             }}
           />
         </Sider>

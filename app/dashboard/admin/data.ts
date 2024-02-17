@@ -3,7 +3,7 @@
 import { db } from '@/lib/bootstrap';
 
 export async function getData() {
-  return db.user.findMany({
+  return db.admin.findMany({
     select: {
       id: true,
       created_at: true,
