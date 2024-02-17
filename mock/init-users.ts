@@ -13,8 +13,6 @@ const db = new PrismaClient();
       gender,
       job_title: faker.person.jobTitle(),
       job_type: faker.person.jobType(),
-      job_descrptior: faker.person.jobDescriptor(),
-      job_area: faker.person.jobArea(),
       bio: faker.person.bio()
     });
   }

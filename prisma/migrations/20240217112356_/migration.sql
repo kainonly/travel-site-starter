@@ -34,8 +34,6 @@ CREATE TABLE "user" (
     "gender" VARCHAR,
     "job_title" VARCHAR,
     "job_type" VARCHAR,
-    "job_descrptior" VARCHAR,
-    "job_area" VARCHAR,
     "bio" VARCHAR,
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")

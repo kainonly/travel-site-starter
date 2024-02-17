@@ -34,18 +34,16 @@ model Role {
 }
 
 model User {
-  id             Int      @id @default(autoincrement())
-  created_at     DateTime @default(now())
-  updated_at     DateTime @updatedAt
-  status         Boolean  @default(true)
-  first_name     String   @db.VarChar
-  last_name      String   @db.VarChar
-  gender         String?  @db.VarChar
-  job_title      String?  @db.VarChar
-  job_type       String?  @db.VarChar
-  job_descrptior String?  @db.VarChar
-  job_area       String?  @db.VarChar
-  bio            String?  @db.VarChar
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  status     Boolean  @default(true)
+  first_name String   @db.VarChar
+  last_name  String   @db.VarChar
+  gender     String?  @db.VarChar
+  job_title  String?  @db.VarChar
+  job_type   String?  @db.VarChar
+  bio        String?  @db.VarChar
 
   @@map("user")
 }

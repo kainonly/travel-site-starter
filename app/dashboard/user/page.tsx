@@ -2,7 +2,7 @@
 
 import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
 import { User } from '@prisma/client';
-import { Button, Card, Input, Space, Table } from 'antd';
+import { Button, Card, Input, Space, Table, Tag } from 'antd';
 import React, { useState } from 'react';
 import useSWR from 'swr';
 
@@ -51,11 +51,19 @@ export default function Page() {
               </>
             )
           },
-          { title: 'Gender', dataIndex: 'gender', width: 160 },
-          { title: 'Job Title', dataIndex: 'job_title', width: 240 },
+          { title: 'Gender', dataIndex: 'gender', width: 180 },
           {
             title: 'Job Detail',
-            render: (value, record, index) => <>{record.job_type}</>
+            width: 420,
+            render: (value, record, index) => (
+              <>
+                <Tag>{record.job_type}</Tag> {record.job_title}
+              </>
+            )
+          },
+          {
+            title: 'Bio',
+            dataIndex: 'bio'
           },
           { title: '', width: 60 }
         ]}
