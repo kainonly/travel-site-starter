@@ -58,7 +58,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </Row>
       </Header>
       <Layout>
-        <Sider style={{ background: colorBgContainer }} width={240}>
+        <Sider style={{ background: colorBgContainer, padding: 8 }} width={256}>
           <Menu
             style={{ height: '100%', borderRight: 0 }}
             mode={'inline'}
@@ -77,7 +77,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           />
         </Sider>
         <Layout>
-          <Content style={{ padding: 16 }}>{children}</Content>
+          <Content style={{ padding: 24, overflowX: 'hidden' }}>{children}</Content>
         </Layout>
       </Layout>
     </>
