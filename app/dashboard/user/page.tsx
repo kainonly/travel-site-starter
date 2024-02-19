@@ -1,14 +1,17 @@
 'use client';
 
+import { User } from '@prisma/client';
 import { Button, Space, Tag } from 'antd';
 import React from 'react';
 
 import { WpxTable } from '@/components/wpx-table';
+import { useModel } from '@/hooks/model';
 
 export default function Page() {
+  const model = useModel<User>('user/api');
   return (
-    <WpxTable
-      fetcher={{ url: 'user/api' }}
+    <WpxTable<User>
+      model={model}
       extra={
         <Space align={'center'}>
           <Button type="primary">Create</Button>

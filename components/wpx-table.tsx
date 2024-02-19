@@ -2,30 +2,17 @@ import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Input, Row, Space, Spin, Table } from 'antd';
 import { AnyObject } from 'antd/lib/_util/type';
 import { ColumnsType } from 'antd/lib/table';
-import React, { useState } from 'react';
-import useSWR from 'swr';
+import React from 'react';
+
+import { WpxModel } from '@/hooks/model';
 
 interface WpxTableProps<T> {
-  fetcher: {
-    url: string;
-  };
+  model: WpxModel<T>;
   columns: ColumnsType<T>;
   extra?: React.ReactNode;
 }
 
-export function WpxTable<T extends AnyObject>(props: WpxTableProps<T>) {
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [total, setTotal] = useState(0);
-  const params = new URLSearchParams({
-    page: page.toString(),
-    pageSize: pageSize.toString()
-  });
-  const { data, mutate, isLoading } = useSWR({ url: `${props.fetcher.url}?${params}` }, async ({ url }) => {
-    const response = await fetch(url);
-    setTotal(parseInt(response.headers.get('X-Total-Count') ?? '0'));
-    return response.json();
-  });
+export function WpxTable<T extends AnyObject>({ model, columns, extra }: WpxTableProps<T>) {
   return (
     <Card>
       <Row justify={'space-between'}>
@@ -36,32 +23,31 @@ export function WpxTable<T extends AnyObject>(props: WpxTableProps<T>) {
               type={'text'}
               icon={<ReloadOutlined />}
               onClick={() => {
-                mutate();
+                model.mutate();
               }}
             ></Button>
           </Space>
         </Col>
         <Col />
-        <Col>{props.extra}</Col>
+        <Col>{extra}</Col>
       </Row>
 
       <Table<T>
         style={{ paddingTop: 12 }}
         rowKey={'id'}
-        loading={isLoading ? { indicator: <Spin /> } : false}
+        loading={model.isLoading ? { indicator: <Spin /> } : false}
         pagination={{
-          current: page,
-          total: total,
-          pageSize,
+          current: model.page,
+          total: model.total,
+          pageSize: model.pageSize,
           pageSizeOptions: [10, 20, 50],
           onChange: (index, size) => {
-            setPage(index);
-            setPageSize(size);
+            model.updatePage(index, size);
           }
         }}
         rowSelection={{ type: 'checkbox' }}
-        columns={props.columns}
-        dataSource={data}
+        columns={columns}
+        dataSource={model.data}
       />
     </Card>
   );
