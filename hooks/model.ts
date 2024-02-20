@@ -1,45 +1,72 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 
-export interface WpxPagination {
+export interface WpxModelState {
   page: number;
   pageSize: number;
   total: number;
+  selection: React.Key[];
 }
 
-export interface WpxModel<T> extends WpxPagination, SWRResponse<T[]> {
-  isLoading: boolean;
-  updatePage(index: number, size: number): void;
+export interface WpxModel<T> extends WpxModelState, SWRResponse<T[]> {
+  setPage(index: number, size: number): void;
+  appendSelection(keys: React.Key[]): void;
+  removeSelection(keys: React.Key[]): void;
+  clearSelection(): void;
 }
 
 export function useModel<T>(url: string): WpxModel<T> {
-  const [pagination, setPagination] = useState<WpxPagination>({
+  const [model, setModel] = useState<WpxModelState>({
+    total: 0,
     page: 1,
     pageSize: 10,
-    total: 0
+    selection: []
   });
   const params = new URLSearchParams({
-    page: pagination.page.toString(),
-    pageSize: pagination.pageSize.toString()
+    page: model.page.toString(),
+    pageSize: model.pageSize.toString()
   });
   const swr = useSWR<T[], any, string>(`${url}?${params}`, async url => {
     const response = await fetch(url);
-    setPagination({
-      ...pagination,
+    setModel({
+      ...model,
       total: parseInt(response.headers.get('X-Total-Count') ?? '0')
     });
     return response.json();
   });
   return {
     ...swr,
-    total: pagination.total,
-    page: pagination.page,
-    pageSize: pagination.pageSize,
-    updatePage(index: number, size: number) {
-      setPagination({
-        ...pagination,
+    total: model.total,
+    page: model.page,
+    pageSize: model.pageSize,
+    selection: model.selection,
+    setPage(index: number, size: number) {
+      setModel({
+        ...model,
         page: index,
         pageSize: size
+      });
+    },
+    appendSelection(keys: React.Key[]) {
+      const data = new Set(model.selection);
+      keys.forEach(key => data.add(key));
+      setModel({
+        ...model,
+        selection: [...data.values()]
+      });
+    },
+    removeSelection(keys: React.Key[]) {
+      const data = new Set(model.selection);
+      keys.forEach(key => data.delete(key));
+      setModel({
+        ...model,
+        selection: [...data.values()]
+      });
+    },
+    clearSelection() {
+      setModel({
+        ...model,
+        selection: []
       });
     }
   };

@@ -1,7 +1,8 @@
 'use client';
 
+import { EllipsisOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons';
 import { User } from '@prisma/client';
-import { Button, Space, Tag } from 'antd';
+import { Button, Dropdown, Tag } from 'antd';
 import React from 'react';
 
 import { WpxTable } from '@/components/wpx-table';
@@ -12,10 +13,11 @@ export default function Page() {
   return (
     <WpxTable<User>
       model={model}
-      extra={
-        <Space align={'center'}>
-          <Button type="primary">Create</Button>
-        </Space>
+      action={
+        <>
+          <Button icon={<EllipsisOutlined />}></Button>
+          <Button type="primary" icon={<PlusOutlined />}></Button>
+        </>
       }
       columns={[
         {
@@ -41,7 +43,20 @@ export default function Page() {
           title: 'Bio',
           dataIndex: 'bio'
         },
-        { title: '', width: 60 }
+        {
+          title: (
+            <Dropdown menu={{ items: [] }}>
+              <Button type="text" icon={<SettingOutlined />}></Button>
+            </Dropdown>
+          ),
+          width: 64,
+          align: 'center',
+          render: (_, record) => (
+            <Dropdown menu={{ items: [] }}>
+              <Button type="text" icon={<EllipsisOutlined />}></Button>
+            </Dropdown>
+          )
+        }
       ]}
     />
   );
