@@ -1,63 +1,79 @@
 'use client';
 
-import { EllipsisOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons';
+import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
 import { User } from '@prisma/client';
-import { Button, Dropdown, Tag } from 'antd';
+import { Button, Col, Form, Input, Row, Tag } from 'antd';
+import { ColumnsType } from 'antd/lib/table';
 import React from 'react';
 
-import { WpxTable } from '@/components/wpx-table';
+import { WpxControl, WpxTable } from '@/components/wpx-table';
 import { useModel } from '@/hooks/model';
 
 export default function Page() {
   const model = useModel<User>('user/api');
+  const columns: ColumnsType<User> = [
+    {
+      key: 'full_name',
+      title: 'Full Name',
+      width: 240,
+      render: (value, record, index) => (
+        <>
+          {record.first_name} {record.last_name}
+        </>
+      )
+    },
+    { title: 'Gender', dataIndex: 'gender', width: 180 },
+    {
+      key: 'detail',
+      title: 'Job Detail',
+      width: 420,
+      render: (value, record, index) => (
+        <>
+          <Tag>{record.job_type}</Tag> {record.job_title}
+        </>
+      )
+    },
+    {
+      title: 'Bio',
+      dataIndex: 'bio'
+    }
+  ];
+  const [form] = Form.useForm();
+  const search = (
+    <Form
+      id={'search'}
+      layout={'vertical'}
+      form={form}
+      onFinish={(data: any) => {
+        console.log(data);
+      }}
+    >
+      <Row align={'middle'} gutter={[24, 12]}>
+        <Col span={6}>
+          <Form.Item label="First Name" name={'first_name'}>
+            <Input placeholder="" />
+          </Form.Item>
+        </Col>
+        <Col span={6}>
+          <Form.Item label="Last Name" name={'last_name'}>
+            <Input placeholder="" />
+          </Form.Item>
+        </Col>
+      </Row>
+    </Form>
+  );
   return (
     <WpxTable<User>
       model={model}
-      action={
+      search={search}
+      extra={
         <>
           <Button icon={<EllipsisOutlined />}></Button>
           <Button type="primary" icon={<PlusOutlined />}></Button>
         </>
       }
-      columns={[
-        {
-          title: 'Full Name',
-          width: 240,
-          render: (value, record, index) => (
-            <>
-              {record.first_name} {record.last_name}
-            </>
-          )
-        },
-        { title: 'Gender', dataIndex: 'gender', width: 180 },
-        {
-          title: 'Job Detail',
-          width: 420,
-          render: (value, record, index) => (
-            <>
-              <Tag>{record.job_type}</Tag> {record.job_title}
-            </>
-          )
-        },
-        {
-          title: 'Bio',
-          dataIndex: 'bio'
-        },
-        {
-          title: (
-            <Dropdown menu={{ items: [] }}>
-              <Button type="text" icon={<SettingOutlined />}></Button>
-            </Dropdown>
-          ),
-          width: 64,
-          align: 'center',
-          render: (_, record) => (
-            <Dropdown menu={{ items: [] }}>
-              <Button type="text" icon={<EllipsisOutlined />}></Button>
-            </Dropdown>
-          )
-        }
-      ]}
+      columns={columns}
+      controls={columns.map<WpxControl>(v => ({ key: v.key!, title: v.title as React.ReactNode }))}
     />
   );
 }

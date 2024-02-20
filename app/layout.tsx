@@ -1,6 +1,5 @@
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { App, ConfigProvider, Layout } from 'antd';
-import zhCN from 'antd/locale/zh_CN';
 import type { Metadata } from 'next';
 import './globals.css';
 
@@ -14,7 +13,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <AntdRegistry>
           <ConfigProvider
-            locale={zhCN}
             theme={{
               components: { Layout: { headerBg: '#fff', headerPadding: '0 16px' } }
             }}
