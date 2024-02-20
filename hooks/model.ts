@@ -6,6 +6,7 @@ export interface WpxModelState {
   pageSize: number;
   total: number;
   selection: React.Key[];
+  query: Record<string, string>;
 }
 
 export interface WpxModel<T> extends WpxModelState, SWRResponse<T[]> {
@@ -13,21 +14,30 @@ export interface WpxModel<T> extends WpxModelState, SWRResponse<T[]> {
   appendSelection(keys: React.Key[]): void;
   removeSelection(keys: React.Key[]): void;
   clearSelection(): void;
+  setQuery(query: Record<any, any>): void;
 }
 
-export function useModel<T>(url: string): WpxModel<T> {
+export function useModel<T>(url: string, data: any): WpxModel<T> {
   const [model, setModel] = useState<WpxModelState>({
     total: 0,
     page: 1,
     pageSize: 10,
-    selection: []
+    selection: [],
+    query: {}
   });
-  const params = new URLSearchParams({
-    page: model.page.toString(),
-    pageSize: model.pageSize.toString()
-  });
-  const swr = useSWR<T[], any, string>(`${url}?${params}`, async url => {
-    const response = await fetch(url);
+  const body = {
+    page: model.page,
+    pageSize: model.pageSize,
+    ...data
+  };
+  const swr = useSWR<T[], any, [string, any]>([url, body], async ([url, body]) => {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
     setModel({
       ...model,
       total: parseInt(response.headers.get('X-Total-Count') ?? '0')
@@ -40,6 +50,7 @@ export function useModel<T>(url: string): WpxModel<T> {
     page: model.page,
     pageSize: model.pageSize,
     selection: model.selection,
+    query: model.query,
     setPage(index: number, size: number) {
       setModel({
         ...model,
@@ -67,6 +78,12 @@ export function useModel<T>(url: string): WpxModel<T> {
       setModel({
         ...model,
         selection: []
+      });
+    },
+    setQuery(query: Record<string, string>) {
+      setModel({
+        ...model,
+        query
       });
     }
   };
