@@ -5,8 +5,9 @@ export async function POST(request: Request) {
   const page = body.page ?? 1;
   const pageSize = body.pageSize ?? 10;
   const where = body.query;
-  const total = await db.user.count();
-  const data = await db.user.findMany({ skip: (page - 1) * pageSize, take: pageSize, where });
+  const orderBy = body.sort;
+  const total = await db.customer.count();
+  const data = await db.customer.findMany({ skip: (page - 1) * pageSize, take: pageSize, where, orderBy });
   const response = Response.json(data);
   response.headers.set('X-Total-Count', total.toString());
   return response;

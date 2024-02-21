@@ -8,6 +8,7 @@ export interface WpxModelState {
   total: number;
   selection: React.Key[];
   query: AnyObject;
+  sort: AnyObject;
 }
 
 export interface WpxModel<T> extends WpxModelState, SWRResponse<T[]> {
@@ -16,6 +17,7 @@ export interface WpxModel<T> extends WpxModelState, SWRResponse<T[]> {
   removeSelection(keys: React.Key[]): void;
   clearSelection(): void;
   setQuery(query: AnyObject): void;
+  setSort(sort: AnyObject): void;
 }
 
 export function useModel<T>(url: string): WpxModel<T> {
@@ -24,12 +26,14 @@ export function useModel<T>(url: string): WpxModel<T> {
     page: 1,
     pageSize: 10,
     selection: [],
-    query: {}
+    query: {},
+    sort: {}
   });
   const body = {
     page: model.page,
     pageSize: model.pageSize,
-    query: model.query
+    query: model.query,
+    sort: model.sort
   };
   const swr = useSWR<T[], any, [string, any]>([url, body], async ([url, body]) => {
     const response = await fetch(url, {
@@ -52,6 +56,7 @@ export function useModel<T>(url: string): WpxModel<T> {
     pageSize: model.pageSize,
     selection: model.selection,
     query: model.query,
+    sort: model.sort,
     setPage(index: number, size: number) {
       setModel({
         ...model,
@@ -85,6 +90,12 @@ export function useModel<T>(url: string): WpxModel<T> {
       setModel({
         ...model,
         query
+      });
+    },
+    setSort(sort: AnyObject) {
+      setModel({
+        ...model,
+        sort
       });
     }
   };

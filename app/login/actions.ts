@@ -12,7 +12,7 @@ export type BasicDto = {
 };
 
 export async function basicSubmit(dto: BasicDto): Promise<boolean> {
-  const data = await db.admin.findFirst({
+  const data = await db.user.findFirst({
     where: {
       email: dto.email,
       status: true

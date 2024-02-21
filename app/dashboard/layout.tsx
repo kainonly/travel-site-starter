@@ -9,6 +9,7 @@ import {
   ProjectOutlined,
   SettingOutlined,
   ShoppingOutlined,
+  SolutionOutlined,
   TeamOutlined
 } from '@ant-design/icons';
 import { Avatar, Badge, Breadcrumb, Button, Col, Divider, Dropdown, Layout, Menu, Row, Space, theme } from 'antd';
@@ -20,12 +21,13 @@ import { logout } from '@/app/dashboard/actions';
 
 const { Header, Sider, Content } = Layout;
 const menus: ItemType[] = [
-  { key: 'index', label: '工作台', icon: <DesktopOutlined /> },
-  { key: 'order', label: '订单管理', icon: <ProjectOutlined /> },
-  { key: 'product', label: '产品管理', icon: <ShoppingOutlined /> },
-  { key: 'user', label: '会员管理', icon: <TeamOutlined /> },
+  { key: 'index', label: 'Dashboard', icon: <DesktopOutlined /> },
+  { key: 'orders', label: 'Orders', icon: <ProjectOutlined /> },
+  { key: 'products', label: 'Products', icon: <ShoppingOutlined /> },
+  { key: 'customers', label: 'Customers', icon: <SolutionOutlined /> },
   { type: 'divider' },
-  { key: 'setting', label: '设置', icon: <SettingOutlined /> }
+  { key: 'users', label: 'Users', icon: <TeamOutlined /> },
+  { key: 'settings', label: 'Settings', icon: <SettingOutlined /> }
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -65,7 +67,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 items: [
                   {
                     key: 'exit',
-                    label: '退出登录',
+                    label: 'Exit',
                     icon: <LogoutOutlined />,
                     onClick: async () => {
                       await logout();

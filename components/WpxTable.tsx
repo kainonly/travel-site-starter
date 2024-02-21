@@ -1,6 +1,7 @@
 import { DownOutlined, EllipsisOutlined, FilterOutlined, ReloadOutlined, SettingOutlined } from '@ant-design/icons';
 import { Button, Card, Checkbox, Col, Divider, Dropdown, Input, Popover, Row, Space, Spin, Table, Tooltip } from 'antd';
 import type { ItemType } from 'antd/es/menu/hooks/useItems';
+import type { SorterResult } from 'antd/es/table/interface';
 import { AnyObject } from 'antd/lib/_util/type';
 import { ColumnsType } from 'antd/lib/table';
 import React, { useState } from 'react';
@@ -15,6 +16,7 @@ interface WpxTableProps<T> {
   controls?: WpxControl[];
   actions?: ItemType[];
   onKeyword?: (value: string) => void;
+  onSort?: (value: SorterResult<T> | SorterResult<T>[]) => void;
 }
 
 export interface WpxControl {
@@ -173,6 +175,11 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
             pageSizeOptions: [10, 20, 50],
             onChange: (index, size) => {
               props.model.setPage(index, size);
+            }
+          }}
+          onChange={(_, filters, sorter, extra) => {
+            if (props.onSort && extra.action === 'sort') {
+              props.onSort(sorter);
             }
           }}
         />

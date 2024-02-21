@@ -7,11 +7,12 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
-model Admin {
+model User {
   id         Int      @id @default(autoincrement())
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -22,7 +23,7 @@ model Admin {
   avatar     String?  @db.VarChar
   phone      String?  @db.VarChar
 
-  @@map("admin")
+  @@map("user")
 }
 
 model Role {
@@ -34,19 +35,39 @@ model Role {
   @@map("role")
 }
 
-model User {
+model Customer {
   id         Int      @id @default(autoincrement())
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   status     Boolean  @default(true)
   first_name String   @db.VarChar
   last_name  String   @db.VarChar
+  email      String   @db.VarChar
+  phone      String   @db.VarChar
   gender     String?  @db.VarChar
-  job_title  String?  @db.VarChar
-  job_type   String?  @db.VarChar
-  bio        String?  @db.VarChar
+  balance    Decimal  @db.Decimal(10, 2)
 
-  @@map("user")
+  addresses CustomerAddress[]
+
+  @@map("customer")
+}
+
+model CustomerAddress {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  status     Boolean  @default(true)
+  country    String   @db.VarChar
+  state      String   @db.VarChar
+  city       String   @db.VarChar
+  district   String   @db.VarChar
+  street     String   @db.VarChar
+  zip_code   String   @db.VarChar
+
+  customer    Customer? @relation(fields: [customer_id], references: [id])
+  customer_id Int?
+
+  @@map("customer_address")
 }
 
 // model Product {

@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "admin" (
+CREATE TABLE "user" (
     "id" SERIAL NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE "admin" (
     "avatar" VARCHAR,
     "phone" VARCHAR,
 
-    CONSTRAINT "admin_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -24,20 +24,37 @@ CREATE TABLE "role" (
 );
 
 -- CreateTable
-CREATE TABLE "user" (
+CREATE TABLE "customer" (
     "id" SERIAL NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "status" BOOLEAN NOT NULL DEFAULT true,
     "first_name" VARCHAR NOT NULL,
     "last_name" VARCHAR NOT NULL,
+    "email" VARCHAR NOT NULL,
+    "phone" VARCHAR NOT NULL,
     "gender" VARCHAR,
-    "job_title" VARCHAR,
-    "job_type" VARCHAR,
-    "bio" VARCHAR,
+    "balance" DECIMAL(10,2) NOT NULL,
 
-    CONSTRAINT "user_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "customer_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "customer_address" (
+    "id" SERIAL NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+    "status" BOOLEAN NOT NULL DEFAULT true,
+    "country" VARCHAR NOT NULL,
+    "state" VARCHAR NOT NULL,
+    "city" VARCHAR NOT NULL,
+    "district" VARCHAR NOT NULL,
+    "street" VARCHAR NOT NULL,
+    "zip_code" VARCHAR NOT NULL,
+    "customer_id" INTEGER,
+
+    CONSTRAINT "customer_address_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "admin_email_key" ON "admin"("email");
+CREATE UNIQUE INDEX "user_email_key" ON "user"("email");

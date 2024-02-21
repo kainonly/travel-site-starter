@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 const db = new PrismaClient();
 
 (async () => {
-  await db.admin.create({
+  await db.user.create({
     data: {
       email: 'work@kainonly.com',
       password: await hash('pass@VAN1234')
