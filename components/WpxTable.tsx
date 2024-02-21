@@ -1,9 +1,15 @@
-import { DownOutlined, EllipsisOutlined, FilterOutlined, ReloadOutlined, SettingOutlined } from '@ant-design/icons';
-import { Button, Card, Checkbox, Col, Divider, Dropdown, Input, Popover, Row, Space, Spin, Table, Tooltip } from 'antd';
+import {
+  ClearOutlined,
+  DownOutlined,
+  EllipsisOutlined,
+  FilterOutlined,
+  ReloadOutlined,
+  SettingOutlined
+} from '@ant-design/icons';
+import { Button, Card, Checkbox, Col, Divider, Dropdown, Input, Popover, Row, Space, Spin, Table } from 'antd';
 import type { ItemType } from 'antd/es/menu/hooks/useItems';
-import type { SorterResult } from 'antd/es/table/interface';
 import { AnyObject } from 'antd/lib/_util/type';
-import { ColumnsType } from 'antd/lib/table';
+import { ColumnsType, ColumnType, TableRef } from 'antd/lib/table';
 import React, { useState } from 'react';
 
 import { WpxModel } from '@/hooks/model';
@@ -11,12 +17,11 @@ import { WpxModel } from '@/hooks/model';
 interface WpxTableProps<T> {
   model: WpxModel<T>;
   columns: ColumnsType<T>;
+  actions: (record: T) => ItemType[];
   extra?: React.ReactNode;
   search?: React.ReactNode;
   controls?: WpxControl[];
-  actions?: ItemType[];
   onKeyword?: (value: string) => void;
-  onSort?: (value: SorterResult<T> | SorterResult<T>[]) => void;
 }
 
 export interface WpxControl {
@@ -25,7 +30,7 @@ export interface WpxControl {
 }
 
 export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
-  const [searchVisable, setSearchVisable] = useState(false);
+  const [searchVisible, setSearchVisible] = useState(false);
   return (
     <>
       <Card>
@@ -35,7 +40,7 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
               {props.onKeyword && (
                 <Input.Search
                   style={{ width: 240 }}
-                  disabled={searchVisable}
+                  disabled={searchVisible}
                   placeholder="Search Keyword..."
                   onSearch={props.onKeyword}
                 />
@@ -51,15 +56,15 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
 
               {props.search && (
                 <Button
-                  type={searchVisable ? 'primary' : 'text'}
+                  type={searchVisible ? 'primary' : 'text'}
                   icon={<FilterOutlined />}
                   onClick={() => {
-                    setSearchVisable(!searchVisable);
+                    setSearchVisible(!searchVisible);
                   }}
                 ></Button>
               )}
 
-              {searchVisable && (
+              {searchVisible && (
                 <>
                   <Divider type={'vertical'} />
                   <Button form={'search'} type={'dashed'} htmlType={'reset'}>
@@ -107,7 +112,7 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
               {props.extra}
             </Space>
           </Col>
-          <Col span={24}>{searchVisable && props.search}</Col>
+          <Col span={24}>{searchVisible && props.search}</Col>
         </Row>
 
         <Table<T>
@@ -142,7 +147,7 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
               width: 64,
               align: 'center',
               render: (_, record) => (
-                <Dropdown menu={{ items: props.actions ?? [] }}>
+                <Dropdown menu={{ items: props.actions(record) }}>
                   <Button type="text" icon={<EllipsisOutlined />}></Button>
                 </Dropdown>
               )
@@ -178,8 +183,18 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
             }
           }}
           onChange={(_, filters, sorter, extra) => {
-            if (props.onSort && extra.action === 'sort') {
-              props.onSort(sorter);
+            if (extra.action === 'sort') {
+              const sort = { ...props.model.sort };
+              const order = { descend: 'desc', ascend: 'asc' };
+              if (!Array.isArray(sorter)) {
+                const key = sorter.columnKey as string;
+                if (sorter.order) {
+                  sort[key] = order[sorter.order];
+                } else {
+                  delete sort[key];
+                }
+              }
+              props.model.setSort(sort);
             }
           }}
         />
