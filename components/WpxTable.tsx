@@ -10,11 +10,11 @@ import { WpxModel } from '@/hooks/model';
 interface WpxTableProps<T> {
   model: WpxModel<T>;
   columns: ColumnsType<T>;
-  keyword: (value: string) => AnyObject;
-  search?: React.ReactNode;
   extra?: React.ReactNode;
+  search?: React.ReactNode;
   controls?: WpxControl[];
   actions?: ItemType[];
+  onKeyword?: (value: string) => void;
 }
 
 export interface WpxControl {
@@ -30,33 +30,31 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
         <Row justify={'space-between'} gutter={[12, 12]}>
           <Col>
             <Space align={'center'}>
-              <Input.Search
-                placeholder="Search Keyword..."
-                onSearch={value => {
-                  props.model.setQuery(props.keyword(value));
+              {props.onKeyword && (
+                <Input.Search
+                  style={{ width: 240 }}
+                  disabled={searchVisable}
+                  placeholder="Search Keyword..."
+                  onSearch={props.onKeyword}
+                />
+              )}
+
+              <Button
+                type={'text'}
+                icon={<ReloadOutlined />}
+                onClick={() => {
+                  props.model.mutate();
                 }}
-                style={{ width: 240 }}
-              />
-              <Tooltip title={'Refresh'}>
-                <Button
-                  type={'text'}
-                  icon={<ReloadOutlined />}
-                  onClick={() => {
-                    props.model.mutate();
-                  }}
-                ></Button>
-              </Tooltip>
+              ></Button>
 
               {props.search && (
-                <Tooltip title={'Advanced Search'}>
-                  <Button
-                    type={searchVisable ? 'primary' : 'text'}
-                    icon={<FilterOutlined />}
-                    onClick={() => {
-                      setSearchVisable(!searchVisable);
-                    }}
-                  ></Button>
-                </Tooltip>
+                <Button
+                  type={searchVisable ? 'primary' : 'text'}
+                  icon={<FilterOutlined />}
+                  onClick={() => {
+                    setSearchVisable(!searchVisable);
+                  }}
+                ></Button>
               )}
 
               {searchVisable && (
@@ -107,7 +105,7 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
               {props.extra}
             </Space>
           </Col>
-          <Col span={24}>{/*{searchOpen && search}*/}</Col>
+          <Col span={24}>{searchVisable && props.search}</Col>
         </Row>
 
         <Table<T>
