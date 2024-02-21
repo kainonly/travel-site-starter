@@ -1,3 +1,4 @@
+import { AnyObject } from 'antd/lib/_util/type';
 import React, { useState } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 
@@ -6,7 +7,7 @@ export interface WpxModelState {
   pageSize: number;
   total: number;
   selection: React.Key[];
-  query: Record<string, string>;
+  query: AnyObject;
 }
 
 export interface WpxModel<T> extends WpxModelState, SWRResponse<T[]> {
@@ -14,10 +15,10 @@ export interface WpxModel<T> extends WpxModelState, SWRResponse<T[]> {
   appendSelection(keys: React.Key[]): void;
   removeSelection(keys: React.Key[]): void;
   clearSelection(): void;
-  setQuery(query: Record<any, any>): void;
+  setQuery(query: AnyObject): void;
 }
 
-export function useModel<T>(url: string, data: any): WpxModel<T> {
+export function useModel<T>(url: string): WpxModel<T> {
   const [model, setModel] = useState<WpxModelState>({
     total: 0,
     page: 1,
@@ -28,7 +29,7 @@ export function useModel<T>(url: string, data: any): WpxModel<T> {
   const body = {
     page: model.page,
     pageSize: model.pageSize,
-    ...data
+    query: model.query
   };
   const swr = useSWR<T[], any, [string, any]>([url, body], async ([url, body]) => {
     const response = await fetch(url, {
@@ -80,7 +81,7 @@ export function useModel<T>(url: string, data: any): WpxModel<T> {
         selection: []
       });
     },
-    setQuery(query: Record<string, string>) {
+    setQuery(query: AnyObject) {
       setModel({
         ...model,
         query

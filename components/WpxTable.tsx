@@ -1,5 +1,5 @@
-import { DownOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
-import { Button, Card, Checkbox, Col, Dropdown, Input, Popover, Row, Space, Spin, Table } from 'antd';
+import { DownOutlined, EllipsisOutlined, FilterOutlined, ReloadOutlined, SettingOutlined } from '@ant-design/icons';
+import { Button, Card, Checkbox, Col, Divider, Dropdown, Input, Popover, Row, Space, Spin, Table, Tooltip } from 'antd';
 import type { ItemType } from 'antd/es/menu/hooks/useItems';
 import { AnyObject } from 'antd/lib/_util/type';
 import { ColumnsType } from 'antd/lib/table';
@@ -10,9 +10,8 @@ import { WpxModel } from '@/hooks/model';
 interface WpxTableProps<T> {
   model: WpxModel<T>;
   columns: ColumnsType<T>;
-  title?: React.ReactNode;
-  keywords?: React.Key[];
-  // search?: (value: string) => Record<any, any>;
+  keyword: (value: string) => AnyObject;
+  search?: React.ReactNode;
   extra?: React.ReactNode;
   controls?: WpxControl[];
   actions?: ItemType[];
@@ -24,21 +23,53 @@ export interface WpxControl {
 }
 
 export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
+  const [searchVisable, setSearchVisable] = useState(false);
   return (
     <>
       <Card>
         <Row justify={'space-between'} gutter={[12, 12]}>
           <Col>
             <Space align={'center'}>
-              {/*{props.search && (*/}
-              {/*  <Input.Search*/}
-              {/*    placeholder="Search Keyword..."*/}
-              {/*    onSearch={value => {*/}
-              {/*      props.model.setQuery(props.search!(value));*/}
-              {/*    }}*/}
-              {/*    style={{ width: 240 }}*/}
-              {/*  />*/}
-              {/*)}*/}
+              <Input.Search
+                placeholder="Search Keyword..."
+                onSearch={value => {
+                  props.model.setQuery(props.keyword(value));
+                }}
+                style={{ width: 240 }}
+              />
+              <Tooltip title={'Refresh'}>
+                <Button
+                  type={'text'}
+                  icon={<ReloadOutlined />}
+                  onClick={() => {
+                    props.model.mutate();
+                  }}
+                ></Button>
+              </Tooltip>
+
+              {props.search && (
+                <Tooltip title={'Advanced Search'}>
+                  <Button
+                    type={searchVisable ? 'primary' : 'text'}
+                    icon={<FilterOutlined />}
+                    onClick={() => {
+                      setSearchVisable(!searchVisable);
+                    }}
+                  ></Button>
+                </Tooltip>
+              )}
+
+              {searchVisable && (
+                <>
+                  <Divider type={'vertical'} />
+                  <Button form={'search'} type={'dashed'} htmlType={'reset'}>
+                    Reset
+                  </Button>
+                  <Button form={'search'} type={'dashed'} htmlType={'submit'}>
+                    Search
+                  </Button>
+                </>
+              )}
             </Space>
           </Col>
           <Col />

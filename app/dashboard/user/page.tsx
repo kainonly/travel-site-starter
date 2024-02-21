@@ -6,11 +6,11 @@ import { Button, Col, Form, Input, Row, Tag } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import React from 'react';
 
-import { WpxControl, WpxKeyword, WpxTable, WpxToolbox } from '@/components';
+import { WpxControl, WpxTable } from '@/components';
 import { useModel } from '@/hooks/model';
 
 export default function Page() {
-  const model = useModel<User>('user/query', {});
+  const model = useModel<User>('user/query');
   const columns: ColumnsType<User> = [
     {
       key: 'full_name',
@@ -65,10 +65,14 @@ export default function Page() {
   return (
     <WpxTable<User>
       model={model}
-      // keywords={['first_name', 'last_name', 'job_title']}
-      // search={value => ({
-      //   OR: [{ first_name: {} }]
-      // })}
+      search={search}
+      keyword={value => ({
+        OR: [
+          { first_name: { contains: value } },
+          { last_name: { contains: value } },
+          { job_title: { contains: value } }
+        ]
+      })}
       extra={
         <>
           <Button icon={<EllipsisOutlined />}></Button>
