@@ -2,39 +2,33 @@ import { AnyObject } from 'antd/lib/_util/type';
 import React, { useState } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 
-export interface WpxModelState {
+export interface BodyState {
   page: number;
   pageSize: number;
-  total: number;
-  selection: React.Key[];
-  query: AnyObject;
-  sort: AnyObject;
+  where: AnyObject;
+  orderBy: AnyObject;
 }
 
-export interface WpxModel<T> extends WpxModelState, SWRResponse<T[]> {
+export interface WpxModel<T> extends BodyState, SWRResponse<T[]> {
+  total: number;
+  selection: React.Key[];
   setPage(index: number, size: number): void;
+  setWhere(where: AnyObject): void;
+  setOrderBy(orderBy: AnyObject): void;
   appendSelection(keys: React.Key[]): void;
   removeSelection(keys: React.Key[]): void;
   clearSelection(): void;
-  setQuery(query: AnyObject): void;
-  setSort(sort: AnyObject): void;
 }
 
 export function useModel<T>(url: string): WpxModel<T> {
-  const [model, setModel] = useState<WpxModelState>({
-    total: 0,
+  const [body, setBody] = useState<BodyState>({
     page: 1,
     pageSize: 10,
-    selection: [],
-    query: {},
-    sort: {}
+    where: {},
+    orderBy: {}
   });
-  const body = {
-    page: model.page,
-    pageSize: model.pageSize,
-    query: model.query,
-    sort: model.sort
-  };
+  const [total, setTotal] = useState<number>(0);
+  const [selection, setSelection] = useState<React.Key[]>([]);
   const swr = useSWR<T[], any, [string, any]>([url, body], async ([url, body]) => {
     const response = await fetch(url, {
       method: 'POST',
@@ -43,60 +37,45 @@ export function useModel<T>(url: string): WpxModel<T> {
       },
       body: JSON.stringify(body)
     });
-    setModel({
-      ...model,
-      total: parseInt(response.headers.get('X-Total-Count') ?? '0')
-    });
+    setTotal(parseInt(response.headers.get('X-Total-Count') ?? '0'));
     return response.json();
   });
   return {
     ...swr,
-    total: model.total,
-    page: model.page,
-    pageSize: model.pageSize,
-    selection: model.selection,
-    query: model.query,
-    sort: model.sort,
+    ...body,
+    total,
+    selection,
     setPage(index: number, size: number) {
-      setModel({
-        ...model,
+      setBody({
+        ...body,
         page: index,
         pageSize: size
       });
     },
-    appendSelection(keys: React.Key[]) {
-      const data = new Set(model.selection);
-      keys.forEach(key => data.add(key));
-      setModel({
-        ...model,
-        selection: [...data.values()]
+    setWhere(where: AnyObject) {
+      setBody({
+        ...body,
+        where
       });
+    },
+    setOrderBy(orderBy: AnyObject) {
+      setBody({
+        ...body,
+        orderBy
+      });
+    },
+    appendSelection(keys: React.Key[]) {
+      const data = new Set(selection);
+      keys.forEach(key => data.add(key));
+      setSelection([...data.values()]);
     },
     removeSelection(keys: React.Key[]) {
-      const data = new Set(model.selection);
+      const data = new Set(selection);
       keys.forEach(key => data.delete(key));
-      setModel({
-        ...model,
-        selection: [...data.values()]
-      });
+      setSelection([...data.values()]);
     },
     clearSelection() {
-      setModel({
-        ...model,
-        selection: []
-      });
-    },
-    setQuery(query: AnyObject) {
-      setModel({
-        ...model,
-        query
-      });
-    },
-    setSort(sort: AnyObject) {
-      setModel({
-        ...model,
-        sort
-      });
+      setSelection([]);
     }
   };
 }

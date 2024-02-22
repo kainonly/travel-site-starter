@@ -11,13 +11,14 @@ import { Customer } from '@prisma/client';
 import { App, Button, Col, Form, Input, Row, Tag, Typography } from 'antd';
 import { AnyObject } from 'antd/lib/_util/type';
 import { ColumnsType } from 'antd/lib/table';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 
+import { bulkDel, del } from '@/app/dashboard/customers/actions';
 import { WpxControl, WpxTable } from '@/components';
 import { useModel } from '@/hooks/model';
 
 export default function Page() {
-  const { modal } = App.useApp();
+  const { message, modal } = App.useApp();
   const model = useModel<Customer>('customers/query');
   const columns: ColumnsType<Customer> = [
     {
@@ -65,17 +66,20 @@ export default function Page() {
             layout={'vertical'}
             form={form}
             onFinish={(data: any) => {
-              let query: AnyObject = {};
+              let where: AnyObject = {};
               if (data.first_name) {
-                query['first_name'] = { contains: data.first_name };
+                where['first_name'] = { contains: data.first_name };
               }
               if (data.last_name) {
-                query['last_name'] = { contains: data.last_name };
+                where['last_name'] = { contains: data.last_name };
               }
-              model.setQuery(query);
+              if (data.phone) {
+                where['phone'] = data.phone;
+              }
+              model.setWhere(where);
             }}
             onReset={() => {
-              model.setQuery({});
+              model.setWhere({});
             }}
           >
             <Row align={'middle'} gutter={[24, 12]}>
@@ -86,6 +90,11 @@ export default function Page() {
               </Col>
               <Col span={6}>
                 <Form.Item label="Last Name" name={'last_name'}>
+                  <Input placeholder="" />
+                </Form.Item>
+              </Col>
+              <Col span={6}>
+                <Form.Item label="Phone Number" name={'phone'}>
                   <Input placeholder="" />
                 </Form.Item>
               </Col>
@@ -113,17 +122,46 @@ export default function Page() {
               okText: 'Yes',
               okType: 'danger',
               cancelText: 'No',
-              onOk: () => {
+              onOk: async () => {
+                await del(record.id);
+                message.success('Deletion successful');
+                model.removeSelection([record.id]);
                 model.mutate();
-                console.log('ok');
               }
             });
           }
         }
       ]}
+      bulkActions={[
+        {
+          key: 'delete',
+          danger: true,
+          label: (
+            <a
+              onClick={() => {
+                modal.confirm({
+                  title: 'Are you sure delete these?',
+                  icon: <ExclamationCircleFilled />,
+                  okText: 'Yes',
+                  okType: 'danger',
+                  cancelText: 'No',
+                  onOk: async () => {
+                    await bulkDel(model.selection as number[]);
+                    message.success('Deletion successful');
+                    model.clearSelection();
+                    model.mutate();
+                  }
+                });
+              }}
+            >
+              Bulk Delete
+            </a>
+          )
+        }
+      ]}
       controls={columns.map<WpxControl>(v => ({ key: v.key!, title: v.title as React.ReactNode }))}
       onKeyword={value => {
-        model.setQuery({ OR: [{ first_name: { contains: value } }, { last_name: { contains: value } }] });
+        model.setWhere({ OR: [{ first_name: { contains: value } }, { last_name: { contains: value } }] });
       }}
     />
   );

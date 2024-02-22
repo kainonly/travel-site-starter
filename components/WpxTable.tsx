@@ -1,15 +1,8 @@
-import {
-  ClearOutlined,
-  DownOutlined,
-  EllipsisOutlined,
-  FilterOutlined,
-  ReloadOutlined,
-  SettingOutlined
-} from '@ant-design/icons';
+import { DownOutlined, EllipsisOutlined, FilterOutlined, ReloadOutlined, SettingOutlined } from '@ant-design/icons';
 import { Button, Card, Checkbox, Col, Divider, Dropdown, Input, Popover, Row, Space, Spin, Table } from 'antd';
 import type { ItemType } from 'antd/es/menu/hooks/useItems';
 import { AnyObject } from 'antd/lib/_util/type';
-import { ColumnsType, ColumnType, TableRef } from 'antd/lib/table';
+import { ColumnsType } from 'antd/lib/table';
 import React, { useState } from 'react';
 
 import { WpxModel } from '@/hooks/model';
@@ -18,6 +11,7 @@ interface WpxTableProps<T> {
   model: WpxModel<T>;
   columns: ColumnsType<T>;
   actions: (record: T) => ItemType[];
+  bulkActions?: ItemType[];
   extra?: React.ReactNode;
   search?: React.ReactNode;
   controls?: WpxControl[];
@@ -40,6 +34,7 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
               {props.onKeyword && (
                 <Input.Search
                   style={{ width: 240 }}
+                  allowClear
                   disabled={searchVisible}
                   placeholder="Search Keyword..."
                   onSearch={props.onKeyword}
@@ -96,11 +91,7 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
                           </a>
                         )
                       },
-                      {
-                        key: 'delete',
-                        danger: true,
-                        label: <a onClick={() => {}}>Bulk Delete</a>
-                      }
+                      ...(props.bulkActions ?? [])
                     ]
                   }}
                 >
@@ -178,23 +169,24 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
             current: props.model.page,
             pageSize: props.model.pageSize,
             pageSizeOptions: [10, 20, 50],
+            showTotal: total => `Total ${total} items`,
             onChange: (index, size) => {
               props.model.setPage(index, size);
             }
           }}
           onChange={(_, filters, sorter, extra) => {
             if (extra.action === 'sort') {
-              const sort = { ...props.model.sort };
+              const orderBy = { ...props.model.orderBy };
               const order = { descend: 'desc', ascend: 'asc' };
               if (!Array.isArray(sorter)) {
                 const key = sorter.columnKey as string;
                 if (sorter.order) {
-                  sort[key] = order[sorter.order];
+                  orderBy[key] = order[sorter.order];
                 } else {
-                  delete sort[key];
+                  delete orderBy[key];
                 }
               }
-              props.model.setSort(sort);
+              props.model.setOrderBy(orderBy);
             }
           }}
         />
