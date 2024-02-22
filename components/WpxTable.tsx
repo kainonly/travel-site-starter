@@ -5,10 +5,10 @@ import { AnyObject } from 'antd/lib/_util/type';
 import { ColumnsType } from 'antd/lib/table';
 import React, { useState } from 'react';
 
-import { WpxModel } from '@/hooks/model';
+import { WpxDataSource } from '@/hooks';
 
 interface WpxTableProps<T> {
-  model: WpxModel<T>;
+  dataSource: WpxDataSource<T>;
   columns: ColumnsType<T>;
   actions: (record: T) => ItemType[];
   bulkActions?: ItemType[];
@@ -45,7 +45,7 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
                 type={'text'}
                 icon={<ReloadOutlined />}
                 onClick={() => {
-                  props.model.mutate();
+                  props.dataSource.mutate();
                 }}
               ></Button>
 
@@ -75,7 +75,7 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
           <Col />
           <Col>
             <Space align={'center'}>
-              {props.model.selection.length !== 0 && (
+              {props.dataSource.selection.length !== 0 && (
                 <Dropdown
                   menu={{
                     items: [
@@ -84,7 +84,7 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
                         label: (
                           <a
                             onClick={() => {
-                              props.model.clearSelection();
+                              props.dataSource.clearSelection();
                             }}
                           >
                             Unselect
@@ -96,7 +96,7 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
                   }}
                 >
                   <Button type={'link'}>
-                    Selected: {props.model.selection.length} <DownOutlined />
+                    Selected: {props.dataSource.selection.length} <DownOutlined />
                   </Button>
                 </Dropdown>
               )}
@@ -107,9 +107,9 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
         </Row>
 
         <Table<T>
-          loading={props.model.isLoading ? { indicator: <Spin /> } : false}
+          loading={props.dataSource.isLoading ? { indicator: <Spin /> } : false}
           rowKey={'id'}
-          dataSource={props.model.data}
+          dataSource={props.dataSource.data}
           columns={[
             ...props.columns,
             {
@@ -145,12 +145,12 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
             }
           ]}
           rowSelection={{
-            selectedRowKeys: props.model.selection,
+            selectedRowKeys: props.dataSource.selection,
             onSelect: (record, selected) => {
               if (selected) {
-                props.model.appendSelection([record.id]);
+                props.dataSource.appendSelection([record.id]);
               } else {
-                props.model.removeSelection([record.id]);
+                props.dataSource.removeSelection([record.id]);
               }
             },
             onChange: (keys, _, info) => {
@@ -158,25 +158,25 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
                 return;
               }
               if (keys.length === 0) {
-                props.model.removeSelection(props.model.data!.map(v => v.id));
+                props.dataSource.removeSelection(props.dataSource.data!.map(v => v.id));
               } else {
-                props.model.appendSelection(props.model.data!.map(v => v.id));
+                props.dataSource.appendSelection(props.dataSource.data!.map(v => v.id));
               }
             }
           }}
           pagination={{
-            total: props.model.total,
-            current: props.model.page,
-            pageSize: props.model.pageSize,
+            total: props.dataSource.total,
+            current: props.dataSource.page,
+            pageSize: props.dataSource.pageSize,
             pageSizeOptions: [10, 20, 50],
             showTotal: total => `Total ${total} items`,
             onChange: (index, size) => {
-              props.model.setPage(index, size);
+              props.dataSource.setPage(index, size);
             }
           }}
           onChange={(_, filters, sorter, extra) => {
             if (extra.action === 'sort') {
-              const orderBy = { ...props.model.orderBy };
+              const orderBy = { ...props.dataSource.orderBy };
               const order = { descend: 'desc', ascend: 'asc' };
               if (!Array.isArray(sorter)) {
                 const key = sorter.columnKey as string;
@@ -186,7 +186,7 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
                   delete orderBy[key];
                 }
               }
-              props.model.setOrderBy(orderBy);
+              props.dataSource.setOrderBy(orderBy);
             }
           }}
         />

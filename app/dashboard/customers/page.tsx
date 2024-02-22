@@ -8,18 +8,19 @@ import {
   PlusOutlined
 } from '@ant-design/icons';
 import { Customer } from '@prisma/client';
-import { App, Button, Col, Form, Input, Row, Tag, Typography } from 'antd';
-import { AnyObject } from 'antd/lib/_util/type';
+import { App, Button, Tag, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 
+import { ModalForm } from '@/app/dashboard/customers/ModalForm';
+import { SearchForm } from '@/app/dashboard/customers/SearchForm';
 import { bulkDel, del } from '@/app/dashboard/customers/actions';
 import { WpxControl, WpxTable } from '@/components';
-import { useModel } from '@/hooks/model';
+import { useDataSource, useModalForm } from '@/hooks';
 
 export default function Page() {
   const { message, modal } = App.useApp();
-  const model = useModel<Customer>('customers/query');
+  const ds = useDataSource<Customer>('customers/query');
   const columns: ColumnsType<Customer> = [
     {
       key: 'name',
@@ -54,62 +55,54 @@ export default function Page() {
       sorter: true
     }
   ];
-  const [form] = Form.useForm();
+  const modalForm = useModalForm(f => <ModalForm f={f} />);
   return (
     <WpxTable<Customer>
-      model={model}
+      dataSource={ds}
       columns={columns}
-      search={
-        <>
-          <Form
-            id={'search'}
-            layout={'vertical'}
-            form={form}
-            onFinish={(data: any) => {
-              let where: AnyObject = {};
-              if (data.first_name) {
-                where['first_name'] = { contains: data.first_name };
-              }
-              if (data.last_name) {
-                where['last_name'] = { contains: data.last_name };
-              }
-              if (data.phone) {
-                where['phone'] = data.phone;
-              }
-              model.setWhere(where);
-            }}
-            onReset={() => {
-              model.setWhere({});
-            }}
-          >
-            <Row align={'middle'} gutter={[24, 12]}>
-              <Col span={6}>
-                <Form.Item label="First Name" name={'first_name'}>
-                  <Input placeholder="" />
-                </Form.Item>
-              </Col>
-              <Col span={6}>
-                <Form.Item label="Last Name" name={'last_name'}>
-                  <Input placeholder="" />
-                </Form.Item>
-              </Col>
-              <Col span={6}>
-                <Form.Item label="Phone Number" name={'phone'}>
-                  <Input placeholder="" />
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
-        </>
-      }
+      search={SearchForm({ ds })}
       extra={
         <>
           <Button icon={<EllipsisOutlined />}></Button>
-          <Button type="primary" icon={<PlusOutlined />}></Button>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() =>
+              modalForm.open({
+                title: 'Create',
+                width: 800,
+                onSubmit: v =>
+                  new Promise(resolve => {
+                    console.log(v);
+                    resolve();
+                  })
+              })
+            }
+          ></Button>
         </>
       }
       actions={record => [
-        { key: `edit:${record.id}`, label: 'Edit', icon: <EditOutlined /> },
+        {
+          key: `edit:${record.id}`,
+          label: 'Edit',
+          icon: <EditOutlined />,
+          onClick: () => {
+            modalForm.open({
+              title: (
+                <>
+                  Edit: {record.first_name} {record.last_name}
+                </>
+              ),
+              width: 800,
+              values: record,
+              onSubmit: v =>
+                new Promise(resolve => {
+                  console.log(v);
+                  resolve();
+                })
+            });
+          }
+        },
         {
           key: `delete:${record.id}`,
           label: 'Delete',
@@ -125,8 +118,8 @@ export default function Page() {
               onOk: async () => {
                 await del(record.id);
                 message.success('Deletion successful');
-                model.removeSelection([record.id]);
-                model.mutate();
+                ds.removeSelection([record.id]);
+                ds.mutate();
               }
             });
           }
@@ -146,10 +139,10 @@ export default function Page() {
                   okType: 'danger',
                   cancelText: 'No',
                   onOk: async () => {
-                    await bulkDel(model.selection as number[]);
+                    await bulkDel(ds.selection as number[]);
                     message.success('Deletion successful');
-                    model.clearSelection();
-                    model.mutate();
+                    ds.clearSelection();
+                    ds.mutate();
                   }
                 });
               }}
@@ -161,7 +154,7 @@ export default function Page() {
       ]}
       controls={columns.map<WpxControl>(v => ({ key: v.key!, title: v.title as React.ReactNode }))}
       onKeyword={value => {
-        model.setWhere({ OR: [{ first_name: { contains: value } }, { last_name: { contains: value } }] });
+        ds.setWhere({ OR: [{ first_name: { contains: value } }, { last_name: { contains: value } }] });
       }}
     />
   );

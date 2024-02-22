@@ -2,14 +2,14 @@ import { AnyObject } from 'antd/lib/_util/type';
 import React, { useState } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 
-export interface BodyState {
+export interface WpxBodyState {
   page: number;
   pageSize: number;
   where: AnyObject;
   orderBy: AnyObject;
 }
 
-export interface WpxModel<T> extends BodyState, SWRResponse<T[]> {
+export interface WpxDataSource<T> extends WpxBodyState, SWRResponse<T[]> {
   total: number;
   selection: React.Key[];
   setPage(index: number, size: number): void;
@@ -20,8 +20,8 @@ export interface WpxModel<T> extends BodyState, SWRResponse<T[]> {
   clearSelection(): void;
 }
 
-export function useModel<T>(url: string): WpxModel<T> {
-  const [body, setBody] = useState<BodyState>({
+export function useDataSource<T>(url: string): WpxDataSource<T> {
+  const [body, setBody] = useState<WpxBodyState>({
     page: 1,
     pageSize: 10,
     where: {},
