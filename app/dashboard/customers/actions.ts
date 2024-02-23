@@ -1,12 +1,27 @@
 'use server';
 
-import { Customer, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
+import { CustomerDto } from '@/app/dashboard/customers/customer';
 import { db } from '@/lib/bootstrap';
 
-export async function create(data: Customer) {
-  data.balance = new Prisma.Decimal(data.balance);
-  return db.customer.create({ data });
+export async function create(data: CustomerDto) {
+  await db.customer.create({
+    data: {
+      ...data,
+      balance: new Prisma.Decimal(data.balance)
+    }
+  });
+}
+
+export async function update(id: number, data: CustomerDto) {
+  await db.customer.update({
+    where: { id },
+    data: {
+      ...data,
+      balance: new Prisma.Decimal(data.balance)
+    }
+  });
 }
 
 export async function del(id: number) {

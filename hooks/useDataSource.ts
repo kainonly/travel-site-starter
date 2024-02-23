@@ -36,7 +36,7 @@ export function useDataSource<T>(url: string): WpxDataSource<T> {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        body,
+        ...body,
         orderBy: [...body.orderBy.entries()].map(([k, v]) => ({ [k]: v }))
       })
     });

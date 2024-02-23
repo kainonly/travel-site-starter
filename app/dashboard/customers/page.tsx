@@ -7,26 +7,26 @@ import {
   ExclamationCircleFilled,
   PlusOutlined
 } from '@ant-design/icons';
-import { Customer } from '@prisma/client';
 import { App, Button, Tag, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import React from 'react';
 
 import { ModalForm } from '@/app/dashboard/customers/ModalForm';
 import { SearchForm } from '@/app/dashboard/customers/SearchForm';
-import { bulkDel, create, del } from '@/app/dashboard/customers/actions';
+import { bulkDel, create, del, update } from '@/app/dashboard/customers/actions';
+import { CustomerDto } from '@/app/dashboard/customers/customer';
 import { WpxControl, WpxTable } from '@/components';
 import { useDataSource, useModalForm } from '@/hooks';
 
 export default function Page() {
   const { message, modal } = App.useApp();
-  const ds = useDataSource<Customer>('customers/query');
+  const ds = useDataSource<CustomerDto>('customers/query');
   const gender = new Map([
     [0, 'Privacy'],
     [1, 'Male'],
     [2, 'Female']
   ]);
-  const columns: ColumnsType<Customer> = [
+  const columns: ColumnsType<CustomerDto> = [
     {
       key: 'name',
       title: 'Name',
@@ -60,9 +60,9 @@ export default function Page() {
       sorter: true
     }
   ];
-  const modalForm = useModalForm<Customer>(f => <ModalForm f={f} />);
+  const modalForm = useModalForm<CustomerDto>(f => <ModalForm f={f} />);
   return (
-    <WpxTable<Customer>
+    <WpxTable<CustomerDto>
       dataSource={ds}
       columns={columns}
       search={SearchForm({ ds })}
@@ -101,9 +101,10 @@ export default function Page() {
               ),
               width: 800,
               values: record,
-              onSubmit: v =>
-                new Promise(resolve => {
-                  console.log(v);
+              onSubmit: data =>
+                new Promise(async resolve => {
+                  await update(record.id, data);
+                  ds.mutate();
                   resolve();
                 })
             });

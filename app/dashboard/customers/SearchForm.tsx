@@ -1,15 +1,15 @@
-import { Customer } from '@prisma/client';
 import { Col, Form, Input, Row, Select } from 'antd';
 import { AnyObject } from 'antd/lib/_util/type';
 import React from 'react';
 
+import { CustomerDto } from '@/app/dashboard/customers/customer';
 import { WpxDataSource } from '@/hooks';
 
 interface FormProps<T> {
   ds: WpxDataSource<T>;
 }
 
-export function SearchForm({ ds }: FormProps<Customer>) {
+export function SearchForm({ ds }: FormProps<CustomerDto>) {
   const [form] = Form.useForm();
   return (
     <Form

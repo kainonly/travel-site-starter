@@ -176,7 +176,6 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
           }}
           onChange={(_, filters, sorter, extra) => {
             if (extra.action === 'sort') {
-              console.log(sorter);
               if (!Array.isArray(sorter)) {
                 props.dataSource.setOrderBy(sorter.columnKey as string, (sorter.order as string) ?? null);
               }
