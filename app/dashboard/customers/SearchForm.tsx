@@ -1,5 +1,5 @@
 import { Customer } from '@prisma/client';
-import { Col, Form, Input, Row } from 'antd';
+import { Col, Form, Input, Row, Select } from 'antd';
 import { AnyObject } from 'antd/lib/_util/type';
 import React from 'react';
 
@@ -18,6 +18,9 @@ export function SearchForm({ ds }: FormProps<Customer>) {
       form={form}
       onFinish={(data: any) => {
         let where: AnyObject = {};
+        if (data.gender !== undefined) {
+          where['gender'] = data.gender;
+        }
         if (data.first_name) {
           where['first_name'] = { contains: data.first_name };
         }
@@ -34,6 +37,18 @@ export function SearchForm({ ds }: FormProps<Customer>) {
       }}
     >
       <Row align={'middle'} gutter={[24, 12]}>
+        <Col span={6}>
+          <Form.Item label="Gender" name={'gender'}>
+            <Select
+              style={{ width: '100%' }}
+              options={[
+                { value: 0, label: 'Privacy' },
+                { value: 1, label: 'Male' },
+                { value: 2, label: 'Female' }
+              ]}
+            />
+          </Form.Item>
+        </Col>
         <Col span={6}>
           <Form.Item label="First Name" name={'first_name'}>
             <Input placeholder="" />

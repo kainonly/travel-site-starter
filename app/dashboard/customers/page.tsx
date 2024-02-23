@@ -14,13 +14,18 @@ import React from 'react';
 
 import { ModalForm } from '@/app/dashboard/customers/ModalForm';
 import { SearchForm } from '@/app/dashboard/customers/SearchForm';
-import { bulkDel, del } from '@/app/dashboard/customers/actions';
+import { bulkDel, create, del } from '@/app/dashboard/customers/actions';
 import { WpxControl, WpxTable } from '@/components';
 import { useDataSource, useModalForm } from '@/hooks';
 
 export default function Page() {
   const { message, modal } = App.useApp();
   const ds = useDataSource<Customer>('customers/query');
+  const gender = new Map([
+    [0, 'Privacy'],
+    [1, 'Male'],
+    [2, 'Female']
+  ]);
   const columns: ColumnsType<Customer> = [
     {
       key: 'name',
@@ -29,7 +34,7 @@ export default function Page() {
       render: (_, record) => (
         <>
           <Tag bordered={false} color="blue">
-            {record.gender}
+            {gender.get(record.gender!)}
           </Tag>
           <Typography.Text strong>
             {record.first_name} {record.last_name}
@@ -55,7 +60,7 @@ export default function Page() {
       sorter: true
     }
   ];
-  const modalForm = useModalForm(f => <ModalForm f={f} />);
+  const modalForm = useModalForm<Customer>(f => <ModalForm f={f} />);
   return (
     <WpxTable<Customer>
       dataSource={ds}
@@ -71,9 +76,10 @@ export default function Page() {
               modalForm.open({
                 title: 'Create',
                 width: 800,
-                onSubmit: v =>
-                  new Promise(resolve => {
-                    console.log(v);
+                onSubmit: data =>
+                  new Promise(async resolve => {
+                    await create(data);
+                    ds.mutate();
                     resolve();
                   })
               })

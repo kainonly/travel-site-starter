@@ -6,7 +6,7 @@ export interface WpxBodyState {
   page: number;
   pageSize: number;
   where: AnyObject;
-  orderBy: AnyObject;
+  orderBy: Map<string, 'desc' | 'asc'>;
 }
 
 export interface WpxDataSource<T> extends WpxBodyState, SWRResponse<T[]> {
@@ -14,7 +14,7 @@ export interface WpxDataSource<T> extends WpxBodyState, SWRResponse<T[]> {
   selection: React.Key[];
   setPage(index: number, size: number): void;
   setWhere(where: AnyObject): void;
-  setOrderBy(orderBy: AnyObject): void;
+  setOrderBy(key: string, sort: string | null): void;
   appendSelection(keys: React.Key[]): void;
   removeSelection(keys: React.Key[]): void;
   clearSelection(): void;
@@ -25,17 +25,20 @@ export function useDataSource<T>(url: string): WpxDataSource<T> {
     page: 1,
     pageSize: 10,
     where: {},
-    orderBy: {}
+    orderBy: new Map()
   });
   const [total, setTotal] = useState<number>(0);
   const [selection, setSelection] = useState<React.Key[]>([]);
-  const swr = useSWR<T[], any, [string, any]>([url, body], async ([url, body]) => {
+  const swr = useSWR<T[], any, [string, WpxBodyState]>([url, body], async ([url, body]) => {
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify({
+        body,
+        orderBy: [...body.orderBy.entries()].map(([k, v]) => ({ [k]: v }))
+      })
     });
     setTotal(parseInt(response.headers.get('X-Total-Count') ?? '0'));
     return response.json();
@@ -58,10 +61,19 @@ export function useDataSource<T>(url: string): WpxDataSource<T> {
         where
       });
     },
-    setOrderBy(orderBy: AnyObject) {
+    setOrderBy(key: string, sort: string | null) {
+      const transform: Record<string, 'desc' | 'asc'> = {
+        descend: 'desc',
+        ascend: 'asc'
+      };
+      if (!sort) {
+        body.orderBy.delete(key);
+      } else {
+        body.orderBy.set(key, transform[sort]);
+      }
       setBody({
         ...body,
-        orderBy
+        orderBy: new Map(body.orderBy)
       });
     },
     appendSelection(keys: React.Key[]) {

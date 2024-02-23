@@ -6,10 +6,10 @@ const db = new PrismaClient();
 (async () => {
   const data: Customer[] = [];
   for (let i = 0; i < 10000; i++) {
-    const gender = faker.person.sexType();
+    const gender = faker.number.int({ min: 0, max: 2 });
     data.push(<Customer>{
-      first_name: faker.person.firstName(gender),
-      last_name: faker.person.lastName(gender),
+      first_name: faker.person.firstName(),
+      last_name: faker.person.lastName(),
       email: faker.internet.email(),
       phone: faker.phone.number(),
       gender,

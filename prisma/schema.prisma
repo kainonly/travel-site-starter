@@ -44,7 +44,7 @@ model Customer {
   last_name  String   @db.VarChar
   email      String   @db.VarChar
   phone      String   @db.VarChar
-  gender     String?  @db.VarChar
+  gender     Int?     @db.Integer
   balance    Decimal  @db.Decimal(10, 2)
 
   addresses CustomerAddress[]

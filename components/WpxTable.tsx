@@ -176,17 +176,10 @@ export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
           }}
           onChange={(_, filters, sorter, extra) => {
             if (extra.action === 'sort') {
-              const orderBy = { ...props.dataSource.orderBy };
-              const order = { descend: 'desc', ascend: 'asc' };
+              console.log(sorter);
               if (!Array.isArray(sorter)) {
-                const key = sorter.columnKey as string;
-                if (sorter.order) {
-                  orderBy[key] = order[sorter.order];
-                } else {
-                  delete orderBy[key];
-                }
+                props.dataSource.setOrderBy(sorter.columnKey as string, (sorter.order as string) ?? null);
               }
-              props.dataSource.setOrderBy(orderBy);
             }
           }}
         />
