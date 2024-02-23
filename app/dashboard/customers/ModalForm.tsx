@@ -1,4 +1,4 @@
-import { Col, Form, Input, InputNumber, Row, Select } from 'antd';
+import { Col, Form, Input, InputNumber, Row, Select, Switch } from 'antd';
 import { FormInstance } from 'antd/es/form/hooks/useForm';
 import React from 'react';
 
@@ -8,7 +8,7 @@ interface FormProps<T> {
 
 export function ModalForm<T>({ f }: FormProps<T>) {
   return (
-    <Form layout={'vertical'} form={f} initialValues={{ gender: 0, balance: 0 }}>
+    <Form layout={'vertical'} form={f} initialValues={{ gender: 0, balance: 0, status: true }}>
       <Row gutter={24}>
         <Col span={12}>
           <Form.Item label="First Name" name={'first_name'} required>
@@ -45,6 +45,11 @@ export function ModalForm<T>({ f }: FormProps<T>) {
         <Col span={12}>
           <Form.Item label="Balance" name={'balance'}>
             <InputNumber style={{ width: '100%' }} prefix="$" min={0} />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item label="Status" name={'status'}>
+            <Switch />
           </Form.Item>
         </Col>
       </Row>

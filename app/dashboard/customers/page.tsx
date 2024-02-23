@@ -7,7 +7,7 @@ import {
   ExclamationCircleFilled,
   PlusOutlined
 } from '@ant-design/icons';
-import { App, Button, Tag, Typography } from 'antd';
+import { App, Badge, Button, Switch, Tag, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import React from 'react';
 
@@ -51,6 +51,13 @@ export default function Page() {
       title: 'Phone Number',
       key: 'phone',
       dataIndex: 'phone'
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      width: 120,
+      render: (_, record) =>
+        record.status ? <Badge status="processing" text="Availability" /> : <Badge status="default" text="Suspended" />
     },
     {
       title: 'Balance',
