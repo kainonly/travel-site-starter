@@ -7,15 +7,14 @@ import {
   ExclamationCircleFilled,
   PlusOutlined
 } from '@ant-design/icons';
-import { App, Badge, Button, Switch, Tag, Typography } from 'antd';
-import { ColumnsType } from 'antd/lib/table';
+import { App, Badge, Button, Tag, Typography } from 'antd';
 import React from 'react';
 
 import { ModalForm } from '@/app/dashboard/customers/ModalForm';
 import { SearchForm } from '@/app/dashboard/customers/SearchForm';
 import { bulkDel, create, del, update } from '@/app/dashboard/customers/actions';
 import { CustomerDto } from '@/app/dashboard/customers/customer';
-import { WpxControl, WpxTable } from '@/components';
+import { WpxColumnsType, WpxTable } from '@/components';
 import { useDataSource, useModalForm } from '@/hooks';
 
 export default function Page() {
@@ -26,10 +25,10 @@ export default function Page() {
     [1, 'Male'],
     [2, 'Female']
   ]);
-  const columns: ColumnsType<CustomerDto> = [
+  const columns: WpxColumnsType<CustomerDto> = [
     {
-      key: 'name',
       title: 'Name',
+      key: 'name',
       width: 320,
       render: (_, record) => (
         <>
@@ -166,7 +165,6 @@ export default function Page() {
           )
         }
       ]}
-      controls={columns.map<WpxControl>(v => ({ key: v.key!, title: v.title as React.ReactNode }))}
       onKeyword={value => {
         ds.setWhere({ OR: [{ first_name: { contains: value } }, { last_name: { contains: value } }] });
       }}
