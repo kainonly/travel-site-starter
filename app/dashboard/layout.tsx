@@ -14,6 +14,7 @@ import {
 } from '@ant-design/icons';
 import { Avatar, Badge, Breadcrumb, Button, Col, Divider, Dropdown, Layout, Menu, Row, Space, theme } from 'antd';
 import { ItemType } from 'antd/es/menu/hooks/useItems';
+import { MenuItemType } from 'antd/lib/menu/hooks/useItems';
 import { useRouter, useSelectedLayoutSegment } from 'next/navigation';
 import React from 'react';
 
@@ -31,12 +32,12 @@ const menus: ItemType[] = [
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const segment = useSelectedLayoutSegment();
+  const activeMenu = menus.find(v => v!.key === segment) as MenuItemType;
   const {
     token: { colorBgContainer }
   } = theme.useToken();
-
-  const segment = useSelectedLayoutSegment();
-  const router = useRouter();
 
   return (
     <>
@@ -53,9 +54,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     title: <HomeOutlined />,
                     href: ''
                   },
-                  {
-                    title: 'User'
-                  }
+                  ...[{ title: activeMenu.label, href: `/dashboard/${activeMenu.key}` }]
                 ]}
               />
             </Space>

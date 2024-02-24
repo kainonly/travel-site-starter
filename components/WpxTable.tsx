@@ -1,15 +1,8 @@
-import {
-  DownOutlined,
-  EllipsisOutlined,
-  FilterOutlined,
-  HolderOutlined,
-  ReloadOutlined,
-  SettingOutlined
-} from '@ant-design/icons';
+import { EllipsisOutlined, HolderOutlined, SettingOutlined } from '@ant-design/icons';
 import { DndContext } from '@dnd-kit/core';
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Button, Card, Checkbox, Col, Divider, Dropdown, Flex, Input, Popover, Row, Space, Spin, Table } from 'antd';
+import { Button, Checkbox, Col, Divider, Dropdown, Flex, Popover, Row, Space, Spin, Table } from 'antd';
 import type { ItemType } from 'antd/es/menu/hooks/useItems';
 import { AnyObject } from 'antd/lib/_util/type';
 import { ColumnType } from 'antd/lib/table';
@@ -17,243 +10,155 @@ import React, { useState } from 'react';
 
 import { WpxDataSource } from '@/hooks';
 
-export interface WpxTableProps<T> {
-  dataSource: WpxDataSource<T>;
-  columns: WpxColumnsType<T>;
-  actions: (record: T) => ItemType[];
-  bulkActions?: ItemType[];
-  extra?: React.ReactNode;
-  search?: React.ReactNode;
-  onKeyword?: (value: string) => void;
-}
-
 export type WpxColumnsType<T> = WpxColumnType<T>[];
 
 export interface WpxColumnType<T> extends ColumnType<T> {
   control?: React.ReactNode;
 }
 
-export const WpxTable = <T extends AnyObject>(props: WpxTableProps<T>) => {
-  const [searchVisible, setSearchVisible] = useState(false);
+export interface WpxTableProps<T> {
+  dataSource: WpxDataSource<T>;
+  columns: WpxColumnsType<T>;
+  actions: (record: T) => ItemType[];
+}
+
+export function WpxTable<T extends AnyObject>(props: WpxTableProps<T>) {
   const keys = props.columns.map<string>(v => v.key as string);
   const [display, setDisplay] = useState<string[]>(keys);
   const [columns, setColumns] = useState(props.columns);
   return (
     <>
-      <Card>
-        <Row justify={'space-between'} gutter={[12, 12]}>
-          <Col>
-            <Space align={'center'}>
-              {props.onKeyword && (
-                <Input.Search
-                  style={{ width: 240 }}
-                  allowClear
-                  disabled={searchVisible}
-                  placeholder="Search Keyword..."
-                  onSearch={props.onKeyword}
-                />
-              )}
-
-              <Button
-                type={'text'}
-                icon={<ReloadOutlined />}
-                onClick={() => {
-                  props.dataSource.mutate();
-                }}
-              ></Button>
-
-              {props.search && (
-                <Button
-                  type={searchVisible ? 'primary' : 'text'}
-                  icon={<FilterOutlined />}
-                  onClick={() => {
-                    setSearchVisible(!searchVisible);
-                  }}
-                ></Button>
-              )}
-
-              {searchVisible && (
-                <>
-                  <Divider type={'vertical'} />
-                  <Button form={'search'} type={'dashed'} htmlType={'reset'}>
-                    Reset
-                  </Button>
-                  <Button form={'search'} type={'dashed'} htmlType={'submit'}>
-                    Search
-                  </Button>
-                </>
-              )}
-            </Space>
-          </Col>
-          <Col />
-          <Col>
-            <Space align={'center'}>
-              {props.dataSource.selection.length !== 0 && (
-                <Dropdown
-                  menu={{
-                    items: [
-                      {
-                        key: 'unselect',
-                        label: (
-                          <a
-                            onClick={() => {
-                              props.dataSource.clearSelection();
-                            }}
-                          >
-                            Unselect
-                          </a>
-                        )
-                      },
-                      ...(props.bulkActions ?? [])
-                    ]
-                  }}
-                >
-                  <Button type={'link'}>
-                    Selected: {props.dataSource.selection.length} <DownOutlined />
-                  </Button>
-                </Dropdown>
-              )}
-              {props.extra}
-            </Space>
-          </Col>
-          <Col span={24}>{searchVisible && props.search}</Col>
-        </Row>
-
-        <Table<T>
-          loading={props.dataSource.isLoading ? { indicator: <Spin /> } : false}
-          rowKey={'id'}
-          dataSource={props.dataSource.data}
-          columns={[
-            ...columns.map(v => ({
-              ...v,
-              hidden: !display.includes(v.key as string)
-            })),
-            {
-              title: (
-                <Popover
-                  placement={'bottomRight'}
-                  trigger={'click'}
-                  title={
-                    <>
-                      <Row justify={'space-between'}>
-                        <Col>
-                          <Checkbox
-                            checked={display.length === keys.length}
-                            indeterminate={display.length !== 0 && display.length !== keys.length}
-                            onChange={e => {
-                              if (e.target.checked) {
-                                setDisplay(keys);
-                              } else {
-                                setDisplay([]);
-                              }
-                            }}
-                          >
-                            Display
-                          </Checkbox>
-                        </Col>
-                        <Col></Col>
-                        <Col>
-                          <Button
-                            size={'small'}
-                            type={'link'}
-                            onClick={() => {
+      <Table<T>
+        loading={props.dataSource.isLoading ? { indicator: <Spin /> } : false}
+        rowKey={'id'}
+        dataSource={props.dataSource.data}
+        columns={[
+          ...columns.map(v => ({
+            ...v,
+            hidden: !display.includes(v.key as string)
+          })),
+          {
+            title: (
+              <Popover
+                placement={'bottomRight'}
+                trigger={'click'}
+                title={
+                  <>
+                    <Row justify={'space-between'}>
+                      <Col>
+                        <Checkbox
+                          checked={display.length === keys.length}
+                          indeterminate={display.length !== 0 && display.length !== keys.length}
+                          onChange={e => {
+                            if (e.target.checked) {
                               setDisplay(keys);
-                            }}
-                          >
-                            Reset
-                          </Button>
-                        </Col>
-                      </Row>
-                    </>
-                  }
-                  content={
-                    <Checkbox.Group
-                      value={display}
-                      onChange={value => {
-                        setDisplay(value);
+                            } else {
+                              setDisplay([]);
+                            }
+                          }}
+                        >
+                          Display
+                        </Checkbox>
+                      </Col>
+                      <Col></Col>
+                      <Col>
+                        <Button
+                          size={'small'}
+                          type={'link'}
+                          onClick={() => {
+                            setDisplay(keys);
+                          }}
+                        >
+                          Reset
+                        </Button>
+                      </Col>
+                    </Row>
+                  </>
+                }
+                content={
+                  <Checkbox.Group
+                    value={display}
+                    onChange={value => {
+                      setDisplay(value);
+                    }}
+                  >
+                    <DndContext
+                      onDragEnd={({ active, over }) => {
+                        if (active.id !== over!.id) {
+                          const oldIndex = columns.findIndex(v => v.key === (active.id as string));
+                          const newIndex = columns.findIndex(v => v.key === (over!.id as string));
+                          setColumns(arrayMove(columns, oldIndex, newIndex));
+                        }
                       }}
                     >
-                      <DndContext
-                        onDragEnd={({ active, over }) => {
-                          if (active.id !== over!.id) {
-                            const oldIndex = columns.findIndex(v => v.key === (active.id as string));
-                            const newIndex = columns.findIndex(v => v.key === (over!.id as string));
-                            setColumns(arrayMove(columns, oldIndex, newIndex));
-                          }
-                        }}
-                      >
-                        <SortableContext
-                          items={columns.map(v => v.key as string)}
-                          strategy={verticalListSortingStrategy}
-                        >
-                          <Flex gap={'small'} vertical>
-                            {columns.map(v => (
-                              <WpxControl
-                                key={v.key}
-                                label={v.control ?? (v.title as React.ReactNode)}
-                                value={v.key as string}
-                              />
-                            ))}
-                          </Flex>
-                        </SortableContext>
-                      </DndContext>
-                    </Checkbox.Group>
-                  }
-                >
-                  <Button disabled={keys.length === 0} type="text" icon={<SettingOutlined />}></Button>
-                </Popover>
-              ),
-              width: 64,
-              align: 'center',
-              render: (_, record) => (
-                <Dropdown menu={{ items: props.actions(record) }}>
-                  <Button type="text" icon={<EllipsisOutlined />}></Button>
-                </Dropdown>
-              )
+                      <SortableContext items={columns.map(v => v.key as string)} strategy={verticalListSortingStrategy}>
+                        <Flex gap={'small'} vertical>
+                          {columns.map(v => (
+                            <WpxControl
+                              key={v.key}
+                              label={v.control ?? (v.title as React.ReactNode)}
+                              value={v.key as string}
+                            />
+                          ))}
+                        </Flex>
+                      </SortableContext>
+                    </DndContext>
+                  </Checkbox.Group>
+                }
+              >
+                <Button disabled={keys.length === 0} type="text" icon={<SettingOutlined />}></Button>
+              </Popover>
+            ),
+            width: 64,
+            align: 'center',
+            render: (_, record) => (
+              <Dropdown menu={{ items: props.actions(record) }}>
+                <Button type="text" icon={<EllipsisOutlined />}></Button>
+              </Dropdown>
+            )
+          }
+        ]}
+        rowSelection={{
+          selectedRowKeys: props.dataSource.selection,
+          onSelect: (record, selected) => {
+            if (selected) {
+              props.dataSource.appendSelection([record.id]);
+            } else {
+              props.dataSource.removeSelection([record.id]);
             }
-          ]}
-          rowSelection={{
-            selectedRowKeys: props.dataSource.selection,
-            onSelect: (record, selected) => {
-              if (selected) {
-                props.dataSource.appendSelection([record.id]);
-              } else {
-                props.dataSource.removeSelection([record.id]);
-              }
-            },
-            onChange: (keys, _, info) => {
-              if (info.type !== 'all') {
-                return;
-              }
-              if (keys.length === 0) {
-                props.dataSource.removeSelection(props.dataSource.data!.map(v => v.id));
-              } else {
-                props.dataSource.appendSelection(props.dataSource.data!.map(v => v.id));
-              }
+          },
+          onChange: (keys, _, info) => {
+            if (info.type !== 'all') {
+              return;
             }
-          }}
-          pagination={{
-            total: props.dataSource.total,
-            current: props.dataSource.page,
-            pageSize: props.dataSource.pageSize,
-            pageSizeOptions: [10, 20, 50],
-            showTotal: total => `Total ${total} items`,
-            onChange: (index, size) => {
-              props.dataSource.setPage(index, size);
+            if (keys.length === 0) {
+              props.dataSource.removeSelection(props.dataSource.data!.map(v => v.id));
+            } else {
+              props.dataSource.appendSelection(props.dataSource.data!.map(v => v.id));
             }
-          }}
-          onChange={(_, filters, sorter, extra) => {
-            if (extra.action === 'sort') {
-              if (!Array.isArray(sorter)) {
-                props.dataSource.setOrderBy(sorter.columnKey as string, (sorter.order as string) ?? null);
-              }
+          }
+        }}
+        pagination={{
+          total: props.dataSource.total,
+          current: props.dataSource.page,
+          pageSize: props.dataSource.pageSize,
+          pageSizeOptions: [10, 20, 50],
+          showTotal: total => `Total ${total} items`,
+          onChange: (index, size) => {
+            props.dataSource.setPage(index, size);
+          }
+        }}
+        onChange={(_, filters, sorter, extra) => {
+          if (extra.action === 'sort') {
+            if (!Array.isArray(sorter)) {
+              props.dataSource.setOrderBy(sorter.columnKey as string, (sorter.order as string) ?? null);
             }
-          }}
-        />
-      </Card>
+          }
+        }}
+      />
     </>
   );
-};
+}
 
 export interface WpxControlProps {
   label: React.ReactNode;

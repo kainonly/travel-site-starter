@@ -1,11 +1,10 @@
 'use server';
 
-import { Prisma } from '@prisma/client';
+import { Customer, Prisma } from '@prisma/client';
 
-import { CustomerDto } from '@/app/dashboard/customers/customer';
 import { db } from '@/lib/bootstrap';
 
-export async function create(data: CustomerDto) {
+export async function create(data: Customer) {
   await db.customer.create({
     data: {
       ...data,
@@ -14,7 +13,7 @@ export async function create(data: CustomerDto) {
   });
 }
 
-export async function update(id: number, data: CustomerDto) {
+export async function update(id: number, data: Customer) {
   await db.customer.update({
     where: { id },
     data: {
