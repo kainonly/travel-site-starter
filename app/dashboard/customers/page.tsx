@@ -31,6 +31,12 @@ export default function Page() {
     <Card>
       <WpxToolbox
         dataSource={ds}
+        keywords={{
+          placeholder: 'Customer Name',
+          onSearch: value => {
+            ds.setWhere({ OR: [{ first_name: { contains: value } }, { last_name: { contains: value } }] });
+          }
+        }}
         search={SearchForm({ ds })}
         extra={
           <>
@@ -53,7 +59,7 @@ export default function Page() {
             ></Button>
           </>
         }
-        bulkActions={[
+        bulk={[
           {
             key: 'delete',
             danger: true,
@@ -80,9 +86,6 @@ export default function Page() {
             )
           }
         ]}
-        onKeyword={value => {
-          ds.setWhere({ OR: [{ first_name: { contains: value } }, { last_name: { contains: value } }] });
-        }}
       />
       <WpxTable<Customer>
         dataSource={ds}

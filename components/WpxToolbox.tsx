@@ -7,25 +7,28 @@ import { WpxDataSource } from '@/hooks';
 
 export interface WpxToolboxProps<T> {
   dataSource: WpxDataSource<T>;
-  bulkActions?: ItemType[];
-  extra?: React.ReactNode;
+  keywords?: {
+    placeholder?: string;
+    onSearch: (value: string) => void;
+  };
   search?: React.ReactNode;
-  onKeyword?: (value: string) => void;
+  bulk?: ItemType[];
+  extra?: React.ReactNode;
 }
 
-export function WpxToolbox<T>(props: WpxToolboxProps<T>) {
-  const [searchVisible, setSearchVisible] = useState(false);
+export function WpxToolbox<T>({ dataSource, keywords, search, bulk, extra }: WpxToolboxProps<T>) {
+  const [visible, setVisible] = useState(false);
   return (
     <Row justify={'space-between'} gutter={[12, 12]}>
       <Col>
         <Space align={'center'}>
-          {props.onKeyword && (
+          {keywords && (
             <Input.Search
               style={{ width: 240 }}
+              disabled={visible}
+              onSearch={keywords.onSearch}
+              placeholder={keywords.placeholder ?? 'Search Keyword...'}
               allowClear
-              disabled={searchVisible}
-              placeholder="Search Keyword..."
-              onSearch={props.onKeyword}
             />
           )}
 
@@ -33,21 +36,21 @@ export function WpxToolbox<T>(props: WpxToolboxProps<T>) {
             type={'text'}
             icon={<ReloadOutlined />}
             onClick={() => {
-              props.dataSource.mutate();
+              dataSource.mutate();
             }}
           ></Button>
 
-          {props.search && (
+          {search && (
             <Button
-              type={searchVisible ? 'primary' : 'text'}
+              type={visible ? 'primary' : 'text'}
               icon={<FilterOutlined />}
               onClick={() => {
-                setSearchVisible(!searchVisible);
+                setVisible(!visible);
               }}
             ></Button>
           )}
 
-          {searchVisible && (
+          {visible && (
             <>
               <Divider type={'vertical'} />
               <Button form={'search'} type={'dashed'} htmlType={'reset'}>
@@ -63,7 +66,7 @@ export function WpxToolbox<T>(props: WpxToolboxProps<T>) {
       <Col />
       <Col>
         <Space align={'center'}>
-          {props.dataSource.selection.length !== 0 && (
+          {dataSource.selection.length !== 0 && (
             <Dropdown
               menu={{
                 items: [
@@ -72,26 +75,26 @@ export function WpxToolbox<T>(props: WpxToolboxProps<T>) {
                     label: (
                       <a
                         onClick={() => {
-                          props.dataSource.clearSelection();
+                          dataSource.clearSelection();
                         }}
                       >
                         Unselect
                       </a>
                     )
                   },
-                  ...(props.bulkActions ?? [])
+                  ...(bulk ?? [])
                 ]
               }}
             >
               <Button type={'link'}>
-                Selected: {props.dataSource.selection.length} <DownOutlined />
+                Selected: {dataSource.selection.length} <DownOutlined />
               </Button>
             </Dropdown>
           )}
-          {props.extra}
+          {extra}
         </Space>
       </Col>
-      <Col span={24}>{searchVisible && props.search}</Col>
+      <Col span={24}>{visible && search}</Col>
     </Row>
   );
 }

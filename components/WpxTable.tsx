@@ -2,7 +2,7 @@ import { EllipsisOutlined, HolderOutlined, SettingOutlined } from '@ant-design/i
 import { DndContext } from '@dnd-kit/core';
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Button, Checkbox, Col, Divider, Dropdown, Flex, Popover, Row, Space, Spin, Table } from 'antd';
+import { Button, Checkbox, Col, Dropdown, Flex, Popover, Row, Space, Spin, Table } from 'antd';
 import type { ItemType } from 'antd/es/menu/hooks/useItems';
 import { AnyObject } from 'antd/lib/_util/type';
 import { ColumnType } from 'antd/lib/table';
