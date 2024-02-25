@@ -17,21 +17,23 @@ export interface WpxColumnType<T> extends ColumnType<T> {
 }
 
 export interface WpxTableProps<T> {
+  rowKey?: string;
   dataSource: WpxDataSource<T>;
   columns: WpxColumnsType<T>;
   actions: (record: T) => ItemType[];
 }
 
 export function WpxTable<T extends AnyObject>(props: WpxTableProps<T>) {
+  const ds = props.dataSource;
   const keys = props.columns.map<string>(v => v.key as string);
   const [display, setDisplay] = useState<string[]>(keys);
   const [columns, setColumns] = useState(props.columns);
   return (
     <>
       <Table<T>
-        loading={props.dataSource.isLoading ? { indicator: <Spin /> } : false}
-        rowKey={'id'}
-        dataSource={props.dataSource.data}
+        loading={ds.isLoading ? { indicator: <Spin /> } : false}
+        rowKey={props.rowKey ?? 'id'}
+        dataSource={ds.data}
         columns={[
           ...columns.map(v => ({
             ...v,
@@ -119,12 +121,12 @@ export function WpxTable<T extends AnyObject>(props: WpxTableProps<T>) {
           }
         ]}
         rowSelection={{
-          selectedRowKeys: props.dataSource.selection,
+          selectedRowKeys: ds.selection,
           onSelect: (record, selected) => {
             if (selected) {
-              props.dataSource.appendSelection([record.id]);
+              ds.appendSelection([record.id]);
             } else {
-              props.dataSource.removeSelection([record.id]);
+              ds.removeSelection([record.id]);
             }
           },
           onChange: (keys, _, info) => {
@@ -132,26 +134,26 @@ export function WpxTable<T extends AnyObject>(props: WpxTableProps<T>) {
               return;
             }
             if (keys.length === 0) {
-              props.dataSource.removeSelection(props.dataSource.data!.map(v => v.id));
+              ds.removeSelection(ds.data!.map(v => v.id));
             } else {
-              props.dataSource.appendSelection(props.dataSource.data!.map(v => v.id));
+              ds.appendSelection(ds.data!.map(v => v.id));
             }
           }
         }}
         pagination={{
-          total: props.dataSource.total,
-          current: props.dataSource.page,
-          pageSize: props.dataSource.pageSize,
+          total: ds.total,
+          current: ds.page,
+          pageSize: ds.pageSize,
           pageSizeOptions: [10, 20, 50],
           showTotal: total => `Total ${total} items`,
           onChange: (index, size) => {
-            props.dataSource.setPage(index, size);
+            ds.setPage(index, size);
           }
         }}
         onChange={(_, filters, sorter, extra) => {
           if (extra.action === 'sort') {
             if (!Array.isArray(sorter)) {
-              props.dataSource.setOrderBy(sorter.columnKey as string, (sorter.order as string) ?? null);
+              ds.setOrderBy(sorter.columnKey as string, (sorter.order as string) ?? null);
             }
           }
         }}

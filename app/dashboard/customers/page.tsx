@@ -28,7 +28,7 @@ export default function Page() {
   ]);
   const modalForm = useModalForm<Customer>(f => <ModalForm f={f} />);
   return (
-    <Card>
+    <Card style={{ minHeight: '100%' }}>
       <WpxToolbox
         dataSource={ds}
         keywords={{
