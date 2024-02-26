@@ -1,8 +1,8 @@
 'use client';
 
-import { EllipsisOutlined, ExclamationCircleFilled, PlusOutlined, UserOutlined } from '@ant-design/icons';
+import { EditOutlined, EllipsisOutlined, ExclamationCircleFilled, PlusOutlined, UserOutlined } from '@ant-design/icons';
 import { User } from '@prisma/client';
-import { App, Avatar, Button, Card, Col, List, Row, Space, Typography } from 'antd';
+import { App, Avatar, Badge, Button, Card, Checkbox, Col, Descriptions, List, Row, Space, Typography } from 'antd';
 import React from 'react';
 
 import { ModalForm } from '@/app/dashboard/users/ModalForm';
@@ -86,8 +86,45 @@ export default function Page() {
             dataSource={ds}
             renderItem={(item, index) => (
               <List.Item key={item.id}>
-                <Card style={{ height: 240 }} type={'inner'} title={item.email}>
-                  <Avatar size={64} src={item.avatar} icon={<UserOutlined />} />
+                <Card
+                  type={'inner'}
+                  title={<Checkbox>{item.email}</Checkbox>}
+                  extra={<Button type={'text'} icon={<EditOutlined />}></Button>}
+                >
+                  <Space size={'large'} align={'start'}>
+                    <Avatar size={128} src={item.avatar} icon={<UserOutlined />} />
+                    <Descriptions
+                      size={'small'}
+                      layout={'vertical'}
+                      items={[
+                        {
+                          key: 'name',
+                          label: 'Name',
+                          children: item.name ?? 'Not set'
+                        },
+                        {
+                          key: 'phone',
+                          label: 'Phone',
+                          children: item.phone ?? 'Not set'
+                        },
+                        {
+                          key: 'status',
+                          label: 'Status',
+                          children: item.status ? (
+                            <Badge status="processing" text="Availability" />
+                          ) : (
+                            <Badge status="default" text="Suspended" />
+                          )
+                        },
+                        {
+                          key: 'roles',
+                          label: 'Roles',
+                          span: 3,
+                          children: 'Not set'
+                        }
+                      ]}
+                    />
+                  </Space>
                 </Card>
               </List.Item>
             )}
