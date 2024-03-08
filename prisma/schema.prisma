@@ -13,77 +13,55 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  status     Boolean  @default(true)
-  email      String   @unique @db.VarChar
-  password   String   @db.VarChar
-  name       String?  @db.VarChar
-  avatar     String?  @db.VarChar
-  phone      String?  @db.VarChar
-
-  @@map("user")
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    Boolean  @default(true)
+  email     String   @unique @db.VarChar
+  password  String   @db.VarChar
+  name      String?  @db.VarChar
+  avatar    String?  @db.VarChar
+  phone     String?  @db.VarChar
+  roles     Int[]
 }
 
 model Role {
-  id         Int      @id @default(autoincrement())
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  status     Boolean  @default(true)
-
-  @@map("role")
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  status      Boolean  @default(true)
+  name        String   @db.VarChar
+  permissions Json     @default("{}")
 }
 
 model Customer {
-  id         Int      @id @default(autoincrement())
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  status     Boolean  @default(true)
-  first_name String   @db.VarChar
-  last_name  String   @db.VarChar
-  email      String   @db.VarChar
-  phone      String   @db.VarChar
-  gender     Int?     @db.Integer
-  balance    Decimal  @db.Decimal(10, 2)
-
+  id        Int               @id @default(autoincrement())
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  status    Boolean           @default(true)
+  firstName String            @db.VarChar
+  lastName  String            @db.VarChar
+  email     String            @db.VarChar
+  phone     String            @db.VarChar
+  gender    Int?              @db.Integer
+  balance   Decimal           @db.Decimal(10, 2)
   addresses CustomerAddress[]
-
-  @@map("customer")
 }
 
 model CustomerAddress {
-  id         Int      @id @default(autoincrement())
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  status     Boolean  @default(true)
-  country    String   @db.VarChar
-  state      String   @db.VarChar
-  city       String   @db.VarChar
-  district   String   @db.VarChar
-  street     String   @db.VarChar
-  zip_code   String   @db.VarChar
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    Boolean  @default(true)
+  country   String   @db.VarChar
+  state     String   @db.VarChar
+  city      String   @db.VarChar
+  district  String   @db.VarChar
+  street    String   @db.VarChar
+  zipCode   String   @db.VarChar
 
-  customer    Customer? @relation(fields: [customer_id], references: [id])
-  customer_id Int?
+  customer   Customer? @relation(fields: [customerId], references: [id])
+  customerId Int?
 
-  @@map("customer_address")
+  @@index([customerId])
 }
-
-// model Product {
-//   id         Int      @id @default(autoincrement())
-//   created_at DateTime @default(now())
-//   updated_at DateTime @updatedAt
-//   status     Boolean  @default(true)
-//
-//   @@map("product")
-// }
-//
-// model Order {
-//   id         Int      @id @default(autoincrement())
-//   created_at DateTime @default(now())
-//   updated_at DateTime @updatedAt
-//   status     Boolean  @default(true)
-//
-//   @@map("order")
-// }
