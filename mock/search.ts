@@ -6,8 +6,8 @@ const db = new PrismaClient();
   // const data = await db.user.findMany({
   //   where: { first_name: { contains: 'Wan' } }
   // });
-  const data = await db.user.findMany({
-    where: { job_title: { search: 'Corporate & Factors' } }
-  });
-  console.log(data);
+  // const data = await db.user.findMany({
+  //   where: { job_title: { search: 'Corporate & Factors' } }
+  // });
+  // console.log(data);
 })();
