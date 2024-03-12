@@ -10,5 +10,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|favicon.ico|login).*)']
+  matcher: ['/((?!_next/static|cypress|favicon.ico|login).*)']
 };
