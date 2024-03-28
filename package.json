@@ -1,5 +1,5 @@
 {
-  "name": "next-lab",
+  "name": "open-hotel",
   "version": "0.1.0",
   "scripts": {
     "start": "next dev -H 0.0.0.0 -p 4200 --turbo",
