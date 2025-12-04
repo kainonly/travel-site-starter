@@ -22,8 +22,13 @@ import { DefaultDocumentIDType, Where } from 'payload'
 
 export const ProductsCollection: CollectionOverride = ({ defaultCollection }) => ({
   ...defaultCollection,
+  labels: {
+    singular: '产品',
+    plural: '产品',
+  },
   admin: {
     ...defaultCollection?.admin,
+    group: '电商',
     defaultColumns: ['title', 'enableVariants', '_status', 'variants.variants'],
     livePreview: {
       url: ({ data, req }) =>
@@ -62,6 +67,7 @@ export const ProductsCollection: CollectionOverride = ({ defaultCollection }) =>
           fields: [
             {
               name: 'description',
+              label: '描述',
               type: 'richText',
               editor: lexicalEditor({
                 features: ({ rootFeatures }) => {
@@ -74,22 +80,24 @@ export const ProductsCollection: CollectionOverride = ({ defaultCollection }) =>
                   ]
                 },
               }),
-              label: false,
               required: false,
             },
             {
               name: 'gallery',
+              label: '图库',
               type: 'array',
               minRows: 1,
               fields: [
                 {
                   name: 'image',
+                  label: '图片',
                   type: 'upload',
                   relationTo: 'media',
                   required: true,
                 },
                 {
                   name: 'variantOption',
+                  label: '变体选项',
                   type: 'relationship',
                   relationTo: 'variantOptions',
                   admin: {
@@ -134,17 +142,19 @@ export const ProductsCollection: CollectionOverride = ({ defaultCollection }) =>
 
             {
               name: 'layout',
+              label: '布局',
               type: 'blocks',
               blocks: [CallToAction, Content, MediaBlock],
             },
           ],
-          label: 'Content',
+          label: '内容',
         },
         {
           fields: [
             ...defaultCollection.fields,
             {
               name: 'relatedProducts',
+              label: '相关产品',
               type: 'relationship',
               filterOptions: ({ id }) => {
                 if (id) {
@@ -166,7 +176,7 @@ export const ProductsCollection: CollectionOverride = ({ defaultCollection }) =>
               relationTo: 'products',
             },
           ],
-          label: 'Product Details',
+          label: '产品详情',
         },
         {
           name: 'meta',
@@ -199,6 +209,7 @@ export const ProductsCollection: CollectionOverride = ({ defaultCollection }) =>
     },
     {
       name: 'categories',
+      label: '分类',
       type: 'relationship',
       admin: {
         position: 'sidebar',

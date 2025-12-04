@@ -36,13 +36,21 @@ export const plugins: Plugin[] = [
       payment: false,
     },
     formSubmissionOverrides: {
+      labels: {
+        singular: '表单提交',
+        plural: '表单提交',
+      },
       admin: {
-        group: 'Content',
+        group: '内容',
       },
     },
     formOverrides: {
+      labels: {
+        singular: '表单',
+        plural: '表单',
+      },
       admin: {
-        group: 'Content',
+        group: '内容',
       },
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
@@ -85,8 +93,95 @@ export const plugins: Plugin[] = [
         }),
       ],
     },
+    addresses: {
+      addressesCollectionOverride: ({ defaultCollection }) => ({
+        ...defaultCollection,
+        labels: {
+          singular: '地址',
+          plural: '地址',
+        },
+        admin: {
+          ...defaultCollection?.admin,
+          group: '电商',
+        },
+      }),
+    },
     products: {
       productsCollectionOverride: ProductsCollection,
+      variants: {
+        variantsCollectionOverride: ({ defaultCollection }) => ({
+          ...defaultCollection,
+          labels: {
+            singular: '变体',
+            plural: '变体',
+          },
+          admin: {
+            ...defaultCollection?.admin,
+            group: '电商',
+          },
+        }),
+        variantOptionsCollectionOverride: ({ defaultCollection }) => ({
+          ...defaultCollection,
+          labels: {
+            singular: '变体选项',
+            plural: '变体选项',
+          },
+          admin: {
+            ...defaultCollection?.admin,
+            group: '电商',
+          },
+        }),
+        variantTypesCollectionOverride: ({ defaultCollection }) => ({
+          ...defaultCollection,
+          labels: {
+            singular: '变体类型',
+            plural: '变体类型',
+          },
+          admin: {
+            ...defaultCollection?.admin,
+            group: '电商',
+          },
+        }),
+      },
+    },
+    carts: {
+      cartsCollectionOverride: ({ defaultCollection }) => ({
+        ...defaultCollection,
+        labels: {
+          singular: '购物车',
+          plural: '购物车',
+        },
+        admin: {
+          ...defaultCollection?.admin,
+          group: '电商',
+        },
+      }),
+    },
+    orders: {
+      ordersCollectionOverride: ({ defaultCollection }) => ({
+        ...defaultCollection,
+        labels: {
+          singular: '订单',
+          plural: '订单',
+        },
+        admin: {
+          ...defaultCollection?.admin,
+          group: '电商',
+        },
+      }),
+    },
+    transactions: {
+      transactionsCollectionOverride: ({ defaultCollection }) => ({
+        ...defaultCollection,
+        labels: {
+          singular: '交易',
+          plural: '交易',
+        },
+        admin: {
+          ...defaultCollection?.admin,
+          group: '电商',
+        },
+      }),
     },
   }),
 ]

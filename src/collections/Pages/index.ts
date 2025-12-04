@@ -24,6 +24,10 @@ import { revalidatePage, revalidateDelete } from './hooks/revalidatePage'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
+  labels: {
+    singular: '页面',
+    plural: '页面',
+  },
   access: {
     create: adminOnly,
     delete: adminOnly,
@@ -31,7 +35,7 @@ export const Pages: CollectionConfig = {
     update: adminOnly,
   },
   admin: {
-    group: 'Content',
+    group: '内容',
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) =>
@@ -52,11 +56,13 @@ export const Pages: CollectionConfig = {
   fields: [
     {
       name: 'title',
+      label: '标题',
       type: 'text',
       required: true,
     },
     {
       name: 'publishedOn',
+      label: '发布时间',
       type: 'date',
       admin: {
         date: {
@@ -80,12 +86,13 @@ export const Pages: CollectionConfig = {
       tabs: [
         {
           fields: [hero],
-          label: 'Hero',
+          label: '首屏',
         },
         {
           fields: [
             {
               name: 'layout',
+              label: '布局',
               type: 'blocks',
               blocks: [
                 CallToAction,
@@ -100,7 +107,7 @@ export const Pages: CollectionConfig = {
               required: true,
             },
           ],
-          label: 'Content',
+          label: '内容',
         },
         {
           name: 'meta',

@@ -1,5 +1,6 @@
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { zh } from '@payloadcms/translations/languages/zh'
 
 import {
   BoldFeature,
@@ -38,6 +39,9 @@ export default buildConfig({
       beforeDashboard: ['@/components/BeforeDashboard#BeforeDashboard'],
     },
     user: Users.slug,
+  },
+  i18n: {
+    supportedLanguages: { zh },
   },
   collections: [Users, Pages, Categories, Media],
   db: postgresAdapter({
