@@ -2,14 +2,20 @@ import type { CollectionConfig } from 'payload'
 
 import { Banner } from '@/blocks/Banner/config'
 import { Carousel } from '@/blocks/Carousel/config'
-import { ThreeItemGrid } from '@/blocks/ThreeItemGrid/config'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
 import { adminOnly } from '@/access/adminOnly'
-import { Archive } from '@/blocks/ArchiveBlock/config'
 import { CallToAction } from '@/blocks/CallToAction/config'
 import { Content } from '@/blocks/Content/config'
 import { FormBlock } from '@/blocks/Form/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
+import { HeroBanner } from '@/blocks/HeroBanner/config'
+import { DestinationsGrid } from '@/blocks/DestinationsGrid/config'
+import { ToursGrid } from '@/blocks/ToursGrid/config'
+import { Statistics } from '@/blocks/Statistics/config'
+import { Testimonials } from '@/blocks/Testimonials/config'
+import { WhyChooseUs } from '@/blocks/WhyChooseUs/config'
+import { TeamSection } from '@/blocks/TeamSection/config'
+import { Newsletter } from '@/blocks/Newsletter/config'
 import { hero } from '@/fields/hero'
 import { slugField } from 'payload'
 import { adminOrPublishedStatus } from '@/access/adminOrPublishedStatus'
@@ -95,12 +101,18 @@ export const Pages: CollectionConfig = {
               label: '布局',
               type: 'blocks',
               blocks: [
+                HeroBanner,
+                DestinationsGrid,
+                ToursGrid,
+                Statistics,
+                Testimonials,
+                WhyChooseUs,
+                TeamSection,
+                Newsletter,
                 CallToAction,
                 Content,
                 MediaBlock,
-                Archive,
                 Carousel,
-                ThreeItemGrid,
                 Banner,
                 FormBlock,
               ],

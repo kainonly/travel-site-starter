@@ -17,12 +17,17 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 
-import { Categories } from '@/collections/Categories'
+import { Destinations } from '@/collections/Destinations'
 import { Media } from '@/collections/Media'
 import { Pages } from '@/collections/Pages'
+import { Reviews } from '@/collections/Reviews'
+import { Team } from '@/collections/Team'
+import { TourCategories } from '@/collections/TourCategories'
+import { Tours } from '@/collections/Tours'
 import { Users } from '@/collections/Users'
 import { Footer } from '@/globals/Footer'
 import { Header } from '@/globals/Header'
+import { SiteSettings } from '@/globals/SiteSettings'
 import { plugins } from './plugins'
 
 const filename = fileURLToPath(import.meta.url)
@@ -43,7 +48,7 @@ export default buildConfig({
   i18n: {
     supportedLanguages: { zh },
   },
-  collections: [Users, Pages, Categories, Media],
+  collections: [Users, Pages, Media, Destinations, TourCategories, Tours, Reviews, Team],
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
@@ -86,7 +91,7 @@ export default buildConfig({
   }),
   //email: nodemailerAdapter(),
   endpoints: [],
-  globals: [Header, Footer],
+  globals: [Header, Footer, SiteSettings],
   plugins: [
     ...plugins,
     // storage-adapter-placeholder

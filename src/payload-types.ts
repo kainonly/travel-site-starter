@@ -76,6 +76,11 @@ export interface Config {
     pages: Page;
     categories: Category;
     media: Media;
+    destinations: Destination;
+    'tour-categories': TourCategory;
+    tours: Tour;
+    reviews: Review;
+    team: Team;
     forms: Form;
     'form-submissions': FormSubmission;
     addresses: Address;
@@ -109,6 +114,11 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    destinations: DestinationsSelect<false> | DestinationsSelect<true>;
+    'tour-categories': TourCategoriesSelect<false> | TourCategoriesSelect<true>;
+    tours: ToursSelect<false> | ToursSelect<true>;
+    reviews: ReviewsSelect<false> | ReviewsSelect<true>;
+    team: TeamSelect<false> | TeamSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     addresses: AddressesSelect<false> | AddressesSelect<true>;
@@ -131,10 +141,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'site-settings': SiteSetting;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
   locale: null;
   user: User & {
@@ -474,6 +486,149 @@ export interface Page {
     media?: (number | null) | Media;
   };
   layout: (
+    | {
+        title: string;
+        subtitle?: string | null;
+        backgroundType?: ('image' | 'video') | null;
+        backgroundImage?: (number | null) | Media;
+        backgroundVideo?: (number | null) | Media;
+        /**
+         * 0-100，数值越大遮罩越暗
+         */
+        overlayOpacity?: number | null;
+        showSearchForm?: boolean | null;
+        ctaButtons?:
+          | {
+              label: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'hero-banner';
+      }
+    | {
+        title?: string | null;
+        subtitle?: string | null;
+        selectionType?: ('auto' | 'manual') | null;
+        autoConfig?: {
+          limit?: number | null;
+          onlyFeatured?: boolean | null;
+          orderBy?: ('order' | 'createdAt' | 'title') | null;
+        };
+        destinations?: (number | Destination)[] | null;
+        layout?: ('grid' | 'carousel' | 'masonry') | null;
+        columns?: ('2' | '3' | '4') | null;
+        showTourCount?: boolean | null;
+        viewAllLink?: string | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'destinations-grid';
+      }
+    | {
+        title?: string | null;
+        subtitle?: string | null;
+        selectionType?: ('auto' | 'manual') | null;
+        autoConfig?: {
+          limit?: number | null;
+          onlyFeatured?: boolean | null;
+          filterByDestination?: (number | null) | Destination;
+          filterByCategory?: (number | null) | TourCategory;
+          orderBy?: ('order' | 'createdAt' | 'priceAsc' | 'priceDesc' | 'rating') | null;
+        };
+        tours?: (number | Tour)[] | null;
+        layout?: ('grid' | 'carousel' | 'list') | null;
+        columns?: ('2' | '3' | '4') | null;
+        showRating?: boolean | null;
+        showPrice?: boolean | null;
+        showDuration?: boolean | null;
+        viewAllLink?: string | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'tours-grid';
+      }
+    | {
+        title?: string | null;
+        subtitle?: string | null;
+        backgroundImage?: (number | null) | Media;
+        items?:
+          | {
+              number: string;
+              label: string;
+              icon?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        style?: ('default' | 'withBackground' | 'cards') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'statistics';
+      }
+    | {
+        title?: string | null;
+        subtitle?: string | null;
+        selectionType?: ('auto' | 'manual') | null;
+        autoConfig?: {
+          limit?: number | null;
+          onlyFeatured?: boolean | null;
+          minRating?: number | null;
+        };
+        reviews?: (number | Review)[] | null;
+        layout?: ('carousel' | 'grid' | 'list') | null;
+        showAvatar?: boolean | null;
+        showRating?: boolean | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'testimonials';
+      }
+    | {
+        title?: string | null;
+        subtitle?: string | null;
+        features?:
+          | {
+              icon?: string | null;
+              /**
+               * 如果没有图标，可以使用图片
+               */
+              image?: (number | null) | Media;
+              title: string;
+              description?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        layout?: ('grid' | 'list' | 'withImage') | null;
+        columns?: ('2' | '3' | '4') | null;
+        sideImage?: (number | null) | Media;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'why-choose-us';
+      }
+    | {
+        title?: string | null;
+        subtitle?: string | null;
+        selectionType?: ('auto' | 'manual') | null;
+        autoConfig?: {
+          limit?: number | null;
+        };
+        members?: (number | Team)[] | null;
+        columns?: ('3' | '4') | null;
+        showSocialLinks?: boolean | null;
+        showBio?: boolean | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'team-section';
+      }
+    | {
+        title?: string | null;
+        subtitle?: string | null;
+        backgroundImage?: (number | null) | Media;
+        buttonText?: string | null;
+        placeholderText?: string | null;
+        style?: ('default' | 'withBackground' | 'fullWidth') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'newsletter';
+      }
     | CallToActionBlock
     | ContentBlock
     | MediaBlock
@@ -499,6 +654,257 @@ export interface Page {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "destinations".
+ */
+export interface Destination {
+  id: number;
+  title: string;
+  country: string;
+  region?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  shortDescription?: string | null;
+  coverImage: number | Media;
+  gallery?:
+    | {
+        image: number | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  highlights?:
+    | {
+        title: string;
+        description?: string | null;
+        /**
+         * 图标名称，如: map-pin, sun, camera
+         */
+        icon?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  climate?: string | null;
+  bestTimeToVisit?: string | null;
+  language?: string | null;
+  currency?: string | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  featured?: boolean | null;
+  order?: number | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tour-categories".
+ */
+export interface TourCategory {
+  id: number;
+  title: string;
+  description?: string | null;
+  /**
+   * 图标名称，如: compass, mountain, beach, camera, utensils
+   */
+  icon?: string | null;
+  coverImage?: (number | null) | Media;
+  order?: number | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tours".
+ */
+export interface Tour {
+  id: number;
+  title: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  shortDescription?: string | null;
+  coverImage: number | Media;
+  gallery?:
+    | {
+        image: number | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  price: number;
+  /**
+   * 用于显示折扣，留空则不显示
+   */
+  originalPrice?: number | null;
+  currency?: ('CNY' | 'USD' | 'EUR') | null;
+  priceType?: ('per_person' | 'per_group') | null;
+  duration: string;
+  durationDays?: number | null;
+  groupSizeMin?: number | null;
+  groupSizeMax?: number | null;
+  difficulty?: ('easy' | 'moderate' | 'challenging' | 'difficult') | null;
+  itinerary?:
+    | {
+        day: number;
+        title: string;
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        meals?: string | null;
+        accommodation?: string | null;
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  includes?:
+    | {
+        item: string;
+        id?: string | null;
+      }[]
+    | null;
+  excludes?:
+    | {
+        item: string;
+        id?: string | null;
+      }[]
+    | null;
+  highlights?:
+    | {
+        item: string;
+        id?: string | null;
+      }[]
+    | null;
+  destinations?: (number | Destination)[] | null;
+  categories?: (number | TourCategory)[] | null;
+  relatedTours?: (number | Tour)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  rating?: number | null;
+  reviewCount?: number | null;
+  featured?: boolean | null;
+  order?: number | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews".
+ */
+export interface Review {
+  id: number;
+  author: string;
+  email?: string | null;
+  avatar?: (number | null) | Media;
+  rating: number;
+  title?: string | null;
+  content: string;
+  tour: number | Tour;
+  destination?: (number | null) | Destination;
+  travelDate?: string | null;
+  /**
+   * 是否已验证为真实评论
+   */
+  verified?: boolean | null;
+  featured?: boolean | null;
+  images?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team".
+ */
+export interface Team {
+  id: number;
+  name: string;
+  position: string;
+  photo: number | Media;
+  bio?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  socialLinks?:
+    | {
+        platform: 'wechat' | 'weibo' | 'douyin' | 'facebook' | 'twitter' | 'instagram' | 'linkedin';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1074,6 +1480,26 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
+        relationTo: 'destinations';
+        value: number | Destination;
+      } | null)
+    | ({
+        relationTo: 'tour-categories';
+        value: number | TourCategory;
+      } | null)
+    | ({
+        relationTo: 'tours';
+        value: number | Tour;
+      } | null)
+    | ({
+        relationTo: 'reviews';
+        value: number | Review;
+      } | null)
+    | ({
+        relationTo: 'team';
+        value: number | Team;
+      } | null)
+    | ({
         relationTo: 'forms';
         value: number | Form;
       } | null)
@@ -1214,6 +1640,159 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
+        'hero-banner'?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              backgroundType?: T;
+              backgroundImage?: T;
+              backgroundVideo?: T;
+              overlayOpacity?: T;
+              showSearchForm?: T;
+              ctaButtons?:
+                | T
+                | {
+                    label?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        'destinations-grid'?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              selectionType?: T;
+              autoConfig?:
+                | T
+                | {
+                    limit?: T;
+                    onlyFeatured?: T;
+                    orderBy?: T;
+                  };
+              destinations?: T;
+              layout?: T;
+              columns?: T;
+              showTourCount?: T;
+              viewAllLink?: T;
+              id?: T;
+              blockName?: T;
+            };
+        'tours-grid'?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              selectionType?: T;
+              autoConfig?:
+                | T
+                | {
+                    limit?: T;
+                    onlyFeatured?: T;
+                    filterByDestination?: T;
+                    filterByCategory?: T;
+                    orderBy?: T;
+                  };
+              tours?: T;
+              layout?: T;
+              columns?: T;
+              showRating?: T;
+              showPrice?: T;
+              showDuration?: T;
+              viewAllLink?: T;
+              id?: T;
+              blockName?: T;
+            };
+        statistics?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              backgroundImage?: T;
+              items?:
+                | T
+                | {
+                    number?: T;
+                    label?: T;
+                    icon?: T;
+                    id?: T;
+                  };
+              style?: T;
+              id?: T;
+              blockName?: T;
+            };
+        testimonials?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              selectionType?: T;
+              autoConfig?:
+                | T
+                | {
+                    limit?: T;
+                    onlyFeatured?: T;
+                    minRating?: T;
+                  };
+              reviews?: T;
+              layout?: T;
+              showAvatar?: T;
+              showRating?: T;
+              id?: T;
+              blockName?: T;
+            };
+        'why-choose-us'?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              features?:
+                | T
+                | {
+                    icon?: T;
+                    image?: T;
+                    title?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              layout?: T;
+              columns?: T;
+              sideImage?: T;
+              id?: T;
+              blockName?: T;
+            };
+        'team-section'?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              selectionType?: T;
+              autoConfig?:
+                | T
+                | {
+                    limit?: T;
+                  };
+              members?: T;
+              columns?: T;
+              showSocialLinks?: T;
+              showBio?: T;
+              id?: T;
+              blockName?: T;
+            };
+        newsletter?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              backgroundImage?: T;
+              buttonText?: T;
+              placeholderText?: T;
+              style?: T;
+              id?: T;
+              blockName?: T;
+            };
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -1383,6 +1962,187 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "destinations_select".
+ */
+export interface DestinationsSelect<T extends boolean = true> {
+  title?: T;
+  country?: T;
+  region?: T;
+  description?: T;
+  shortDescription?: T;
+  coverImage?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  highlights?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        icon?: T;
+        id?: T;
+      };
+  climate?: T;
+  bestTimeToVisit?: T;
+  language?: T;
+  currency?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  featured?: T;
+  order?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tour-categories_select".
+ */
+export interface TourCategoriesSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  icon?: T;
+  coverImage?: T;
+  order?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tours_select".
+ */
+export interface ToursSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  shortDescription?: T;
+  coverImage?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  price?: T;
+  originalPrice?: T;
+  currency?: T;
+  priceType?: T;
+  duration?: T;
+  durationDays?: T;
+  groupSizeMin?: T;
+  groupSizeMax?: T;
+  difficulty?: T;
+  itinerary?:
+    | T
+    | {
+        day?: T;
+        title?: T;
+        description?: T;
+        meals?: T;
+        accommodation?: T;
+        image?: T;
+        id?: T;
+      };
+  includes?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  excludes?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  highlights?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  destinations?: T;
+  categories?: T;
+  relatedTours?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  rating?: T;
+  reviewCount?: T;
+  featured?: T;
+  order?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews_select".
+ */
+export interface ReviewsSelect<T extends boolean = true> {
+  author?: T;
+  email?: T;
+  avatar?: T;
+  rating?: T;
+  title?: T;
+  content?: T;
+  tour?: T;
+  destination?: T;
+  travelDate?: T;
+  verified?: T;
+  featured?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team_select".
+ */
+export interface TeamSelect<T extends boolean = true> {
+  name?: T;
+  position?: T;
+  photo?: T;
+  bio?: T;
+  email?: T;
+  phone?: T;
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1786,6 +2546,13 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: number;
+  logo?: (number | null) | Media;
+  showTopBar?: boolean | null;
+  topBarContent?: {
+    phone?: string | null;
+    email?: string | null;
+    announcement?: string | null;
+  };
   navItems?:
     | {
         link: {
@@ -1798,9 +2565,40 @@ export interface Header {
           url?: string | null;
           label: string;
         };
+        hasSubmenu?: boolean | null;
+        submenuItems?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?: {
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null;
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
+  showSearch?: boolean | null;
+  ctaButton: {
+    show?: boolean | null;
+    label?: string | null;
+    ctaLink: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?: {
+        relationTo: 'pages';
+        value: number | Page;
+      } | null;
+      url?: string | null;
+      label: string;
+    };
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1810,7 +2608,45 @@ export interface Header {
  */
 export interface Footer {
   id: number;
-  navItems?:
+  logo?: (number | null) | Media;
+  description?: string | null;
+  contactInfo?: {
+    address?: string | null;
+    phone?: string | null;
+    email?: string | null;
+  };
+  navColumns?:
+    | {
+        title: string;
+        links?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?: {
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null;
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  newsletter?: {
+    show?: boolean | null;
+    title?: string | null;
+    description?: string | null;
+  };
+  /**
+   * 从网站设置中获取社交媒体链接
+   */
+  showSocialLinks?: boolean | null;
+  copyright?: string | null;
+  bottomLinks?:
     | {
         link: {
           type?: ('reference' | 'custom') | null;
@@ -1830,10 +2666,165 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  siteName: string;
+  tagline?: string | null;
+  description?: string | null;
+  logo?: (number | null) | Media;
+  favicon?: (number | null) | Media;
+  contactPhone?: string | null;
+  contactEmail?: string | null;
+  contactAddress?: string | null;
+  workingHours?: string | null;
+  mapCoordinates?: {
+    latitude?: number | null;
+    longitude?: number | null;
+  };
+  socialLinks?:
+    | {
+        platform:
+          | 'wechat'
+          | 'weibo'
+          | 'douyin'
+          | 'xiaohongshu'
+          | 'facebook'
+          | 'twitter'
+          | 'instagram'
+          | 'youtube'
+          | 'linkedin';
+        url: string;
+        /**
+         * 用于微信等需要扫码关注的平台
+         */
+        qrCode?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  defaultCurrency?: ('CNY' | 'USD' | 'EUR' | 'GBP' | 'JPY') | null;
+  currencySymbol?: string | null;
+  googleAnalyticsId?: string | null;
+  baiduTongjiId?: string | null;
+  /**
+   * 添加到 <head> 标签中的自定义脚本
+   */
+  customHeadScripts?: string | null;
+  /**
+   * 添加到 </body> 标签前的自定义脚本
+   */
+  customFooterScripts?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
+  logo?: T;
+  showTopBar?: T;
+  topBarContent?:
+    | T
+    | {
+        phone?: T;
+        email?: T;
+        announcement?: T;
+      };
   navItems?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        hasSubmenu?: T;
+        submenuItems?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  showSearch?: T;
+  ctaButton?:
+    | T
+    | {
+        show?: T;
+        label?: T;
+        ctaLink?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer_select".
+ */
+export interface FooterSelect<T extends boolean = true> {
+  logo?: T;
+  description?: T;
+  contactInfo?:
+    | T
+    | {
+        address?: T;
+        phone?: T;
+        email?: T;
+      };
+  navColumns?:
+    | T
+    | {
+        title?: T;
+        links?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  newsletter?:
+    | T
+    | {
+        show?: T;
+        title?: T;
+        description?: T;
+      };
+  showSocialLinks?: T;
+  copyright?: T;
+  bottomLinks?:
     | T
     | {
         link?:
@@ -1853,23 +2844,38 @@ export interface HeaderSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer_select".
+ * via the `definition` "site-settings_select".
  */
-export interface FooterSelect<T extends boolean = true> {
-  navItems?:
+export interface SiteSettingsSelect<T extends boolean = true> {
+  siteName?: T;
+  tagline?: T;
+  description?: T;
+  logo?: T;
+  favicon?: T;
+  contactPhone?: T;
+  contactEmail?: T;
+  contactAddress?: T;
+  workingHours?: T;
+  mapCoordinates?:
     | T
     | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-            };
+        latitude?: T;
+        longitude?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        qrCode?: T;
         id?: T;
       };
+  defaultCurrency?: T;
+  currencySymbol?: T;
+  googleAnalyticsId?: T;
+  baiduTongjiId?: T;
+  customHeadScripts?: T;
+  customFooterScripts?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
