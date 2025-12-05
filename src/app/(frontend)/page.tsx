@@ -8,6 +8,7 @@ import HeroVideo from './components/HeroVideo'
 import HeroAnimations from './components/HeroAnimations'
 import DestinationCard from './components/DestinationCard'
 import './styles.css'
+import { Building2, Landmark, Mountain, Waves } from 'lucide-react'
 
 export default async function HomePage() {
   const payloadConfig = await config
@@ -23,98 +24,116 @@ export default async function HomePage() {
   const featuredTours =
     tours.length > 0
       ? tours.map((tour) => ({
-          id: tour.id,
-          title: tour.title,
-          price: tour.price,
-          duration: tour.duration || '3天',
-          destination:
-            typeof tour.destination === 'object' && tour.destination
-              ? tour.destination.name || '未知'
-              : '未知',
-          image:
-            typeof tour.image === 'object' && tour.image?.url
-              ? tour.image.url
-              : 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80',
-          originalPrice: null,
-        }))
+        id: tour.id,
+        title: tour.title,
+        price: tour.price,
+        duration: tour.duration || '3天',
+        destination:
+          typeof tour.destination === 'object' && tour.destination
+            ? tour.destination.name || '未知'
+            : '未知',
+        image:
+          typeof tour.image === 'object' && tour.image?.url
+            ? tour.image.url
+            : 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80',
+        originalPrice: null,
+      }))
       : [
-          {
-            id: 1,
-            title: '马尔代夫探险之旅',
-            price: 11999,
-            duration: '5天',
-            destination: '马尔代夫',
-            image: 'https://images.unsplash.com/photo-1698726654862-377c0218dfdc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxNYWxkaXZlcyUyMGJlYWNoJTIwcmVzb3J0fGVufDF8fHx8MTc2NDc5ODgxNnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-            originalPrice: 15999,
-          },
-          {
-            id: 2,
-            title: '巴黎浪漫之旅',
-            price: 9999,
-            duration: '7天',
-            destination: '法国',
-            image: 'https://images.unsplash.com/photo-1431274172761-fca41d930114?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxQYXJpcyUyMEVpZmZlbCUyMFRvd2VyfGVufDF8fHx8MTc2NDg0NzQ5OXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-            originalPrice: 12000,
-          },
-          {
-            id: 3,
-            title: '东京发现之旅',
-            price: 6999,
-            duration: '6天',
-            destination: '日本',
-            image: 'https://images.unsplash.com/photo-1640871426525-a19540c45a39?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxUb2t5byUyMEphcGFuJTIwY2l0eXxlbnwxfHx8fDE3NjQ4NTEwMTB8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-            originalPrice: 8999,
-          },
-          {
-            id: 4,
-            title: '圣托里尼家庭游',
-            price: 13999,
-            duration: '5天',
-            destination: '希腊',
-            image: 'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxTYW50b3JpbmklMjBHcmVlY2V8ZW58MXx8fHwxNzY0OTAzMDg3fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-            originalPrice: 16999,
-          },
-          {
-            id: 5,
-            title: '瑞士阿尔卑斯探险',
-            price: 15999,
-            duration: '10天',
-            destination: '瑞士',
-            image: 'https://images.unsplash.com/photo-1633942515749-f93dddbbcff9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxTd2lzcyUyMEFscHMlMjBtb3VudGFpbnN8ZW58MXx8fHwxNzY0OTAzMDg3fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-            originalPrice: 19999,
-          },
-          {
-            id: 6,
-            title: '迪拜奢华之旅',
-            price: 11999,
-            duration: '5天',
-            destination: '阿联酋',
-            image: 'https://images.unsplash.com/photo-1649158779127-d3c740ddeddd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxEdWJhaSUyMGx1eHVyeSUyMHRyYXZlbHxlbnwxfHx8fDE3NjQ5MDMwODh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-            originalPrice: 14999,
-          },
-        ]
+        {
+          id: 1,
+          title: '马尔代夫探险之旅',
+          price: 11999,
+          duration: '5天',
+          destination: '马尔代夫',
+          image:
+            'https://images.unsplash.com/photo-1698726654862-377c0218dfdc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxNYWxkaXZlcyUyMGJlYWNoJTIwcmVzb3J0fGVufDF8fHx8MTc2NDc5ODgxNnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+          originalPrice: 15999,
+        },
+        {
+          id: 2,
+          title: '巴黎浪漫之旅',
+          price: 9999,
+          duration: '7天',
+          destination: '法国',
+          image:
+            'https://images.unsplash.com/photo-1431274172761-fca41d930114?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxQYXJpcyUyMEVpZmZlbCUyMFRvd2VyfGVufDF8fHx8MTc2NDg0NzQ5OXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+          originalPrice: 12000,
+        },
+        {
+          id: 3,
+          title: '东京发现之旅',
+          price: 6999,
+          duration: '6天',
+          destination: '日本',
+          image:
+            'https://images.unsplash.com/photo-1640871426525-a19540c45a39?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxUb2t5byUyMEphcGFuJTIwY2l0eXxlbnwxfHx8fDE3NjQ4NTEwMTB8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+          originalPrice: 8999,
+        },
+        {
+          id: 4,
+          title: '圣托里尼家庭游',
+          price: 13999,
+          duration: '5天',
+          destination: '希腊',
+          image:
+            'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxTYW50b3JpbmklMjBHcmVlY2V8ZW58MXx8fHwxNzY0OTAzMDg3fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+          originalPrice: 16999,
+        },
+        {
+          id: 5,
+          title: '瑞士阿尔卑斯探险',
+          price: 15999,
+          duration: '10天',
+          destination: '瑞士',
+          image:
+            'https://images.unsplash.com/photo-1633942515749-f93dddbbcff9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxTd2lzcyUyMEFscHMlMjBtb3VudGFpbnN8ZW58MXx8fHwxNzY0OTAzMDg3fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+          originalPrice: 19999,
+        },
+        {
+          id: 6,
+          title: '迪拜奢华之旅',
+          price: 11999,
+          duration: '5天',
+          destination: '阿联酋',
+          image:
+            'https://images.unsplash.com/photo-1649158779127-d3c740ddeddd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxEdWJhaSUyMGx1eHVyeSUyMHRyYXZlbHxlbnwxfHx8fDE3NjQ5MDMwODh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+          originalPrice: 14999,
+        },
+      ]
 
   // 按类别旅行
   const travelCategories = [
     {
-      name: '海滩海岛',
-      count: 122,
-      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80',
+      icon: Waves,
+      title: '海滩海岛',
+      description: '热带天堂目的地',
+      image:
+        'https://images.unsplash.com/photo-1579077926357-365f07b70b01?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiZWFjaCUyMHZhY2F0aW9uJTIwdHJvcGljYWx8ZW58MXx8fHwxNzY0ODM0NDMxfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+      count: 128,
     },
     {
-      name: '山地自然',
+      icon: Mountain,
+      title: '山地自然',
+      description: '探险与徒步之旅',
+      image:
+        'https://images.unsplash.com/photo-1609373066983-cee8662ea93f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMGhpa2luZyUyMGFkdmVudHVyZXxlbnwxfHx8fDE3NjQ4MDExNDR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
       count: 96,
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
     },
     {
-      name: '城市观光',
-      count: 122,
-      image: 'https://images.unsplash.com/photo-1499856871958-5b962c5dcc8f?w=600&q=80',
+      icon: Building2,
+      title: '城市观光',
+      description: '都市探索之旅',
+      image:
+        'https://images.unsplash.com/photo-1595273647789-54432cefc8e1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaXR5JTIwc2t5bGluZSUyMHVyYmFufGVufDF8fHx8MTc2NDc5ODI2Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+      count: 152,
     },
     {
-      name: '文化遗产',
-      count: 94,
-      image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80',
+      icon: Landmark,
+      title: '文化遗产',
+      description: '历史与传统',
+      image:
+        'https://images.unsplash.com/photo-1696857674757-185edd346e7b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjdWx0dXJhbCUyMGhlcml0YWdlJTIwdGVtcGxlfGVufDF8fHx8MTc2NDkwNjM0MHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+      count: 84,
     },
   ]
 
@@ -292,22 +311,50 @@ export default async function HomePage() {
             <p className="section-subtitle">从我们多样化的旅行体验中选择</p>
           </div>
           <div className="categories-grid">
-            {travelCategories.map((category, idx) => (
-              <div key={idx} className="category-card">
-                <div className="category-image">
-                  <Image
-                    src={category.image}
-                    alt={category.name}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                  />
+            {travelCategories.map((category, idx) => {
+              const Icon = category.icon;
+              return (
+                <div
+                  key={idx}
+                  className="group relative overflow-hidden rounded-3xl cursor-pointer h-80 transition-all duration-500 hover:shadow-lg"
+                >
+                  {/* 背景图 */}
+                  <div className="absolute inset-0">
+                    <img
+                      src={category.image}
+                      alt={category.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10"></div>
+                  </div>
+
+                  {/* 内容 */}
+                  <div className="relative h-full flex flex-col justify-end p-6">
+                    {/* 图标 */}
+                    <div
+                      className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4 transition-all duration-300"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.25)',
+                        backdropFilter: 'blur(8px)',
+                        WebkitBackdropFilter: 'blur(8px)',
+                      }}
+                    >
+                      <Icon className="w-7 h-7 text-white" />
+                    </div>
+
+                    <h3 className="text-white mb-2" style={{ fontSize: '22px', fontWeight: 700 }}>
+                      {category.title}
+                    </h3>
+                    <p className="text-white/80 mb-3" style={{ fontSize: '14px' }}>
+                      {category.description}
+                    </p>
+                    <p className="text-white/70" style={{ fontSize: '13px' }}>
+                      {category.count} 条线路可选
+                    </p>
+                  </div>
                 </div>
-                <div className="category-content">
-                  <h3>{category.name}</h3>
-                  <p>{category.count}条线路</p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
