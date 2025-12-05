@@ -5,6 +5,7 @@ import React from 'react'
 
 import config from '@/payload.config'
 import HeroVideo from './components/HeroVideo'
+import HeroAnimations from './components/HeroAnimations'
 import './styles.css'
 
 export default async function HomePage() {
@@ -140,13 +141,15 @@ export default async function HomePage() {
     <div className="home-page">
       {/* Hero 区域 */}
       <section className="hero-section">
+        <HeroAnimations />
         <div className="hero-background">
           <HeroVideo videoUrl="https://cdn.kainonly.com/travel/hero.mp4" />
           <div className="hero-overlay"></div>
+          <div className="hero-soft-light"></div>
         </div>
         <div className="hero-content-new">
           {/* Hero 标题 - 带装饰线 */}
-          <div className="hero-title-wrapper">
+          <div className="hero-title-wrapper" id="hero-title-wrapper">
             <div className="hero-title-decorative">
               <div className="hero-decorative-line"></div>
               <p className="hero-title-prefix">寻找您的</p>
@@ -157,7 +160,7 @@ export default async function HomePage() {
               在我们的网站上，您可以找到适合您和家人朋友的最佳梦想旅程。<br />我们为您提供最优质的旅游体验！
             </p>
           </div>
-          <div className="hero-search-box">
+          <div className="hero-search-box" id="hero-search-box">
             <div className="hero-search-field">
               <label>目的地</label>
               <div>
