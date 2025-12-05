@@ -25,9 +25,65 @@ export default async function HomePage() {
     <div className="home-page">
       {/* Hero 区域 */}
       <section className="hero">
+        <div className="hero-bg">
+          <Image
+            src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&q=80"
+            alt="日落海滩"
+            fill
+            priority
+            style={{ objectFit: 'cover' }}
+          />
+          <div className="hero-overlay"></div>
+        </div>
+        
         <div className="hero-content">
-          <h1>探索世界的美丽</h1>
-          <p>发现令人心动的目的地，开启一段难忘的旅程</p>
+          <h1>寻找你的完美旅行</h1>
+          <p className="hero-subtitle">探索世界最美的目的地，开启一段难忘的度假时光</p>
+          
+          {/* 搜索条 */}
+          <div className="search-box">
+            <div className="search-field">
+              <label>目的地</label>
+              <input type="text" placeholder="想去哪里？" />
+            </div>
+            <div className="search-divider"></div>
+            <div className="search-field">
+              <label>出发日期</label>
+              <input type="text" placeholder="选择日期" />
+            </div>
+            <div className="search-divider"></div>
+            <div className="search-field">
+              <label>人数</label>
+              <input type="text" placeholder="2人" />
+            </div>
+            <button className="search-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+              搜索
+            </button>
+          </div>
+        </div>
+
+        {/* 底部装饰元素 */}
+        <div className="hero-features">
+          <div className="feature-item">
+            <span className="feature-icon">✈️</span>
+            <span>500+ 目的地</span>
+          </div>
+          <div className="feature-item">
+            <span className="feature-icon">⭐</span>
+            <span>精选线路</span>
+          </div>
+          <div className="feature-item">
+            <span className="feature-icon">💰</span>
+            <span>最优价格</span>
+          </div>
+          <div className="feature-item">
+            <span className="feature-icon">🛡️</span>
+            <span>安全保障</span>
+          </div>
         </div>
       </section>
 
@@ -35,12 +91,13 @@ export default async function HomePage() {
       <section className="section">
         <div className="container">
           <h2 className="section-title">热门目的地</h2>
+          <p className="section-subtitle">探索人们最爱的旅游胜地</p>
           <div className="destinations-grid">
             {destinations.map((destination) => {
               const imageUrl =
                 typeof destination.image === 'object' && destination.image?.url
                   ? destination.image.url
-                  : '/placeholder.jpg'
+                  : 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80'
 
               return (
                 <div key={destination.id} className="destination-card">
@@ -69,12 +126,13 @@ export default async function HomePage() {
       <section className="section section-alt">
         <div className="container">
           <h2 className="section-title">精选线路</h2>
+          <p className="section-subtitle">专为你策划的完美行程</p>
           <div className="tours-grid">
             {tours.map((tour) => {
               const imageUrl =
                 typeof tour.image === 'object' && tour.image?.url
                   ? tour.image.url
-                  : '/placeholder.jpg'
+                  : 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80'
 
               return (
                 <div key={tour.id} className="tour-card">
