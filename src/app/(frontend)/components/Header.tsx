@@ -1,11 +1,13 @@
 'use client'
 
 import Link from 'next/link'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { gsap } from 'gsap'
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
+  const headerRef = useRef<HTMLElement>(null)
+  const isInHeroRef = useRef(true)
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen)
@@ -23,18 +25,162 @@ export default function Header() {
   }, [])
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100)
+    if (!headerRef.current) return
+
+    const header = headerRef.current
+    const heroSection = document.querySelector('.hero-section')
+    if (!heroSection) return
+
+    const updateHeaderStyle = (isInHero: boolean) => {
+      if (isInHero === isInHeroRef.current) return
+
+      isInHeroRef.current = isInHero
+
+      if (isInHero) {
+        // 在 Hero 区域：透明背景，白色文字
+        gsap.to(header, {
+          duration: 0.6,
+          backgroundColor: 'rgba(0, 0, 0, 0)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0)',
+          ease: 'power2.out',
+        })
+
+        const logo = header.querySelector('.logo')
+        const navLinks = header.querySelectorAll('.nav-link')
+        const btnInquire = header.querySelector('.btn-inquire')
+        const menuToggleSpans = header.querySelectorAll('.mobile-menu-toggle span')
+
+        if (logo) {
+          gsap.to(logo, {
+            duration: 0.6,
+            color: '#ffffff',
+            ease: 'power2.out',
+          })
+        }
+
+        if (navLinks.length > 0) {
+          gsap.to(navLinks, {
+            duration: 0.6,
+            color: 'rgba(255, 255, 255, 0.95)',
+            ease: 'power2.out',
+          })
+        }
+
+        if (btnInquire) {
+          gsap.to(btnInquire, {
+            duration: 0.6,
+            color: '#ffffff',
+            borderColor: 'rgba(255, 255, 255, 0.6)',
+            ease: 'power2.out',
+          })
+        }
+
+        if (menuToggleSpans.length > 0) {
+          gsap.to(menuToggleSpans, {
+            duration: 0.6,
+            backgroundColor: '#ffffff',
+            ease: 'power2.out',
+          })
+        }
+      } else {
+        // 离开 Hero 区域：深色背景，深色文字
+        gsap.to(header, {
+          duration: 0.6,
+          backgroundColor: 'rgb(53, 53, 53)',
+          backdropFilter: 'blur(0px)',
+          WebkitBackdropFilter: 'blur(0px)',
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.15)',
+          ease: 'power2.out',
+        })
+
+        const logo = header.querySelector('.logo')
+        const navLinks = header.querySelectorAll('.nav-link')
+        const btnInquire = header.querySelector('.btn-inquire')
+        const menuToggleSpans = header.querySelectorAll('.mobile-menu-toggle span')
+
+        if (logo) {
+          gsap.to(logo, {
+            duration: 0.6,
+            color: '#ffffff',
+            ease: 'power2.out',
+          })
+        }
+
+        if (navLinks.length > 0) {
+          gsap.to(navLinks, {
+            duration: 0.6,
+            color: 'rgba(255, 255, 255, 0.95)',
+            ease: 'power2.out',
+          })
+        }
+
+        if (btnInquire) {
+          gsap.to(btnInquire, {
+            duration: 0.6,
+            color: '#ffffff',
+            borderColor: 'rgba(255, 255, 255, 0.6)',
+            ease: 'power2.out',
+          })
+        }
+
+        if (menuToggleSpans.length > 0) {
+          gsap.to(menuToggleSpans, {
+            duration: 0.6,
+            backgroundColor: '#ffffff',
+            ease: 'power2.out',
+          })
+        }
+      }
     }
 
+    const handleScroll = () => {
+      const scrollY = window.scrollY
+      const heroHeight = heroSection.clientHeight
+      const isInHero = scrollY < heroHeight - 100 // 提前一点切换，更自然
+
+      updateHeaderStyle(isInHero)
+    }
+
+    const handleResize = () => {
+      handleScroll()
+    }
+
+    // 初始状态检查
+    const initCheck = () => {
+      handleScroll()
+    }
+
+    // 等待 DOM 完全加载
+    if (document.readyState === 'complete') {
+      setTimeout(initCheck, 100)
+    } else {
+      window.addEventListener('load', () => {
+        setTimeout(initCheck, 100)
+      })
+    }
+
+    // 页面加载时的淡入动画
+    gsap.fromTo(
+      header,
+      { y: -100, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1, ease: 'power2.out', delay: 0.3 },
+    )
+
     window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleResize)
+    }
   }, [])
 
   const navItems = ['首页', '目的地', '旅行产品', '旅游攻略', '联系我们']
 
   return (
-    <header className={`header ${isScrolled ? 'header-scrolled' : ''}`}>
+    <header ref={headerRef} className="header">
       <div className="header-container">
         <Link href="/" className="logo">
           Traveler
