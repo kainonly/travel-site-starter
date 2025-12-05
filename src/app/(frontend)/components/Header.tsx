@@ -35,118 +35,102 @@ export default function Header() {
       return heroSection.clientHeight || window.innerHeight
     }
 
-    const updateHeaderStyle = (isScrolled: boolean) => {
-      if (isScrolled === isInHeroRef.current) return
+    const updateHeaderStyle = (progress: number) => {
+      // progress: 0 = 在Hero顶部, 1 = 完全离开Hero
+      const logo = header.querySelector('.logo')
+      const navLinks = header.querySelectorAll('.nav-link')
+      const btnInquire = header.querySelector('.btn-inquire')
+      const menuToggleSpans = header.querySelectorAll('.mobile-menu-toggle span')
 
-      isInHeroRef.current = isScrolled
+      // 背景色：透明 -> 白色
+      const bgAlpha = progress
+      const bgColor = `rgba(255, 255, 255, ${bgAlpha})`
+      const backdropBlur = 8 * (1 - progress)
+      const boxShadow = progress > 0
+        ? `0 4px 6px -1px rgba(0, 0, 0, ${0.1 * progress}), 0 2px 4px -1px rgba(0, 0, 0, ${0.06 * progress})`
+        : '0 2px 10px rgba(0, 0, 0, 0)'
 
-      if (!isScrolled) {
-        // 页面顶部（在 Hero 区域时）：透明背景，白色文字，白色描边按钮
-        gsap.to(header, {
-          duration: 0.6,
-          backgroundColor: 'rgba(0, 0, 0, 0)',
-          backdropFilter: 'blur(8px)',
-          WebkitBackdropFilter: 'blur(8px)',
-          boxShadow: '0 2px 10px rgba(0, 0, 0, 0)',
-          ease: 'power2.out',
+      gsap.to(header, {
+        duration: 0.1,
+        backgroundColor: bgColor,
+        backdropFilter: `blur(${backdropBlur}px)`,
+        WebkitBackdropFilter: `blur(${backdropBlur}px)`,
+        boxShadow: boxShadow,
+        ease: 'none',
+      })
+
+      // 文字颜色：白色 -> 深灰
+      const textColor = progress > 0.5
+        ? `rgba(${31 + (255 - 31) * (1 - (progress - 0.5) * 2)}, ${41 + (255 - 41) * (1 - (progress - 0.5) * 2)}, ${55 + (255 - 55) * (1 - (progress - 0.5) * 2)}, 1)`
+        : `rgba(255, 255, 255, ${1 - progress * 2})`
+
+      if (logo) {
+        gsap.to(logo, {
+          duration: 0.1,
+          color: progress > 0.5 ? '#1f2937' : '#ffffff',
+          ease: 'none',
         })
+      }
 
-        const logo = header.querySelector('.logo')
-        const navLinks = header.querySelectorAll('.nav-link')
-        const btnInquire = header.querySelector('.btn-inquire')
-        const menuToggleSpans = header.querySelectorAll('.mobile-menu-toggle span')
-
-        if (logo) {
-          gsap.to(logo, {
-            duration: 0.6,
-            color: '#ffffff',
-            ease: 'power2.out',
+      if (navLinks.length > 0) {
+        navLinks.forEach((link) => {
+          gsap.to(link, {
+            duration: 0.1,
+            color: progress > 0.5 ? '#1f2937' : 'rgba(255, 255, 255, 0.95)',
+            ease: 'none',
           })
-        }
-
-        if (navLinks.length > 0) {
-          gsap.to(navLinks, {
-            duration: 0.6,
-            color: 'rgba(255, 255, 255, 0.95)',
-            ease: 'power2.out',
-          })
-        }
-
-        if (btnInquire) {
-          gsap.to(btnInquire, {
-            duration: 0.6,
-            color: '#ffffff',
-            backgroundColor: 'transparent',
-            borderColor: 'rgba(255, 255, 255, 0.6)',
-            ease: 'power2.out',
-          })
-        }
-
-        if (menuToggleSpans.length > 0) {
-          gsap.to(menuToggleSpans, {
-            duration: 0.6,
-            backgroundColor: '#ffffff',
-            ease: 'power2.out',
-          })
-        }
-      } else {
-        // 滚动超过 Hero 高度：白色背景，深灰文字，主题色按钮，添加阴影
-        gsap.to(header, {
-          duration: 0.6,
-          backgroundColor: '#ffffff',
-          backdropFilter: 'blur(0px)',
-          WebkitBackdropFilter: 'blur(0px)',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-          ease: 'power2.out',
         })
+      }
 
-        const logo = header.querySelector('.logo')
-        const navLinks = header.querySelectorAll('.nav-link')
-        const btnInquire = header.querySelector('.btn-inquire')
-        const menuToggleSpans = header.querySelectorAll('.mobile-menu-toggle span')
-
-        if (logo) {
-          gsap.to(logo, {
-            duration: 0.6,
-            color: '#1f2937',
-            ease: 'power2.out',
-          })
-        }
-
-        if (navLinks.length > 0) {
-          gsap.to(navLinks, {
-            duration: 0.6,
-            color: '#1f2937',
-            ease: 'power2.out',
-          })
-        }
-
-        if (btnInquire) {
+      // 按钮样式
+      if (btnInquire) {
+        if (progress > 0.5) {
           gsap.to(btnInquire, {
-            duration: 0.6,
+            duration: 0.1,
             color: '#ffffff',
             backgroundColor: 'var(--primary)',
             borderColor: 'var(--primary)',
-            ease: 'power2.out',
+            ease: 'none',
+          })
+        } else {
+          gsap.to(btnInquire, {
+            duration: 0.1,
+            color: '#ffffff',
+            backgroundColor: 'transparent',
+            borderColor: `rgba(255, 255, 255, ${0.6 + 0.4 * (1 - progress * 2)})`,
+            ease: 'none',
           })
         }
+      }
 
-        if (menuToggleSpans.length > 0) {
-          gsap.to(menuToggleSpans, {
-            duration: 0.6,
-            backgroundColor: '#1f2937',
-            ease: 'power2.out',
-          })
-        }
+      // 移动端菜单按钮
+      if (menuToggleSpans.length > 0) {
+        gsap.to(menuToggleSpans, {
+          duration: 0.1,
+          backgroundColor: progress > 0.5 ? '#1f2937' : '#ffffff',
+          ease: 'none',
+        })
       }
     }
 
     const handleScroll = () => {
       const scrollY = window.scrollY
       const heroHeight = getHeroHeight()
-      const isScrolled = scrollY >= heroHeight
+      const headerHeight = header.clientHeight || 80
+      
+      // 计算在Hero区域内的进度
+      // 从Hero高度的50%开始渐变，到Hero底部完全变色
+      const startFadePoint = heroHeight * 0.5
+      const endFadePoint = heroHeight - headerHeight
+      
+      let progress = 0
+      if (scrollY >= endFadePoint) {
+        progress = 1
+      } else if (scrollY >= startFadePoint) {
+        progress = (scrollY - startFadePoint) / (endFadePoint - startFadePoint)
+      }
 
-      updateHeaderStyle(isScrolled)
+      updateHeaderStyle(progress)
     }
 
     const handleResize = () => {
