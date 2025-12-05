@@ -820,54 +820,97 @@ a {
 }
 
 /* ==================== Testimonials ==================== */
+.section-testimonials {
+  background: white;
+}
+
 .testimonials-grid-new {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 36px;
+  gap: 32px;
 }
 
 .testimonial-card-new {
-  background: white;
-  padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  padding: 32px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  transition: all 0.5s ease;
 }
 
 .testimonial-card-new:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
+/* 引号装饰 */
+.testimonial-quote-icon {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  opacity: 0.1;
+}
+
+.testimonial-quote {
+  width: 64px;
+  height: 64px;
+  color: #059669;
+}
+
+/* 评分 */
 .testimonial-rating {
   display: flex;
-  gap: 6px;
-  margin-bottom: 20px;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.testimonial-star {
+  width: 16px;
+  height: 16px;
+  fill: #fbbf24;
   color: #fbbf24;
 }
 
+/* 评论内容 */
 .testimonial-content-new {
-  font-size: 1.0625rem;
-  line-height: 1.75;
-  color: var(--text);
-  margin-bottom: 28px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #374151;
+  margin-bottom: 24px;
   font-weight: 400;
+  position: relative;
+  z-index: 10;
 }
 
+/* 用户信息 */
 .testimonial-author-new {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  gap: 16px;
+}
+
+.testimonial-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .testimonial-name {
-  font-weight: 600;
-  color: var(--text);
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 4px;
 }
 
 .testimonial-location {
-  font-size: 14px;
-  color: var(--text-light);
+  font-size: 13px;
+  color: #6b7280;
 }
 
 /* ==================== Newsletter ==================== */

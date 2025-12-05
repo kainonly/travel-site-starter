@@ -8,7 +8,7 @@ import HeroVideo from './components/HeroVideo'
 import HeroAnimations from './components/HeroAnimations'
 import DestinationCard from './components/DestinationCard'
 import './styles.css'
-import { Building2, Landmark, Mountain, Waves, Shield, Award, Headphones, DollarSign } from 'lucide-react'
+import { Building2, Landmark, Mountain, Waves, Shield, Award, Headphones, DollarSign, Star, Quote } from 'lucide-react'
 
 export default async function HomePage() {
   const payloadConfig = await config
@@ -140,22 +140,28 @@ export default async function HomePage() {
   // 客户评价
   const testimonials = [
     {
+      id: 1,
+      name: '王美丽',
+      location: '北京，中国',
       rating: 5,
-      content: '一次很棒的体验!行程安排很好，导游知识渊博，一定会再次预订。',
-      author: '王美丽',
-      location: '上海, 中国',
+      comment: '非常棒的体验！行程安排得很好，导游知识渊博。一定会再次预订。',
+      avatar: 'https://images.unsplash.com/photo-1589553009868-c7b2bb474531?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxBc2lhbiUyMHdvbWFuJTIwcG9ydHJhaXR8ZW58MXx8fHwxNzY0OTAxNTMwfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
     },
     {
+      id: 2,
+      name: '陈浩然',
+      location: '上海，中国',
       rating: 5,
-      content: '我用过最好的旅行社。价格优惠，服务出色。强烈推荐，值得拥有!',
-      author: '陈浩然',
-      location: '上海, 中国',
+      comment: '我用过最好的旅行社。价格优惠，服务出色，回忆难忘。强烈推荐！',
+      avatar: 'https://images.unsplash.com/photo-1633177188754-980c2a6b6266?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxBc2lhbiUyMG1hbiUyMHBvcnRyYWl0fGVufDF8fHx8MTc2NDk0NzA2NXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
     },
     {
+      id: 3,
+      name: '李晓婷',
+      location: '广州，中国',
       rating: 5,
-      content: '对细节的关注令人印象深刻。从头到尾都非常完美，感谢这次难忘的旅行!',
-      author: '李晓玲',
-      location: '广州, 中国',
+      comment: '对细节的关注令人印象深刻。从头到尾一切都很完美。感谢这次难忘的旅行！',
+      avatar: 'https://images.unsplash.com/photo-1747707499498-7077014c4423?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxBc2lhbiUyMHlvdW5nJTIwd29tYW58ZW58MXx8fHwxNzY0OTQ3MDY1fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
     },
   ]
 
@@ -385,35 +391,41 @@ export default async function HomePage() {
       </section>
 
       {/* 客户评价 */}
-      <section className="section section-alt-new">
+      <section className="section section-testimonials">
         <div className="container">
           <div className="section-header-center">
             <h2 className="section-title">客户评价</h2>
-            <p className="section-subtitle">真实来自真实客户的真实评价</p>
+            <p className="section-subtitle">阅读来自满意客户的真实评价</p>
           </div>
           <div className="testimonials-grid-new">
-            {testimonials.map((testimonial, idx) => (
-              <div key={idx} className="testimonial-card-new">
+            {testimonials.map((testimonial) => (
+              <div key={testimonial.id} className="testimonial-card-new">
+                {/* 引号装饰 */}
+                <div className="testimonial-quote-icon">
+                  <Quote className="testimonial-quote" />
+                </div>
+
+                {/* 评分 */}
                 <div className="testimonial-rating">
                   {Array.from({ length: testimonial.rating }).map((_, i) => (
-                    <svg
-                      key={i}
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                    </svg>
+                    <Star key={i} className="testimonial-star" />
                   ))}
                 </div>
-                <p className="testimonial-content-new">{testimonial.content}</p>
+
+                {/* 评论内容 */}
+                <p className="testimonial-content-new">"{testimonial.comment}"</p>
+
+                {/* 用户信息 */}
                 <div className="testimonial-author-new">
-                  <span className="testimonial-name">{testimonial.author}</span>
-                  <span className="testimonial-location">{testimonial.location}</span>
+                  <img
+                    src={testimonial.avatar}
+                    alt={testimonial.name}
+                    className="testimonial-avatar"
+                  />
+                  <div>
+                    <h4 className="testimonial-name">{testimonial.name}</h4>
+                    <p className="testimonial-location">{testimonial.location}</p>
+                  </div>
                 </div>
               </div>
             ))}
