@@ -915,12 +915,90 @@ a {
 
 /* ==================== Newsletter ==================== */
 .newsletter-section {
+  position: relative;
   background: var(--primary);
+  background-image: 
+    linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.08) 50%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.12) 50%, transparent 100%);
+  background-size: 2px 80px, 1.5px 100px, 2.5px 90px;
+  background-position: 15% 0, 45% 0, 75% 0;
+  background-repeat: no-repeat;
   color: white;
   padding: 100px 0;
+  overflow: hidden;
+  animation: meteor-rain 4s linear infinite;
 }
 
+/* 流星粒子流光坠落动效 */
+.newsletter-section::before,
+.newsletter-section::after {
+  content: '';
+  position: absolute;
+  top: -100px;
+  width: 2px;
+  height: 100px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.8) 20%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  animation: meteor-fall 3s linear infinite;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.newsletter-section::before {
+  left: 20%;
+  animation-delay: 0s;
+  animation-duration: 3s;
+}
+
+.newsletter-section::after {
+  left: 60%;
+  animation-delay: 1.5s;
+  animation-duration: 3.5s;
+  height: 120px;
+  width: 1.5px;
+}
+
+
+@keyframes meteor-fall {
+  0% {
+    top: -100px;
+    opacity: 0;
+    transform: translateX(0) rotate(45deg);
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    top: 100vh;
+    opacity: 0;
+    transform: translateX(200px) rotate(45deg);
+  }
+}
+
+@keyframes meteor-rain {
+  0% {
+    background-position: 15% -80px, 45% -100px, 75% -90px;
+  }
+  100% {
+    background-position: 15% calc(100vh + 80px), 45% calc(100vh + 100px), 75% calc(100vh + 90px);
+  }
+}
+
+/* 确保内容在流星之上 */
 .newsletter-content {
+  position: relative;
+  z-index: 2;
   text-align: center;
   max-width: 600px;
   margin: 0 auto;
