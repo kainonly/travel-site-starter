@@ -120,6 +120,11 @@ a {
   width: calc(100% - 48px);
 }
 
+/* 滚动后导航链接下划线颜色 */
+.header.scrolled .nav-link::after {
+  background: var(--primary);
+}
+
 .btn-inquire {
   display: flex;
   align-items: center;
@@ -138,6 +143,12 @@ a {
 .btn-inquire:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: white;
+}
+
+/* 滚动后按钮样式 */
+.header.scrolled .btn-inquire:hover {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
 }
 
 .btn-inquire svg {

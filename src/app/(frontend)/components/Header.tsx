@@ -29,15 +29,19 @@ export default function Header() {
 
     const header = headerRef.current
     const heroSection = document.querySelector('.hero-section')
-    if (!heroSection) return
 
-    const updateHeaderStyle = (isInHero: boolean) => {
-      if (isInHero === isInHeroRef.current) return
+    const getHeroHeight = () => {
+      if (!heroSection) return window.innerHeight
+      return heroSection.clientHeight || window.innerHeight
+    }
 
-      isInHeroRef.current = isInHero
+    const updateHeaderStyle = (isScrolled: boolean) => {
+      if (isScrolled === isInHeroRef.current) return
 
-      if (isInHero) {
-        // 在 Hero 区域：透明背景，白色文字
+      isInHeroRef.current = isScrolled
+
+      if (!isScrolled) {
+        // 页面顶部（在 Hero 区域时）：透明背景，白色文字，白色描边按钮
         gsap.to(header, {
           duration: 0.6,
           backgroundColor: 'rgba(0, 0, 0, 0)',
@@ -72,6 +76,7 @@ export default function Header() {
           gsap.to(btnInquire, {
             duration: 0.6,
             color: '#ffffff',
+            backgroundColor: 'transparent',
             borderColor: 'rgba(255, 255, 255, 0.6)',
             ease: 'power2.out',
           })
@@ -85,13 +90,13 @@ export default function Header() {
           })
         }
       } else {
-        // 离开 Hero 区域：深色背景，深色文字
+        // 滚动超过 Hero 高度：白色背景，深灰文字，主题色按钮，添加阴影
         gsap.to(header, {
           duration: 0.6,
-          backgroundColor: 'rgb(53, 53, 53)',
+          backgroundColor: '#ffffff',
           backdropFilter: 'blur(0px)',
           WebkitBackdropFilter: 'blur(0px)',
-          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.15)',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
           ease: 'power2.out',
         })
 
@@ -103,7 +108,7 @@ export default function Header() {
         if (logo) {
           gsap.to(logo, {
             duration: 0.6,
-            color: '#ffffff',
+            color: '#1f2937',
             ease: 'power2.out',
           })
         }
@@ -111,7 +116,7 @@ export default function Header() {
         if (navLinks.length > 0) {
           gsap.to(navLinks, {
             duration: 0.6,
-            color: 'rgba(255, 255, 255, 0.95)',
+            color: '#1f2937',
             ease: 'power2.out',
           })
         }
@@ -120,7 +125,8 @@ export default function Header() {
           gsap.to(btnInquire, {
             duration: 0.6,
             color: '#ffffff',
-            borderColor: 'rgba(255, 255, 255, 0.6)',
+            backgroundColor: 'var(--primary)',
+            borderColor: 'var(--primary)',
             ease: 'power2.out',
           })
         }
@@ -128,7 +134,7 @@ export default function Header() {
         if (menuToggleSpans.length > 0) {
           gsap.to(menuToggleSpans, {
             duration: 0.6,
-            backgroundColor: '#ffffff',
+            backgroundColor: '#1f2937',
             ease: 'power2.out',
           })
         }
@@ -137,10 +143,10 @@ export default function Header() {
 
     const handleScroll = () => {
       const scrollY = window.scrollY
-      const heroHeight = heroSection.clientHeight
-      const isInHero = scrollY < heroHeight - 100 // 提前一点切换，更自然
+      const heroHeight = getHeroHeight()
+      const isScrolled = scrollY >= heroHeight
 
-      updateHeaderStyle(isInHero)
+      updateHeaderStyle(isScrolled)
     }
 
     const handleResize = () => {
