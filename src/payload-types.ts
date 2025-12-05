@@ -183,6 +183,7 @@ export interface Tour {
   title: string;
   destination: number | Destination;
   image: number | Media;
+  video: number | Media;
   price: number;
   duration?: string | null;
   description?: {
@@ -343,6 +344,7 @@ export interface ToursSelect<T extends boolean = true> {
   title?: T;
   destination?: T;
   image?: T;
+  video?: T;
   price?: T;
   duration?: T;
   description?: T;

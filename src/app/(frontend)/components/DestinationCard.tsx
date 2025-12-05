@@ -1,4 +1,5 @@
-import Image from 'next/image'
+'use client'
+
 import React from 'react'
 
 interface DestinationCardProps {
@@ -8,7 +9,8 @@ interface DestinationCardProps {
   originalPrice?: number | null
   duration: string
   destination: string
-  image: string
+  video?: string
+  image?: string
 }
 
 export default function DestinationCard({
@@ -18,12 +20,24 @@ export default function DestinationCard({
   originalPrice,
   duration,
   destination,
+  video,
   image,
 }: DestinationCardProps) {
   return (
     <div className="destination-card-figma">
       <div className="destination-card-background">
-        <Image src={image} alt={title} fill style={{ objectFit: 'cover' }} />
+        {video ? (
+          <video
+            src={video}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="destination-card-video"
+          />
+        ) : image ? (
+          <img src={image} alt={title} className="destination-card-image" />
+        ) : null}
         <div className="destination-card-gradient"></div>
       </div>
       {/* 价格标签 - 左上角 */}

@@ -524,13 +524,22 @@ a {
   position: absolute;
   inset: 0;
   z-index: 0;
+  overflow: hidden;
 }
 
-.destination-card-background img {
+.destination-card-image,
+.destination-card-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   transition: transform 0.7s ease;
 }
 
-.destination-card-figma:hover .destination-card-background img {
+.destination-card-figma:hover .destination-card-image,
+.destination-card-figma:hover .destination-card-video {
   transform: scale(1.05);
 }
 

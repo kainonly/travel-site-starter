@@ -20,77 +20,79 @@ export default async function HomePage() {
   })
 
   // 精选旅游线路数据（从后端获取或使用模拟数据）
-  const featuredTours = tours.length > 0
-    ? tours.map((tour) => ({
-        id: tour.id,
-        title: tour.title,
-        price: tour.price,
-        duration: tour.duration || '3天',
-        destination: typeof tour.destination === 'object' && tour.destination
-          ? tour.destination.name || '未知'
-          : '未知',
-        image:
-          typeof tour.image === 'object' && tour.image?.url
-            ? tour.image.url
-            : 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80',
-        originalPrice: null,
-      }))
-    : [
-        {
-          id: 1,
-          title: 'Maldives Adventure Tour',
-          price: 11999,
-          duration: '3天',
-          destination: '马尔代夫',
-          image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80',
+  const featuredTours =
+    tours.length > 0
+      ? tours.map((tour) => ({
+          id: tour.id,
+          title: tour.title,
+          price: tour.price,
+          duration: tour.duration || '3天',
+          destination:
+            typeof tour.destination === 'object' && tour.destination
+              ? tour.destination.name || '未知'
+              : '未知',
+          image:
+            typeof tour.image === 'object' && tour.image?.url
+              ? tour.image.url
+              : 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80',
           originalPrice: null,
-        },
-        {
-          id: 2,
-          title: 'Paris Romantic Tour',
-          price: 9999,
-          duration: '3天',
-          destination: '巴黎',
-          image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80',
-          originalPrice: 12000,
-        },
-        {
-          id: 3,
-          title: 'Tokyo Discovery Tour',
-          price: 6999,
-          duration: '4天',
-          destination: '东京',
-          image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80',
-          originalPrice: null,
-        },
-        {
-          id: 4,
-          title: 'Santorini Family Tour',
-          price: 13999,
-          duration: '5天',
-          destination: '圣托里尼',
-          image: 'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?w=600&q=80',
-          originalPrice: null,
-        },
-        {
-          id: 5,
-          title: 'Swiss Alps Exploration',
-          price: 15999,
-          duration: '6天',
-          destination: '瑞士',
-          image: 'https://images.unsplash.com/photo-1533050487297-09b450131914?w=600&q=80',
-          originalPrice: 19999,
-        },
-        {
-          id: 6,
-          title: 'Dubai Luxury Tour',
-          price: 11999,
-          duration: '5天',
-          destination: '迪拜',
-          image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=600&q=80',
-          originalPrice: null,
-        },
-      ]
+        }))
+      : [
+          {
+            id: 1,
+            title: '马尔代夫探险之旅',
+            price: 11999,
+            duration: '5天',
+            destination: '马尔代夫',
+            image: 'https://images.unsplash.com/photo-1698726654862-377c0218dfdc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxNYWxkaXZlcyUyMGJlYWNoJTIwcmVzb3J0fGVufDF8fHx8MTc2NDc5ODgxNnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+            originalPrice: 15999,
+          },
+          {
+            id: 2,
+            title: '巴黎浪漫之旅',
+            price: 9999,
+            duration: '7天',
+            destination: '法国',
+            image: 'https://images.unsplash.com/photo-1431274172761-fca41d930114?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxQYXJpcyUyMEVpZmZlbCUyMFRvd2VyfGVufDF8fHx8MTc2NDg0NzQ5OXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+            originalPrice: 12000,
+          },
+          {
+            id: 3,
+            title: '东京发现之旅',
+            price: 6999,
+            duration: '6天',
+            destination: '日本',
+            image: 'https://images.unsplash.com/photo-1640871426525-a19540c45a39?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxUb2t5byUyMEphcGFuJTIwY2l0eXxlbnwxfHx8fDE3NjQ4NTEwMTB8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+            originalPrice: 8999,
+          },
+          {
+            id: 4,
+            title: '圣托里尼家庭游',
+            price: 13999,
+            duration: '5天',
+            destination: '希腊',
+            image: 'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxTYW50b3JpbmklMjBHcmVlY2V8ZW58MXx8fHwxNzY0OTAzMDg3fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+            originalPrice: 16999,
+          },
+          {
+            id: 5,
+            title: '瑞士阿尔卑斯探险',
+            price: 15999,
+            duration: '10天',
+            destination: '瑞士',
+            image: 'https://images.unsplash.com/photo-1633942515749-f93dddbbcff9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxTd2lzcyUyMEFscHMlMjBtb3VudGFpbnN8ZW58MXx8fHwxNzY0OTAzMDg3fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+            originalPrice: 19999,
+          },
+          {
+            id: 6,
+            title: '迪拜奢华之旅',
+            price: 11999,
+            duration: '5天',
+            destination: '阿联酋',
+            image: 'https://images.unsplash.com/photo-1649158779127-d3c740ddeddd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxEdWJhaSUyMGx1eHVyeSUyMHRyYXZlbHxlbnwxfHx8fDE3NjQ5MDMwODh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+            originalPrice: 14999,
+          },
+        ]
 
   // 按类别旅行
   const travelCategories = [
@@ -158,7 +160,9 @@ export default async function HomePage() {
             </div>
             <h1 className="hero-title">完美旅程</h1>
             <p className="hero-subtitle-new">
-              在我们的网站上，您可以找到适合您和家人朋友的最佳梦想旅程。<br />我们为您提供最优质的旅游体验！
+              在我们的网站上，您可以找到适合您和家人朋友的最佳梦想旅程。
+              <br />
+              我们为您提供最优质的旅游体验！
             </p>
           </div>
           <div className="hero-search-box" id="hero-search-box">
@@ -291,7 +295,12 @@ export default async function HomePage() {
             {travelCategories.map((category, idx) => (
               <div key={idx} className="category-card">
                 <div className="category-image">
-                  <Image src={category.image} alt={category.name} fill style={{ objectFit: 'cover' }} />
+                  <Image
+                    src={category.image}
+                    alt={category.name}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                  />
                 </div>
                 <div className="category-content">
                   <h3>{category.name}</h3>
@@ -458,9 +467,7 @@ export default async function HomePage() {
               <input type="email" placeholder="输入您的邮箱地址" className="newsletter-input" />
               <button className="newsletter-btn">订阅</button>
             </div>
-            <p className="newsletter-privacy">
-              我们尊重您的隐私，您可以随时取消订阅。
-            </p>
+            <p className="newsletter-privacy">我们尊重您的隐私，您可以随时取消订阅。</p>
           </div>
         </div>
       </section>

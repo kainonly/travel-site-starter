@@ -32,6 +32,13 @@ export const Tours: CollectionConfig = {
       required: true,
     },
     {
+      name: 'video',
+      type: 'upload',
+      label: '视频',
+      relationTo: 'media',
+      required: true,
+    },
+    {
       name: 'price',
       type: 'number',
       label: '价格',
