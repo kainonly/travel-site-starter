@@ -24,12 +24,19 @@ export default function HeroVideo({ videoUrl }: HeroVideoProps) {
         muted={true}
         width="100%"
         height="100%"
-        className="react-player"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+        }}
         pip={false}
         controls={false}
         light={false}
         volume={0}
         playbackRate={1}
+        playsInline={true}
         onReady={() => setIsReady(true)}
         onStart={() => setIsReady(true)}
         onError={(error) => {
