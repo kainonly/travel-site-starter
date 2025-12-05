@@ -11,107 +11,220 @@ export default async function HomePage() {
   const payloadConfig = await config
   const payload = await getPayload({ config: payloadConfig })
 
-  // 获取目的地列表（更多数量用于热门目的地展示）
-  const { docs: destinations } = await payload.find({
-    collection: 'destinations',
-    limit: 9,
-  })
-
   // 获取热门线路
   const { docs: tours } = await payload.find({
     collection: 'tours',
     limit: 6,
   })
 
-  // 模拟数据 - 热门目的地（带数量）
-  const popularDestinations = [
-    { name: '印度', tours: 20 },
-    { name: '希腊', tours: 67 },
-    { name: '法国', tours: 50 },
-    { name: '英国', tours: 17 },
-    { name: '意大利', tours: 22 },
-    { name: '埃及', tours: 93 },
-    { name: '新西兰', tours: 27 },
-    { name: '马尔代夫', tours: 51 },
-    { name: '克罗地亚', tours: 33 },
+  // 精选旅游线路数据（从后端获取或使用模拟数据）
+  const featuredTours = tours.length > 0
+    ? tours.map((tour) => ({
+        id: tour.id,
+        title: tour.title,
+        price: tour.price,
+        duration: tour.duration || '3天',
+        destination: typeof tour.destination === 'object' && tour.destination
+          ? tour.destination.name || '未知'
+          : '未知',
+        image:
+          typeof tour.image === 'object' && tour.image?.url
+            ? tour.image.url
+            : 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80',
+        originalPrice: null,
+      }))
+    : [
+        {
+          id: 1,
+          title: 'Maldives Adventure Tour',
+          price: 11999,
+          duration: '3天',
+          destination: '马尔代夫',
+          image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80',
+          originalPrice: null,
+        },
+        {
+          id: 2,
+          title: 'Paris Romantic Tour',
+          price: 9999,
+          duration: '3天',
+          destination: '巴黎',
+          image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80',
+          originalPrice: 12000,
+        },
+        {
+          id: 3,
+          title: 'Tokyo Discovery Tour',
+          price: 6999,
+          duration: '4天',
+          destination: '东京',
+          image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80',
+          originalPrice: null,
+        },
+        {
+          id: 4,
+          title: 'Santorini Family Tour',
+          price: 13999,
+          duration: '5天',
+          destination: '圣托里尼',
+          image: 'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?w=600&q=80',
+          originalPrice: null,
+        },
+        {
+          id: 5,
+          title: 'Swiss Alps Exploration',
+          price: 15999,
+          duration: '6天',
+          destination: '瑞士',
+          image: 'https://images.unsplash.com/photo-1533050487297-09b450131914?w=600&q=80',
+          originalPrice: 19999,
+        },
+        {
+          id: 6,
+          title: 'Dubai Luxury Tour',
+          price: 11999,
+          duration: '5天',
+          destination: '迪拜',
+          image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=600&q=80',
+          originalPrice: null,
+        },
+      ]
+
+  // 按类别旅行
+  const travelCategories = [
+    {
+      name: '海滩海岛',
+      count: 122,
+      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80',
+    },
+    {
+      name: '山地自然',
+      count: 96,
+      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
+    },
+    {
+      name: '城市观光',
+      count: 122,
+      image: 'https://images.unsplash.com/photo-1499856871958-5b962c5dcc8f?w=600&q=80',
+    },
+    {
+      name: '文化遗产',
+      count: 94,
+      image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80',
+    },
   ]
 
-  // 模拟数据 - 最后一刻优惠
-  const lastMinuteOffers = [
-    {
-      title: '加尔达湖附近的森林探险',
-      originalPrice: 1400,
-      discountPrice: 435,
-      discount: 20,
-      image: 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80',
-    },
-    {
-      title: '日本穷游之旅',
-      originalPrice: 1400,
-      discountPrice: 399,
-      discount: 20,
-      image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80',
-    },
-    {
-      title: '探索加勒比海岛屿',
-      originalPrice: 1400,
-      discountPrice: 555,
-      discount: 30,
-      image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=600&q=80',
-    },
-  ]
-
-  // 模拟数据 - 客户评价
+  // 客户评价
   const testimonials = [
     {
-      content:
-        '我想非常感谢您为我和我姐姐计划了这次法国之旅。这次旅行非常棒，超出了我的预期！我们度过了一段美好的时光，非常满意。',
-      author: '简·史密斯',
+      rating: 5,
+      content: '一次很棒的体验!行程安排很好，导游知识渊博，一定会再次预订。',
+      author: '王美丽',
+      location: '上海, 中国',
     },
     {
-      content:
-        '我们在马达加斯加、津巴布韦和博茨瓦纳的旅行非常愉快，体验非常棒。您的服务很出色，每个人都非常细心！',
-      author: '彼得·麦克米伦',
+      rating: 5,
+      content: '我用过最好的旅行社。价格优惠，服务出色。强烈推荐，值得拥有!',
+      author: '陈浩然',
+      location: '上海, 中国',
     },
     {
-      content:
-        '我想说非常感谢您帮我安排了一次精彩的哥斯达黎加冒险之旅！我和我的侄子玩得很开心！所有的住宿都很完美，谢谢！',
-      author: '凯特·威尔逊',
-    },
-    {
-      content:
-        '您为我们安排的意大利之旅非常完美。每一个接触点，每一次冒险，都感觉您是精心为我们计划和安排的。感谢您所做的一切！',
-      author: '萨曼莎·李',
+      rating: 5,
+      content: '对细节的关注令人印象深刻。从头到尾都非常完美，感谢这次难忘的旅行!',
+      author: '李晓玲',
+      location: '广州, 中国',
     },
   ]
 
   return (
     <div className="home-page">
-      {/* Hero 区域 - 视频背景 */}
-      <section className="hero">
-        <div className="hero-video-bg">
+      {/* Hero 区域 */}
+      <section className="hero-section">
+        <div className="hero-background">
           <HeroVideo videoUrl="https://cdn.kainonly.com/travel/hero.mp4" />
           <div className="hero-overlay"></div>
         </div>
-
-        <div className="hero-content">
-          {/* 搜索条 */}
-          <div className="search-box">
-            <div className="search-field">
+        <div className="hero-content-new">
+          {/* Hero 标题 - 带装饰线 */}
+          <div className="hero-title-wrapper">
+            <div className="hero-title-decorative">
+              <div className="hero-decorative-line"></div>
+              <p className="hero-title-prefix">寻找您的</p>
+              <div className="hero-decorative-line"></div>
+            </div>
+            <h1 className="hero-title">完美旅程</h1>
+            <p className="hero-subtitle-new">
+              在我们的网站上，您可以找到适合您和家人朋友的最佳梦想旅程。<br />我们为您提供最优质的旅游体验！
+            </p>
+          </div>
+          <div className="hero-search-box">
+            <div className="hero-search-field">
               <label>目的地</label>
-              <input type="text" placeholder="想去哪里？" />
+              <div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <input type="text" placeholder="选择目的地" />
+              </div>
             </div>
-            <div className="search-divider"></div>
-            <div className="search-field">
+            <div className="hero-search-divider"></div>
+            <div className="hero-search-field">
               <label>出发日期</label>
-              <input type="text" placeholder="选择日期" />
+              <div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <input type="text" placeholder="选择日期" />
+              </div>
             </div>
-            <div className="search-divider"></div>
-            <div className="search-field">
+            <div className="hero-search-divider"></div>
+            <div className="hero-search-field">
               <label>人数</label>
-              <input type="text" placeholder="2人" />
+              <div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                <input type="text" placeholder="几位旅客" />
+              </div>
             </div>
-            <button className="search-btn">
+            <button className="hero-search-btn">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -126,184 +239,270 @@ export default async function HomePage() {
                 <circle cx="11" cy="11" r="8"></circle>
                 <path d="m21 21-4.3-4.3"></path>
               </svg>
-              搜索
+              预订
             </button>
           </div>
         </div>
       </section>
 
-      {/* 热门目的地 */}
-      <section className="section">
-        <div className="container">
-          <div className="section-header">
-            <h2 className="section-title">热门目的地</h2>
-            <Link href="/destinations" className="section-link">
-              查看全部
-            </Link>
-          </div>
-          <div className="popular-destinations-grid">
-            {popularDestinations.map((dest, idx) => {
-              const destinationImages = [
-                'https://images.unsplash.com/photo-1533050487297-09b450131914?w=400&q=80',
-                'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?w=400&q=80',
-                'https://images.unsplash.com/photo-1499856871958-5b962c5dcc8f?w=400&q=80',
-                'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&q=80',
-                'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&q=80',
-                'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=400&q=80',
-                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80',
-                'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80',
-                'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=400&q=80',
-              ]
-              return (
-                <div key={idx} className="popular-destination-card">
-                  <div className="popular-dest-image">
-                    <Image
-                      src={destinationImages[idx % destinationImages.length]}
-                      alt={dest.name}
-                      fill
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
-                  <div className="popular-dest-content">
-                    <h3>{dest.name}</h3>
-                    <p className="tour-count">{dest.tours} 条线路</p>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* 精选旅游线路 */}
-      <section className="section section-alt">
+      <section className="section section-featured-tours">
         <div className="container">
-          <h2 className="section-title">精选线路</h2>
-          <div className="featured-tours-grid">
-            {tours.slice(0, 6).map((tour) => {
-              const imageUrl =
-                typeof tour.image === 'object' && tour.image?.url
-                  ? tour.image.url
-                  : 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80'
-
-              return (
-                <div key={tour.id} className="featured-tour-card">
-                  <div className="tour-card-image">
-                    <Image src={imageUrl} alt={tour.title} fill style={{ objectFit: 'cover' }} />
-                    <div className="tour-rating">
-                      <span>⭐</span>
-                      <span>4.9</span>
-                    </div>
-                  </div>
-                  <div className="tour-card-content">
-                    <div className="tour-hotel">豪华酒店 5*</div>
-                    <h3>{tour.title}</h3>
-                    <div className="tour-meta">
-                      <span className="tour-reviews">4 评价</span>
-                      <span className="tour-duration">{tour.duration || '5天'}</span>
-                    </div>
-                    <div className="tour-price">
-                      <span className="price">¥{tour.price}</span>
-                      <span className="price-label">起/人</span>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-          {tours.length === 0 && <p className="empty-text">暂无旅游线路，请在后台添加</p>}
-          <div className="section-footer">
-            <Link href="/tours" className="btn-view-all">
-              查看所有线路
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 最快预订方式 - 统计数据 */}
-      <section className="section stats-section">
-        <div className="container">
-          <div className="stats-content">
-            <h2 className="stats-title">最快方式预订超过 450 条精彩线路</h2>
-            <p className="stats-description">
-              我们为全球旅行者和客户提供各种精彩的旅行线路。我们以实惠的价格提供最优惠的交易！
-              <br />
-              我们的旅行社是廉价机票以及为喜欢探索未旅行世界路径的游客和人们提供优惠的领先提供商。我们可以为您、您的家人和朋友创造最难忘的假期！
-            </p>
-          </div>
-          <div className="stats-grid">
-            <div className="stat-item">
-              <div className="stat-number">5690</div>
-              <div className="stat-label">已售机票</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">1346</div>
-              <div className="stat-label">已预订线路</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">10679</div>
-              <div className="stat-label">网站访客</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">678+</div>
-              <div className="stat-label">认证酒店</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 最后一刻优惠 */}
-      <section className="section section-alt">
-        <div className="container">
-          <div className="section-header">
-            <h2 className="section-title">最后一刻优惠</h2>
+          <div className="section-header-center">
+            <h2 className="section-title">精选旅游线路</h2>
             <p className="section-subtitle">
-              我们为您挑选了一些令人惊叹的最后一刻假期优惠供您选择。这些优惠不会持续太久，所以赶快预订您的吧！
+              这些是我们最受欢迎的旅游线路，精心为您挑选。希望您能在下面找到感兴趣的目的地。
             </p>
           </div>
-          <div className="last-minute-grid">
-            {lastMinuteOffers.map((offer, idx) => (
-              <div key={idx} className="last-minute-card">
-                <div className="last-minute-image">
-                  <Image src={offer.image} alt={offer.title} fill style={{ objectFit: 'cover' }} />
-                  <div className="discount-badge">-{offer.discount}%</div>
+          <div className="featured-tours-grid-new">
+            {featuredTours.map((tour) => (
+              <div key={tour.id} className="destination-card-figma">
+                <div className="destination-card-background">
+                  <Image src={tour.image} alt={tour.title} fill style={{ objectFit: 'cover' }} />
+                  <div className="destination-card-gradient"></div>
                 </div>
-                <div className="last-minute-content">
-                  <h3>{offer.title}</h3>
-                  <div className="last-minute-price">
-                    <span className="original-price">¥{offer.originalPrice}</span>
-                    <span className="discount-price">¥{offer.discountPrice}</span>
+                {/* 价格标签 - 左上角 */}
+                <div className="destination-price-label">
+                  <p className="destination-price-label-text">人均价格</p>
+                  <div className="destination-price-wrapper">
+                    {tour.originalPrice && (
+                      <span className="destination-price-original">¥{tour.originalPrice}</span>
+                    )}
+                    <span className="destination-price-current">¥{tour.price}</span>
+                  </div>
+                </div>
+                {/* 底部信息区 */}
+                <div className="destination-card-info">
+                  <h3 className="destination-card-title">{tour.title}</h3>
+                  <div className="destination-card-meta">
+                    <div className="destination-meta-item">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                      </svg>
+                      <span>{tour.duration}</span>
+                    </div>
+                    <div className="destination-meta-item">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                      </svg>
+                      <span>{tour.destination}</span>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
+          </div>
+          <div className="section-footer-center">
+            <Link href="/tours" className="btn-view-all-new">
+              查看全部线路
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 按类别旅行 */}
+      <section className="section section-alt-new">
+        <div className="container">
+          <div className="section-header-center">
+            <h2 className="section-title">按类别旅行</h2>
+            <p className="section-subtitle">从我们多样化的旅行体验中选择</p>
+          </div>
+          <div className="categories-grid">
+            {travelCategories.map((category, idx) => (
+              <div key={idx} className="category-card">
+                <div className="category-image">
+                  <Image src={category.image} alt={category.name} fill style={{ objectFit: 'cover' }} />
+                </div>
+                <div className="category-content">
+                  <h3>{category.name}</h3>
+                  <p>{category.count}条线路</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 为什么选择我们 */}
+      <section className="section section-white">
+        <div className="container">
+          <div className="section-header-center">
+            <h2 className="section-title">为什么选择我们</h2>
+            <p className="section-subtitle">我们提供卓越的服务和难忘的体验</p>
+          </div>
+          <div className="features-grid">
+            <div className="feature-item-new">
+              <div className="feature-icon-new">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+              </div>
+              <h3>安全支付</h3>
+              <p>安全加密的支付环境，全国的买家都可使用</p>
+            </div>
+            <div className="feature-item-new">
+              <div className="feature-icon-new">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+              </div>
+              <h3>品质保证</h3>
+              <p>精心挑选的旅游线路，真实评价的质量保障</p>
+            </div>
+            <div className="feature-item-new">
+              <div className="feature-icon-new">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+              </div>
+              <h3>24/7 客服</h3>
+              <p>全天候客户服务，让您安心出行</p>
+            </div>
+            <div className="feature-item-new">
+              <div className="feature-icon-new">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="12" y1="1" x2="12" y2="23"></line>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+              </div>
+              <h3>最优价格</h3>
+              <p>价格匹配保证，会员专享优惠</p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* 客户评价 */}
-      <section className="section testimonials-section">
+      <section className="section section-alt-new">
         <div className="container">
-          <h2 className="section-title">客户评价</h2>
-          <div className="testimonials-grid">
+          <div className="section-header-center">
+            <h2 className="section-title">客户评价</h2>
+            <p className="section-subtitle">真实来自真实客户的真实评价</p>
+          </div>
+          <div className="testimonials-grid-new">
             {testimonials.map((testimonial, idx) => (
-              <div key={idx} className="testimonial-card">
-                <div className="testimonial-quote"></div>
-                <p className="testimonial-content">{testimonial.content}</p>
-                <p className="testimonial-author">{testimonial.author}</p>
+              <div key={idx} className="testimonial-card-new">
+                <div className="testimonial-rating">
+                  {Array.from({ length: testimonial.rating }).map((_, i) => (
+                    <svg
+                      key={i}
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                  ))}
+                </div>
+                <p className="testimonial-content-new">{testimonial.content}</p>
+                <div className="testimonial-author-new">
+                  <span className="testimonial-name">{testimonial.author}</span>
+                  <span className="testimonial-location">{testimonial.location}</span>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 找到完美旅程 */}
-      <section className="section find-tour-section">
+      {/* 邮件订阅 */}
+      <section className="section newsletter-section">
         <div className="container">
-          <div className="find-tour-content">
-            <h2>找到您的完美旅程</h2>
-            <p>在我们的网站上，您可以找到梦想中的旅程，100% 保证。</p>
-            <button className="find-tour-btn">搜索</button>
+          <div className="newsletter-content">
+            <div className="newsletter-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="48"
+                height="48"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </div>
+            <h2 className="newsletter-title">订阅我们的邮件</h2>
+            <p className="newsletter-subtitle">
+              获取最新旅游优惠、目的地指南和独家优惠，直接发送到您的收件箱
+            </p>
+            <div className="newsletter-form">
+              <input type="email" placeholder="输入您的邮箱地址" className="newsletter-input" />
+              <button className="newsletter-btn">订阅</button>
+            </div>
+            <p className="newsletter-privacy">
+              我们尊重您的隐私，您可以随时取消订阅。
+            </p>
           </div>
         </div>
       </section>

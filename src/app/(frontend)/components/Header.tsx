@@ -5,28 +5,10 @@ import React, { useState, useEffect } from 'react'
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen)
-  }
-
-  const toggleDropdown = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (window.innerWidth <= 992) {
-      e.preventDefault()
-      e.stopPropagation()
-      const navItem = e.currentTarget.closest('.nav-item')
-      if (navItem) {
-        const isOpen = navItem.classList.contains('mobile-open')
-        // 关闭其他打开的下拉菜单
-        document.querySelectorAll('.nav-item.mobile-open').forEach((item) => {
-          if (item !== navItem) {
-            item.classList.remove('mobile-open')
-          }
-        })
-        // 切换当前菜单
-        navItem.classList.toggle('mobile-open', !isOpen)
-      }
-    }
   }
 
   useEffect(() => {
@@ -40,76 +22,48 @@ export default function Header() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 100)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const navItems = ['首页', '目的地', '旅行产品', '旅游攻略', '联系我们']
+
   return (
-    <header className="header">
+    <header className={`header ${isScrolled ? 'header-scrolled' : ''}`}>
       <div className="header-container">
         <Link href="/" className="logo">
           Traveler
         </Link>
         <nav className={`nav ${mobileMenuOpen ? 'mobile-open' : ''}`}>
-          <div className="nav-item has-dropdown">
-            <Link href="/" onClick={toggleDropdown}>
-              首页
-            </Link>
-            <div className="dropdown">
-              <Link href="/">首页 2</Link>
-              <Link href="/">首页 3</Link>
+          {navItems.map((item, index) => (
+            <div key={index} className="nav-item">
+              <Link href="#" className="nav-link">
+                {item}
+              </Link>
             </div>
-          </div>
-          <div className="nav-item has-dropdown">
-            <Link href="/tours" onClick={toggleDropdown}>
-              旅游线路
-            </Link>
-            <div className="dropdown">
-              <Link href="/tours">线路列表 1</Link>
-              <Link href="/tours">线路列表 2</Link>
-              <Link href="/tours">单个线路</Link>
-            </div>
-          </div>
-          <div className="nav-item has-dropdown">
-            <Link href="/destinations" onClick={toggleDropdown}>
-              目的地
-            </Link>
-            <div className="dropdown">
-              <Link href="/destinations">单个目的地</Link>
-            </div>
-          </div>
-          <div className="nav-item has-dropdown">
-            <Link href="/pages" onClick={toggleDropdown}>
-              页面
-            </Link>
-            <div className="dropdown dropdown-mega">
-              <div className="mega-menu-content">
-                <div className="mega-menu-column">
-                  <h4>元素</h4>
-                  <Link href="/pages">排版</Link>
-                  <Link href="/pages">按钮</Link>
-                  <Link href="/pages">表单</Link>
-                  <Link href="/pages">图标列表</Link>
-                  <Link href="/pages">计数器与手风琴</Link>
-                </div>
-                <div className="mega-menu-column">
-                  <h4>页面</h4>
-                  <Link href="/about">关于我们</Link>
-                  <Link href="/pages">我们的团队</Link>
-                  <Link href="/pages">客户评价</Link>
-                  <Link href="/contact">联系我们</Link>
-                  <Link href="/pages">404 页面</Link>
-                  <Link href="/pages">即将上线</Link>
-                  <Link href="/pages">隐私政策</Link>
-                  <Link href="/pages">搜索结果</Link>
-                </div>
-                <div className="mega-menu-column">
-                  <h4>博客</h4>
-                  <Link href="/blog">博客文章</Link>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="nav-item">
-            <Link href="/blog">博客</Link>
-          </div>
+          ))}
         </nav>
+        <Link href="/contact" className="btn-inquire">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+          </svg>
+          立即咨询
+        </Link>
         <button
           className={`mobile-menu-toggle ${mobileMenuOpen ? 'active' : ''}`}
           aria-label="菜单"
@@ -124,4 +78,3 @@ export default function Header() {
     </header>
   )
 }
-
