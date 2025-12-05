@@ -4,6 +4,7 @@ import { getPayload } from 'payload'
 import React from 'react'
 
 import config from '@/payload.config'
+import HeroVideo from './components/HeroVideo'
 import './styles.css'
 
 export default async function HomePage() {
@@ -63,19 +64,23 @@ export default async function HomePage() {
   // 模拟数据 - 客户评价
   const testimonials = [
     {
-      content: '我想非常感谢您为我和我姐姐计划了这次法国之旅。这次旅行非常棒，超出了我的预期！我们度过了一段美好的时光，非常满意。',
+      content:
+        '我想非常感谢您为我和我姐姐计划了这次法国之旅。这次旅行非常棒，超出了我的预期！我们度过了一段美好的时光，非常满意。',
       author: '简·史密斯',
     },
     {
-      content: '我们在马达加斯加、津巴布韦和博茨瓦纳的旅行非常愉快，体验非常棒。您的服务很出色，每个人都非常细心！',
+      content:
+        '我们在马达加斯加、津巴布韦和博茨瓦纳的旅行非常愉快，体验非常棒。您的服务很出色，每个人都非常细心！',
       author: '彼得·麦克米伦',
     },
     {
-      content: '我想说非常感谢您帮我安排了一次精彩的哥斯达黎加冒险之旅！我和我的侄子玩得很开心！所有的住宿都很完美，谢谢！',
+      content:
+        '我想说非常感谢您帮我安排了一次精彩的哥斯达黎加冒险之旅！我和我的侄子玩得很开心！所有的住宿都很完美，谢谢！',
       author: '凯特·威尔逊',
     },
     {
-      content: '您为我们安排的意大利之旅非常完美。每一个接触点，每一次冒险，都感觉您是精心为我们计划和安排的。感谢您所做的一切！',
+      content:
+        '您为我们安排的意大利之旅非常完美。每一个接触点，每一次冒险，都感觉您是精心为我们计划和安排的。感谢您所做的一切！',
       author: '萨曼莎·李',
     },
   ]
@@ -85,22 +90,10 @@ export default async function HomePage() {
       {/* Hero 区域 - 视频背景 */}
       <section className="hero">
         <div className="hero-video-bg">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="hero-video"
-            poster="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&q=80"
-          >
-            <source
-              src="https://videos.pexels.com/video-files/3045163/3045163-hd_1920_1080_30fps.mp4"
-              type="video/mp4"
-            />
-          </video>
+          <HeroVideo videoUrl="https://cdn.kainonly.com/travel/hero.mp4" />
           <div className="hero-overlay"></div>
         </div>
-        
+
         <div className="hero-content">
           {/* 搜索条 */}
           <div className="search-box">
@@ -119,7 +112,17 @@ export default async function HomePage() {
               <input type="text" placeholder="2人" />
             </div>
             <button className="search-btn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <circle cx="11" cy="11" r="8"></circle>
                 <path d="m21 21-4.3-4.3"></path>
               </svg>
@@ -134,7 +137,9 @@ export default async function HomePage() {
         <div className="container">
           <div className="section-header">
             <h2 className="section-title">热门目的地</h2>
-            <Link href="/destinations" className="section-link">查看全部</Link>
+            <Link href="/destinations" className="section-link">
+              查看全部
+            </Link>
           </div>
           <div className="popular-destinations-grid">
             {popularDestinations.map((dest, idx) => {
@@ -184,12 +189,7 @@ export default async function HomePage() {
               return (
                 <div key={tour.id} className="featured-tour-card">
                   <div className="tour-card-image">
-                    <Image
-                      src={imageUrl}
-                      alt={tour.title}
-                      fill
-                      style={{ objectFit: 'cover' }}
-                    />
+                    <Image src={imageUrl} alt={tour.title} fill style={{ objectFit: 'cover' }} />
                     <div className="tour-rating">
                       <span>⭐</span>
                       <span>4.9</span>
@@ -211,11 +211,11 @@ export default async function HomePage() {
               )
             })}
           </div>
-          {tours.length === 0 && (
-            <p className="empty-text">暂无旅游线路，请在后台添加</p>
-          )}
+          {tours.length === 0 && <p className="empty-text">暂无旅游线路，请在后台添加</p>}
           <div className="section-footer">
-            <Link href="/tours" className="btn-view-all">查看所有线路</Link>
+            <Link href="/tours" className="btn-view-all">
+              查看所有线路
+            </Link>
           </div>
         </div>
       </section>
@@ -265,12 +265,7 @@ export default async function HomePage() {
             {lastMinuteOffers.map((offer, idx) => (
               <div key={idx} className="last-minute-card">
                 <div className="last-minute-image">
-                  <Image
-                    src={offer.image}
-                    alt={offer.title}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                  />
+                  <Image src={offer.image} alt={offer.title} fill style={{ objectFit: 'cover' }} />
                   <div className="discount-badge">-{offer.discount}%</div>
                 </div>
                 <div className="last-minute-content">
@@ -293,7 +288,7 @@ export default async function HomePage() {
           <div className="testimonials-grid">
             {testimonials.map((testimonial, idx) => (
               <div key={idx} className="testimonial-card">
-                <div className="testimonial-quote">"</div>
+                <div className="testimonial-quote"></div>
                 <p className="testimonial-content">{testimonial.content}</p>
                 <p className="testimonial-author">{testimonial.author}</p>
               </div>
