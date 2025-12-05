@@ -8,7 +8,7 @@ import HeroVideo from './components/HeroVideo'
 import HeroAnimations from './components/HeroAnimations'
 import DestinationCard from './components/DestinationCard'
 import './styles.css'
-import { Building2, Landmark, Mountain, Waves } from 'lucide-react'
+import { Building2, Landmark, Mountain, Waves, Shield, Award, Headphones, DollarSign } from 'lucide-react'
 
 export default async function HomePage() {
   const payloadConfig = await config
@@ -314,43 +314,28 @@ export default async function HomePage() {
             {travelCategories.map((category, idx) => {
               const Icon = category.icon;
               return (
-                <div
-                  key={idx}
-                  className="group relative overflow-hidden rounded-3xl cursor-pointer h-80 transition-all duration-500 hover:shadow-lg"
-                >
+                <div key={idx} className="category-card">
                   {/* 背景图 */}
-                  <div className="absolute inset-0">
+                  <div className="category-image">
                     <img
                       src={category.image}
                       alt={category.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="category-image-bg"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10"></div>
+                    <div className="category-overlay"></div>
                   </div>
 
-                  {/* 内容 */}
-                  <div className="relative h-full flex flex-col justify-end p-6">
+                  {/* 底部内容区域（包含图标和文字） */}
+                  <div className="category-content">
                     {/* 图标 */}
-                    <div
-                      className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4 transition-all duration-300"
-                      style={{
-                        background: 'rgba(255, 255, 255, 0.25)',
-                        backdropFilter: 'blur(8px)',
-                        WebkitBackdropFilter: 'blur(8px)',
-                      }}
-                    >
-                      <Icon className="w-7 h-7 text-white" />
+                    <div className="category-icon-wrapper">
+                      <Icon className="category-icon" />
                     </div>
 
-                    <h3 className="text-white mb-2" style={{ fontSize: '22px', fontWeight: 700 }}>
-                      {category.title}
-                    </h3>
-                    <p className="text-white/80 mb-3" style={{ fontSize: '14px' }}>
-                      {category.description}
-                    </p>
-                    <p className="text-white/70" style={{ fontSize: '13px' }}>
-                      {category.count} 条线路可选
-                    </p>
+                    {/* 文字内容 */}
+                    <h3 className="category-title">{category.title}</h3>
+                    <p className="category-description">{category.description}</p>
+                    <p className="category-count">{category.count} 条线路可选</p>
                   </div>
                 </div>
               );
@@ -360,7 +345,7 @@ export default async function HomePage() {
       </section>
 
       {/* 为什么选择我们 */}
-      <section className="section section-white">
+      <section className="section section-features">
         <div className="container">
           <div className="section-header-center">
             <h2 className="section-title">为什么选择我们</h2>
@@ -368,82 +353,32 @@ export default async function HomePage() {
           </div>
           <div className="features-grid">
             <div className="feature-item-new">
-              <div className="feature-icon-new">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="48"
-                  height="48"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                </svg>
+              <div className="feature-icon-wrapper">
+                <Shield className="feature-icon" />
               </div>
-              <h3>安全支付</h3>
-              <p>安全加密的支付环境，全国的买家都可使用</p>
+              <h3 className="feature-title">安全支付</h3>
+              <p className="feature-description">安全加密的支付处理，全面的买家保护</p>
             </div>
             <div className="feature-item-new">
-              <div className="feature-icon-new">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="48"
-                  height="48"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
-                  <polyline points="14 2 14 8 20 8"></polyline>
-                </svg>
+              <div className="feature-icon-wrapper">
+                <Award className="feature-icon" />
               </div>
-              <h3>品质保证</h3>
-              <p>精心挑选的旅游线路，真实评价的质量保障</p>
+              <h3 className="feature-title">品质保证</h3>
+              <p className="feature-description">精心挑选的旅游线路，真实评价和质量保障</p>
             </div>
             <div className="feature-item-new">
-              <div className="feature-icon-new">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="48"
-                  height="48"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                </svg>
+              <div className="feature-icon-wrapper">
+                <Headphones className="feature-icon" />
               </div>
-              <h3>24/7 客服</h3>
-              <p>全天候客户服务，让您安心出行</p>
+              <h3 className="feature-title">24/7 客服</h3>
+              <p className="feature-description">全天候客户服务，让您安心无忧</p>
             </div>
             <div className="feature-item-new">
-              <div className="feature-icon-new">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="48"
-                  height="48"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="12" y1="1" x2="12" y2="23"></line>
-                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                </svg>
+              <div className="feature-icon-wrapper">
+                <DollarSign className="feature-icon" />
               </div>
-              <h3>最优价格</h3>
-              <p>价格匹配保证，会员专享优惠</p>
+              <h3 className="feature-title">最优价格</h3>
+              <p className="feature-description">价格匹配保证，会员专享优惠</p>
             </div>
           </div>
         </div>
