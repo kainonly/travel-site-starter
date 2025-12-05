@@ -821,7 +821,7 @@ a {
 
 /* ==================== Testimonials ==================== */
 .section-testimonials {
-  background: white;
+  background: var(--bg-alt);
 }
 
 .testimonials-grid-new {
