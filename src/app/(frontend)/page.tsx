@@ -6,6 +6,7 @@ import React from 'react'
 import config from '@/payload.config'
 import HeroVideo from './components/HeroVideo'
 import HeroAnimations from './components/HeroAnimations'
+import DestinationCard from './components/DestinationCard'
 import './styles.css'
 
 export default async function HomePage() {
@@ -259,62 +260,16 @@ export default async function HomePage() {
           </div>
           <div className="featured-tours-grid-new">
             {featuredTours.map((tour) => (
-              <div key={tour.id} className="destination-card-figma">
-                <div className="destination-card-background">
-                  <Image src={tour.image} alt={tour.title} fill style={{ objectFit: 'cover' }} />
-                  <div className="destination-card-gradient"></div>
-                </div>
-                {/* 价格标签 - 左上角 */}
-                <div className="destination-price-label">
-                  <p className="destination-price-label-text">人均价格</p>
-                  <div className="destination-price-wrapper">
-                    {tour.originalPrice && (
-                      <span className="destination-price-original">¥{tour.originalPrice}</span>
-                    )}
-                    <span className="destination-price-current">¥{tour.price}</span>
-                  </div>
-                </div>
-                {/* 底部信息区 */}
-                <div className="destination-card-info">
-                  <h3 className="destination-card-title">{tour.title}</h3>
-                  <div className="destination-card-meta">
-                    <div className="destination-meta-item">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                      </svg>
-                      <span>{tour.duration}</span>
-                    </div>
-                    <div className="destination-meta-item">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                      </svg>
-                      <span>{tour.destination}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <DestinationCard
+                key={tour.id}
+                id={tour.id}
+                title={tour.title}
+                price={tour.price}
+                originalPrice={tour.originalPrice}
+                duration={tour.duration}
+                destination={tour.destination}
+                image={tour.image}
+              />
             ))}
           </div>
           <div className="section-footer-center">
