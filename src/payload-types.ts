@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     destinations: Destination;
     tours: Tour;
+    travelers: Traveler;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -82,6 +83,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     destinations: DestinationsSelect<false> | DestinationsSelect<true>;
     tours: ToursSelect<false> | ToursSelect<true>;
+    travelers: TravelersSelect<false> | TravelersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -206,6 +208,25 @@ export interface Tour {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "travelers".
+ */
+export interface Traveler {
+  id: number;
+  name: string;
+  phone: string;
+  email?: string | null;
+  idType: 'idCard' | 'passport' | 'hkMacauPass' | 'taiwanPass';
+  idNumber: string;
+  gender?: ('male' | 'female') | null;
+  birthday?: string | null;
+  emergencyContact?: string | null;
+  emergencyPhone?: string | null;
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -243,6 +264,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tours';
         value: number | Tour;
+      } | null)
+    | ({
+        relationTo: 'travelers';
+        value: number | Traveler;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -348,6 +373,24 @@ export interface ToursSelect<T extends boolean = true> {
   price?: T;
   duration?: T;
   description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "travelers_select".
+ */
+export interface TravelersSelect<T extends boolean = true> {
+  name?: T;
+  phone?: T;
+  email?: T;
+  idType?: T;
+  idNumber?: T;
+  gender?: T;
+  birthday?: T;
+  emergencyContact?: T;
+  emergencyPhone?: T;
+  notes?: T;
   updatedAt?: T;
   createdAt?: T;
 }

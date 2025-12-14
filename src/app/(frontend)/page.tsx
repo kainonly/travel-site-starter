@@ -1,14 +1,15 @@
-import Image from 'next/image'
-import Link from 'next/link'
 import { getPayload } from 'payload'
 import React from 'react'
 
 import config from '@/payload.config'
-import HeroVideo from './components/HeroVideo'
-import HeroAnimations from './components/HeroAnimations'
-import DestinationCard from './components/DestinationCard'
+import HeroSection from './components/HeroSection'
+import FeaturedToursSection, { Tour } from './components/FeaturedToursSection'
+import TravelCategoriesSection, { TravelCategory } from './components/TravelCategoriesSection'
+import WhyChooseUsSection from './components/WhyChooseUsSection'
+import TestimonialsSection, { Testimonial } from './components/TestimonialsSection'
+import NewsletterSection from './components/NewsletterSection'
 import './styles.css'
-import { Building2, Landmark, Mountain, Waves, Shield, Award, Headphones, DollarSign, Star, Quote } from 'lucide-react'
+import { Building2, Landmark, Mountain, Waves } from 'lucide-react'
 
 export default async function HomePage() {
   const payloadConfig = await config
@@ -21,7 +22,7 @@ export default async function HomePage() {
   })
 
   // 精选旅游线路数据（从后端获取或使用模拟数据）
-  const featuredTours =
+  const featuredTours: Tour[] =
     tours.length > 0
       ? tours.map((tour) => ({
         id: tour.id,
@@ -102,7 +103,7 @@ export default async function HomePage() {
       ]
 
   // 按类别旅行
-  const travelCategories = [
+  const travelCategories: TravelCategory[] = [
     {
       icon: Waves,
       title: '海滩海岛',
@@ -138,7 +139,7 @@ export default async function HomePage() {
   ]
 
   // 客户评价
-  const testimonials = [
+  const testimonials: Testimonial[] = [
     {
       id: 1,
       name: '王美丽',
@@ -167,304 +168,12 @@ export default async function HomePage() {
 
   return (
     <div className="home-page">
-      {/* Hero 区域 */}
-      <section className="hero-section">
-        <HeroAnimations />
-        <div className="hero-background">
-          <HeroVideo videoUrl="https://cdn.kainonly.com/travel/hero.mp4" />
-          <div className="hero-overlay"></div>
-          <div className="hero-soft-light"></div>
-        </div>
-        <div className="hero-content-new">
-          {/* Hero 标题 - 带装饰线 */}
-          <div className="hero-title-wrapper" id="hero-title-wrapper">
-            <div className="hero-title-decorative">
-              <div className="hero-decorative-line"></div>
-              <p className="hero-title-prefix">寻找您的</p>
-              <div className="hero-decorative-line"></div>
-            </div>
-            <h1 className="hero-title">完美旅程</h1>
-            <p className="hero-subtitle-new">
-              在我们的网站上，您可以找到适合您和家人朋友的最佳梦想旅程。
-              <br />
-              我们为您提供最优质的旅游体验！
-            </p>
-          </div>
-          <div className="hero-search-box" id="hero-search-box">
-            <div className="hero-search-field">
-              <label>目的地</label>
-              <div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                  <circle cx="12" cy="10" r="3"></circle>
-                </svg>
-                <input type="text" placeholder="选择目的地" />
-              </div>
-            </div>
-            <div className="hero-search-divider"></div>
-            <div className="hero-search-field">
-              <label>出发日期</label>
-              <div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                  <line x1="16" y1="2" x2="16" y2="6"></line>
-                  <line x1="8" y1="2" x2="8" y2="6"></line>
-                  <line x1="3" y1="10" x2="21" y2="10"></line>
-                </svg>
-                <input type="text" placeholder="选择日期" />
-              </div>
-            </div>
-            <div className="hero-search-divider"></div>
-            <div className="hero-search-field">
-              <label>人数</label>
-              <div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="9" cy="7" r="4"></circle>
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
-                <input type="text" placeholder="几位旅客" />
-              </div>
-            </div>
-            <button className="hero-search-btn">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.3-4.3"></path>
-              </svg>
-              预订
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* 精选旅游线路 */}
-      <section className="section section-featured-tours">
-        <div className="container">
-          <div className="section-header-center">
-            <h2 className="section-title">精选旅游线路</h2>
-            <p className="section-subtitle">
-              这些是我们最受欢迎的旅游线路，精心为您挑选。希望您能在下面找到感兴趣的目的地。
-            </p>
-          </div>
-          <div className="featured-tours-grid-new">
-            {featuredTours.map((tour) => (
-              <DestinationCard
-                key={tour.id}
-                id={tour.id}
-                title={tour.title}
-                price={tour.price}
-                originalPrice={tour.originalPrice}
-                duration={tour.duration}
-                destination={tour.destination}
-                image={tour.image}
-              />
-            ))}
-          </div>
-          <div className="section-footer-center">
-            <Link href="/tours" className="btn-view-all-new">
-              查看全部线路
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 按类别旅行 */}
-      <section className="section section-alt-new">
-        <div className="container">
-          <div className="section-header-center">
-            <h2 className="section-title">按类别旅行</h2>
-            <p className="section-subtitle">从我们多样化的旅行体验中选择</p>
-          </div>
-          <div className="categories-grid">
-            {travelCategories.map((category, idx) => {
-              const Icon = category.icon;
-              return (
-                <div key={idx} className="category-card">
-                  {/* 背景图 */}
-                  <div className="category-image">
-                    <img
-                      src={category.image}
-                      alt={category.title}
-                      className="category-image-bg"
-                    />
-                    <div className="category-overlay"></div>
-                  </div>
-
-                  {/* 底部内容区域（包含图标和文字） */}
-                  <div className="category-content">
-                    {/* 图标 */}
-                    <div className="category-icon-wrapper">
-                      <Icon className="category-icon" />
-                    </div>
-
-                    {/* 文字内容 */}
-                    <h3 className="category-title">{category.title}</h3>
-                    <p className="category-description">{category.description}</p>
-                    <p className="category-count">{category.count} 条线路可选</p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* 为什么选择我们 */}
-      <section className="section section-features">
-        <div className="container">
-          <div className="section-header-center">
-            <h2 className="section-title">为什么选择我们</h2>
-            <p className="section-subtitle">我们提供卓越的服务和难忘的体验</p>
-          </div>
-          <div className="features-grid">
-            <div className="feature-item-new">
-              <div className="feature-icon-wrapper">
-                <Shield className="feature-icon" />
-              </div>
-              <h3 className="feature-title">安全支付</h3>
-              <p className="feature-description">安全加密的支付处理，全面的买家保护</p>
-            </div>
-            <div className="feature-item-new">
-              <div className="feature-icon-wrapper">
-                <Award className="feature-icon" />
-              </div>
-              <h3 className="feature-title">品质保证</h3>
-              <p className="feature-description">精心挑选的旅游线路，真实评价和质量保障</p>
-            </div>
-            <div className="feature-item-new">
-              <div className="feature-icon-wrapper">
-                <Headphones className="feature-icon" />
-              </div>
-              <h3 className="feature-title">24/7 客服</h3>
-              <p className="feature-description">全天候客户服务，让您安心无忧</p>
-            </div>
-            <div className="feature-item-new">
-              <div className="feature-icon-wrapper">
-                <DollarSign className="feature-icon" />
-              </div>
-              <h3 className="feature-title">最优价格</h3>
-              <p className="feature-description">价格匹配保证，会员专享优惠</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 客户评价 */}
-      <section className="section section-testimonials">
-        <div className="container">
-          <div className="section-header-center">
-            <h2 className="section-title">客户评价</h2>
-            <p className="section-subtitle">阅读来自满意客户的真实评价</p>
-          </div>
-          <div className="testimonials-grid-new">
-            {testimonials.map((testimonial) => (
-              <div key={testimonial.id} className="testimonial-card-new">
-                {/* 引号装饰 */}
-                <div className="testimonial-quote-icon">
-                  <Quote className="testimonial-quote" />
-                </div>
-
-                {/* 评分 */}
-                <div className="testimonial-rating">
-                  {Array.from({ length: testimonial.rating }).map((_, i) => (
-                    <Star key={i} className="testimonial-star" />
-                  ))}
-                </div>
-
-                {/* 评论内容 */}
-                <p className="testimonial-content-new">"{testimonial.comment}"</p>
-
-                {/* 用户信息 */}
-                <div className="testimonial-author-new">
-                  <img
-                    src={testimonial.avatar}
-                    alt={testimonial.name}
-                    className="testimonial-avatar"
-                  />
-                  <div>
-                    <h4 className="testimonial-name">{testimonial.name}</h4>
-                    <p className="testimonial-location">{testimonial.location}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 邮件订阅 */}
-      <section className="section newsletter-section">
-        <div className="container">
-          <div className="newsletter-content">
-            <div className="newsletter-icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="48"
-                height="48"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                <polyline points="22,6 12,13 2,6"></polyline>
-              </svg>
-            </div>
-            <h2 className="newsletter-title">订阅我们的邮件</h2>
-            <p className="newsletter-subtitle">
-              获取最新旅游优惠、目的地指南和独家优惠，直接发送到您的收件箱
-            </p>
-            <div className="newsletter-form">
-              <input type="email" placeholder="输入您的邮箱地址" className="newsletter-input" />
-              <button className="newsletter-btn">订阅</button>
-            </div>
-            <p className="newsletter-privacy">我们尊重您的隐私，您可以随时取消订阅。</p>
-          </div>
-        </div>
-      </section>
+      <HeroSection />
+      <FeaturedToursSection tours={featuredTours} />
+      <TravelCategoriesSection categories={travelCategories} />
+      <WhyChooseUsSection />
+      <TestimonialsSection testimonials={testimonials} />
+      <NewsletterSection />
     </div>
   )
 }
